@@ -81,7 +81,13 @@ export function useAudioEngine() {
         });
     }, []);
 
-    return { playNote, playChord, loading };
+    return {
+        playNote,
+        playChord,
+        loading,
+        audioContext: audioRef.current.context,
+        instrument: audioRef.current.instrument,
+    };
 }
 
 // Helper function to convert frequency to MIDI note number

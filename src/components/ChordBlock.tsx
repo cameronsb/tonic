@@ -3,7 +3,7 @@ import { useGrid } from '../hooks/useGrid';
 import type { ChordBlock as ChordBlockType } from '../types/music';
 import './ChordBlock.css';
 
-/* eslint-disable no-unused-vars */
+ 
 interface ChordBlockProps {
     block: ChordBlockType;
     blockIndex: number;
@@ -14,7 +14,7 @@ interface ChordBlockProps {
     onReorder: (fromIndex: number, toIndex: number) => void;
     onMove: (id: string, newPosition: number) => void;
 }
-/* eslint-enable no-unused-vars */
+ 
 
 export function ChordBlock({
     block,

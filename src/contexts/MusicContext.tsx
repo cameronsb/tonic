@@ -329,7 +329,7 @@ function musicReducer(state: MusicState, action: MusicAction): MusicState {
 }
 
 // Context interface with state and actions
-/* eslint-disable no-unused-vars */
+ 
 interface MusicContextType {
     state: MusicState;
     actions: {
@@ -357,7 +357,7 @@ interface MusicContextType {
         loadSong: (song: Song) => void;
     };
 }
-/* eslint-enable no-unused-vars */
+ 
 
 // Create context
 // eslint-disable-next-line react-refresh/only-export-components

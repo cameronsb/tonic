@@ -16,7 +16,7 @@ export interface GridConfig {
     measureWidth: number;
 }
 
-/* eslint-disable no-unused-vars */
+ 
 export interface GridUtils {
     timeToPixels: (_timeInEighths: number) => number;
     pixelsToTime: (_pixels: number) => number;
@@ -27,7 +27,7 @@ export interface GridUtils {
     getBeatInMeasure: (_timeInEighths: number) => number;
     config: GridConfig;
 }
-/* eslint-enable no-unused-vars */
+ 
 
 /**
  * Hook that provides grid calculation utilities for the timeline

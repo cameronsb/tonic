@@ -1,6 +1,7 @@
-import { useRef, useEffect, useMemo, useState } from 'react';
+import { useRef, useMemo, useState, useCallback } from 'react';
 import { useMusic } from '../hooks/useMusic';
 import { useAudioEngine } from '../hooks/useAudioEngine';
+import { usePlayback } from '../hooks/usePlayback';
 import { useGrid } from '../hooks/useGrid';
 import { getChordFrequencies } from '../utils/musicTheory';
 import { Ruler } from './Ruler';
@@ -10,12 +11,10 @@ import './ChordTimeline.css';
 
 export function ChordTimeline() {
   const { state, actions } = useMusic();
-  const { playChord } = useAudioEngine();
+  const { playChord, audioContext, instrument } = useAudioEngine();
   const grid = useGrid();
-  const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const timelineRef = useRef<HTMLDivElement>(null);
-  const playbackStartTime = useRef<number>(0);
-  const currentTimeInEighths = useRef<number>(0);
+  const [playheadPosition, setPlayheadPosition] = useState(0);
 
   const chordBlocks = state.song.tracks.chords.blocks;
 
@@ -26,73 +25,44 @@ export function ChordTimeline() {
   const totalMeasures = Math.max(8, Math.ceil(totalDurationInEighths / grid.config.eighthsPerMeasure) + 2);
   const timelineWidth = totalMeasures * grid.config.measureWidth;
 
-  useEffect(() => {
-    return () => {
-      if (intervalRef.current) {
-        clearInterval(intervalRef.current);
-        intervalRef.current = null;
-      }
-    };
-  }, []);
+  const handleTimeUpdate = useCallback((timeInEighths: number) => {
+    setPlayheadPosition(grid.timeToPixels(timeInEighths));
+
+    const currentChordIndex = chordBlocks.findIndex((block) => {
+      const blockEnd = block.position + block.duration;
+      return timeInEighths >= block.position && timeInEighths < blockEnd;
+    });
+
+    if (currentChordIndex !== -1) {
+      actions.setPlaybackBeat(currentChordIndex);
+    }
+  }, [chordBlocks, grid, actions]);
+
+  const handlePlaybackEnd = useCallback(() => {
+    actions.setPlaybackPlaying(false);
+    actions.setPlaybackBeat(0);
+    setPlayheadPosition(0);
+  }, [actions]);
+
+  const playback = usePlayback({
+    tempo: state.song.tempo,
+    chordBlocks,
+    loop: state.playbackState.loop,
+    audioContext,
+    instrument,
+    onTimeUpdate: handleTimeUpdate,
+    onPlaybackEnd: handlePlaybackEnd,
+  });
 
   const handlePlayPause = () => {
     if (state.playbackState.isPlaying) {
-      if (intervalRef.current) {
-        clearInterval(intervalRef.current);
-        intervalRef.current = null;
-      }
+      playback.pause();
       actions.setPlaybackPlaying(false);
-      currentTimeInEighths.current = 0;
+      setPlayheadPosition(0);
     } else {
       if (chordBlocks.length === 0) return;
-
+      playback.play();
       actions.setPlaybackPlaying(true);
-      playbackStartTime.current = Date.now();
-      currentTimeInEighths.current = 0;
-
-      const msPerEighth = (60000 / state.song.tempo) / 2;
-      let lastChordIndex = -1;
-
-      const firstChord = chordBlocks[0];
-      if (firstChord) {
-        const frequencies = getChordFrequencies(firstChord.rootNote, firstChord.intervals, 4);
-        playChord(frequencies, grid.eighthsToBeats(firstChord.duration) * (msPerEighth * 2 / 1000));
-        lastChordIndex = 0;
-        actions.setPlaybackBeat(0);
-      }
-
-      intervalRef.current = setInterval(() => {
-        const elapsed = Date.now() - playbackStartTime.current;
-        currentTimeInEighths.current = elapsed / msPerEighth;
-
-        const currentChordIndex = chordBlocks.findIndex((block) => {
-          const blockEnd = block.position + block.duration;
-          return currentTimeInEighths.current >= block.position && currentTimeInEighths.current < blockEnd;
-        });
-
-        if (currentChordIndex !== -1 && currentChordIndex !== lastChordIndex) {
-          const chord = chordBlocks[currentChordIndex];
-          const frequencies = getChordFrequencies(chord.rootNote, chord.intervals, 4);
-          playChord(frequencies, grid.eighthsToBeats(chord.duration) * (msPerEighth * 2 / 1000));
-          lastChordIndex = currentChordIndex;
-          actions.setPlaybackBeat(currentChordIndex);
-        }
-
-        if (currentTimeInEighths.current >= totalDurationInEighths) {
-          if (state.playbackState.loop) {
-            playbackStartTime.current = Date.now();
-            currentTimeInEighths.current = 0;
-            lastChordIndex = -1;
-          } else {
-            if (intervalRef.current) {
-              clearInterval(intervalRef.current);
-              intervalRef.current = null;
-            }
-            actions.setPlaybackPlaying(false);
-            currentTimeInEighths.current = 0;
-          }
-        }
-      }, 50);
     }
   };
 
@@ -106,10 +76,7 @@ export function ChordTimeline() {
 
   const handleChordDelete = (id: string) => {
     if (state.playbackState.isPlaying) {
-      if (intervalRef.current) {
-        clearInterval(intervalRef.current);
-        intervalRef.current = null;
-      }
+      playback.stop();
       actions.setPlaybackPlaying(false);
       actions.setPlaybackBeat(0);
     }
@@ -123,32 +90,12 @@ export function ChordTimeline() {
 
   const handleClearProgression = () => {
     if (state.playbackState.isPlaying) {
-      if (intervalRef.current) {
-        clearInterval(intervalRef.current);
-        intervalRef.current = null;
-      }
+      playback.stop();
       actions.setPlaybackPlaying(false);
       actions.setPlaybackBeat(0);
     }
     chordBlocks.forEach(block => actions.removeChordBlock(block.id));
   };
-
-  const [playheadPosition, setPlayheadPosition] = useState(0);
-
-  useEffect(() => {
-    if (!state.playbackState.isPlaying) {
-      setPlayheadPosition(0);
-      return;
-    }
-
-    const updatePlayhead = () => {
-      setPlayheadPosition(grid.timeToPixels(currentTimeInEighths.current));
-      requestAnimationFrame(updatePlayhead);
-    };
-
-    const animationId = requestAnimationFrame(updatePlayhead);
-    return () => cancelAnimationFrame(animationId);
-  }, [state.playbackState.isPlaying, grid]);
 
   return (
     <div className="chord-timeline-grid">

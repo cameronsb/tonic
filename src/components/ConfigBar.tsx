@@ -5,12 +5,12 @@ import './ConfigBar.css';
 
 type Mode = 'learn' | 'build';
 
-/* eslint-disable no-unused-vars */
+ 
 interface ConfigBarProps {
   mode: Mode;
   onModeChange: (mode: Mode) => void;
 }
-/* eslint-enable no-unused-vars */
+ 
 
 export function ConfigBar({ mode, onModeChange }: ConfigBarProps) {
   const { state, actions } = useMusic();
