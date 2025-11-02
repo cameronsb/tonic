@@ -11,7 +11,8 @@ export function BuildMode() {
   // Set to build mode when component mounts
   React.useEffect(() => {
     actions.setChordDisplayMode('build');
-  }, [actions]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <div className="build-mode">
