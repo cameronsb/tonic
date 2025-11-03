@@ -1,3 +1,4 @@
+import React from 'react';
 import { useMusic } from '../hooks/useMusic';
 import './DrumSequencer.css';
 

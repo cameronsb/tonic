@@ -1,10 +1,10 @@
 .build-mode {
   display: flex;
   flex-direction: column;
-  gap: 16px;
   height: 100%;
   padding: 16px;
   background: var(--bg);
+  gap: 0;
 }
 
 .build-mode-top {
@@ -17,6 +17,10 @@
 .chord-palette-container {
   width: 280px;
   min-width: 280px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  overflow-y: auto;
 }
 
 .timeline-container {
@@ -25,7 +29,7 @@
 }
 
 .build-mode-bottom {
-  height: 200px;
+  flex-shrink: 0;
   background: var(--surface-bg);
   border-radius: 8px;
   display: flex;
@@ -68,8 +72,70 @@
 .bottom-view-content {
   flex: 1;
   overflow-y: auto;
+  overflow-x: auto;
   padding: 16px;
+  display: flex;
+  min-height: 0;
+}
+
+.bottom-view-content.piano-view {
+  align-items: center;
+  justify-content: center;
+}
+
+.bottom-view-content.drums-view {
+  align-items: flex-start;
+  justify-content: flex-start;
+}
+
+/* Panel resize handle (for resizing bottom panel) */
+.panel-resize-handle {
+  height: 12px;
+  width: 100%;
+  cursor: ns-resize;
   display: flex;
   align-items: center;
   justify-content: center;
+  position: relative;
+  z-index: 10;
+  flex-shrink: 0;
+  transition: all 0.2s ease;
+  background: rgba(255, 255, 255, 0.08);
+  border-top: 1px solid rgba(255, 255, 255, 0.15);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.panel-resize-handle:hover {
+  background-color: rgba(102, 126, 234, 0.15);
+  border-top-color: rgba(102, 126, 234, 0.3);
+  border-bottom-color: rgba(102, 126, 234, 0.3);
+}
+
+.panel-resize-handle.resizing {
+  background-color: rgba(102, 126, 234, 0.25);
+  border-top-color: rgba(102, 126, 234, 0.5);
+  border-bottom-color: rgba(102, 126, 234, 0.5);
+}
+
+.panel-resize-indicator {
+  width: 120px;
+  height: 4px;
+  background: rgba(255, 255, 255, 0.4);
+  border-radius: 3px;
+  transition: all 0.2s ease;
+  pointer-events: none;
+}
+
+.panel-resize-handle:hover .panel-resize-indicator {
+  width: 160px;
+  height: 5px;
+  background: rgba(102, 126, 234, 0.8);
+  box-shadow: 0 0 8px rgba(102, 126, 234, 0.4);
+}
+
+.panel-resize-handle.resizing .panel-resize-indicator {
+  width: 200px;
+  height: 6px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  box-shadow: 0 0 12px rgba(102, 126, 234, 0.8);
 }

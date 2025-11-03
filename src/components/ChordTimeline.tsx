@@ -5,11 +5,12 @@ import { useGrid } from '../hooks/useGrid';
 import { getChordFrequencies } from '../utils/musicTheory';
 import { Ruler } from './Ruler';
 import { ChordBlock } from './ChordBlock';
+import { VolumeKnob } from './VolumeKnob';
 import type { ChordBlock as ChordBlockType } from '../types/music';
 import './ChordTimeline.css';
 
 export function ChordTimeline() {
-  const { state, actions, audio } = useMusic();
+  const { state, actions, audio, settings } = useMusic();
   const grid = useGrid();
   const timelineRef = useRef<HTMLDivElement>(null);
   const [playheadPosition, setPlayheadPosition] = useState(0);
@@ -102,19 +103,65 @@ export function ChordTimeline() {
   return (
     <div className="chord-timeline-grid">
       <div className="timeline-header">
-        <h3>Chord Timeline</h3>
-        <div className="timeline-info">
-          {chordBlocks.length} chords • {grid.eighthsToBeats(totalDurationInEighths).toFixed(1)} beats
+        <div className="timeline-header-left">
+          <h3>Chord Timeline</h3>
+          <div className="timeline-info">
+            {chordBlocks.length} chords • {grid.eighthsToBeats(totalDurationInEighths).toFixed(1)} beats
+          </div>
         </div>
-        {chordBlocks.length > 0 && (
-          <button
-            className="clear-button"
-            onClick={handleClearProgression}
-            title="Clear timeline"
-          >
-            Clear
-          </button>
-        )}
+        <div className="timeline-header-right">
+          <div className="playback-controls">
+            <button
+              className="play-button"
+              onClick={handlePlayPause}
+              disabled={chordBlocks.length === 0}
+            >
+              {state.playbackState.isPlaying ? '⏸ Pause' : '▶ Play'}
+            </button>
+            <button
+              className={`loop-button ${state.playbackState.loop ? 'active' : ''}`}
+              onClick={() => actions.toggleLoop()}
+            >
+              🔁 Loop
+            </button>
+            <div className="tempo-control">
+              <label>Tempo:</label>
+              <input
+                type="number"
+                min="60"
+                max="180"
+                value={state.song.tempo}
+                onChange={(e) => actions.setTempo(parseInt(e.target.value) || 120)}
+              />
+              <span>BPM</span>
+            </div>
+          </div>
+          <div className="volume-controls">
+            <VolumeKnob
+              value={settings.volume.master}
+              onChange={actions.setMasterVolume}
+              size={36}
+              color="#667eea"
+              label="Master"
+            />
+            <VolumeKnob
+              value={settings.volume.tracks.chords}
+              onChange={(v) => actions.setTrackVolume('chords', v)}
+              size={36}
+              color="#764ba2"
+              label="Chords"
+            />
+          </div>
+          {chordBlocks.length > 0 && (
+            <button
+              className="clear-button"
+              onClick={handleClearProgression}
+              title="Clear timeline"
+            >
+              Clear
+            </button>
+          )}
+        </div>
       </div>
 
       <Ruler totalMeasures={totalMeasures} />
@@ -159,35 +206,6 @@ export function ChordTimeline() {
               style={{ left: `${playheadPosition}px` }}
             />
           )}
-        </div>
-      </div>
-
-      <div className="timeline-footer">
-        <div className="playback-controls">
-          <button
-            className="play-button"
-            onClick={handlePlayPause}
-            disabled={chordBlocks.length === 0}
-          >
-            {state.playbackState.isPlaying ? '⏸ Pause' : '▶ Play'}
-          </button>
-          <button
-            className={`loop-button ${state.playbackState.loop ? 'active' : ''}`}
-            onClick={() => actions.toggleLoop()}
-          >
-            🔁 Loop
-          </button>
-          <div className="tempo-control">
-            <label>Tempo:</label>
-            <input
-              type="number"
-              min="60"
-              max="180"
-              value={state.song.tempo}
-              onChange={(e) => actions.setTempo(parseInt(e.target.value) || 120)}
-            />
-            <span>BPM</span>
-          </div>
         </div>
       </div>
     </div>

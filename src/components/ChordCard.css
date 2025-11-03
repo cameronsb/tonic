@@ -12,7 +12,6 @@
 
 .chord-card-main {
   overflow: hidden; /* Constrain ripple to card bounds */
-  border-radius: 6px;
   position: relative;
 }
 
@@ -84,6 +83,19 @@
   text-overflow: ellipsis;
 }
 
+/* New button grid mode - fixed width buttons, 2 rows, right-justified */
+.modifier-buttons-grid {
+  display: grid;
+  grid-template-columns: repeat(6, 50px); /* 6 buttons per row, 50px each */
+  grid-template-rows: repeat(2, 40px); /* 2 rows, 40px tall */
+  gap: 6px 6px;
+  margin-left: auto; /* Right-justify the grid */
+  pointer-events: none;
+  position: relative;
+  z-index: 1;
+}
+
+/* Legacy full mode modifier buttons (kept for backwards compatibility) */
 .modifier-buttons {
   display: grid;
   grid-template-columns: repeat(4, 1fr); /* 4 buttons per row */
@@ -150,34 +162,54 @@
   box-shadow: 0 4px 12px rgba(245, 87, 108, 0.4);
 }
 
-/* Compact Mode Styles */
+/* Button mode - slightly more padding to accommodate 40px buttons */
+.chord-card-buttons {
+  padding: 12px 14px;
+}
+
+.chord-card-buttons .chord-card-main {
+  gap: 16px; /* More space between chord info and buttons */
+}
+
+/* Select mode styles (compact) */
+.chord-card-select {
+  padding: 8px 12px;
+}
+
+/* Legacy compact class for backwards compatibility */
 .chord-card-compact {
   padding: 8px 12px;
 }
 
+.chord-card-select .chord-card-main::before,
 .chord-card-compact .chord-card-main::before {
-  /* Ripple effect for compact mode - starts at 20px, grows to 200px */
+  /* Ripple effect for select/compact mode - starts at 20px, grows to 400px */
   width: 20px;
   height: 20px;
 }
 
+.chord-card-select:active .chord-card-main::before,
 .chord-card-compact:active .chord-card-main::before {
   width: 400px;
   height: 400px;
 }
 
+.chord-card-select .chord-card-main,
 .chord-card-compact .chord-card-main {
   gap: 8px;
 }
 
+.chord-card-select .chord-info,
 .chord-card-compact .chord-info {
   gap: 6px;
 }
 
+.chord-card-select .chord-numeral,
 .chord-card-compact .chord-numeral {
   font-size: 14px;
 }
 
+.chord-card-select .chord-name,
 .chord-card-compact .chord-name {
   font-size: 16px;
   min-width: 60px;

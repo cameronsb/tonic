@@ -103,7 +103,8 @@
     background: rgba(255, 0, 0, 0.8);
 }
 
-.resize-handle {
+/* Chord block resize handle (for resizing individual chord duration) */
+.chord-block-positioned .resize-handle {
     position: absolute;
     right: 0;
     top: 0;
@@ -119,7 +120,7 @@
     opacity: 1;
 }
 
-.resize-handle:hover {
+.chord-block-positioned .resize-handle:hover {
     background: rgba(255, 255, 255, 0.4);
 }
 

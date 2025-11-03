@@ -16,6 +16,26 @@
     border-bottom: 1px solid #333;
 }
 
+.timeline-header-left {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.timeline-header-right {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.volume-controls {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding-left: 16px;
+    border-left: 1px solid rgba(255, 255, 255, 0.15);
+}
+
 .timeline-header h3 {
     margin: 0;
     font-size: 18px;
@@ -126,12 +146,6 @@
     border-left: 5px solid transparent;
     border-right: 5px solid transparent;
     border-top: 8px solid #3498db;
-}
-
-.timeline-footer {
-    padding: 16px 20px;
-    background: #242424;
-    border-top: 1px solid #333;
 }
 
 .playback-controls {

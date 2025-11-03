@@ -59,7 +59,7 @@ export function useAudioEngine() {
         initAudio();
     }, []);
 
-    const playNote = useCallback(async (frequency: number, duration = 0.3) => {
+    const playNote = useCallback(async (frequency: number, duration = 0.3, volume = 0.8) => {
         const { instrument, initialized, context } = audioRef.current;
         if (!instrument || !initialized || !context) {
             console.warn('Audio engine not ready yet');
@@ -75,10 +75,10 @@ export function useAudioEngine() {
         const midiNote = frequencyToMidi(frequency);
 
         // Play the note with the sampled piano sound - use currentTime for immediate playback
-        instrument.play(midiNote, context.currentTime, { duration, gain: 0.8 });
+        instrument.play(midiNote, context.currentTime, { duration, gain: volume });
     }, []);
 
-    const playChord = useCallback(async (frequencies: number[], duration = 0.8) => {
+    const playChord = useCallback(async (frequencies: number[], duration = 0.8, volume = 0.6) => {
         const { instrument, initialized, context } = audioRef.current;
         if (!instrument || !initialized || !context) {
             console.warn('Audio engine not ready yet');
@@ -94,34 +94,35 @@ export function useAudioEngine() {
         const now = context.currentTime;
         frequencies.forEach((freq) => {
             const midiNote = frequencyToMidi(freq);
-            instrument.play(midiNote, now, { duration, gain: 0.6 });
+            instrument.play(midiNote, now, { duration, gain: volume });
         });
     }, []);
 
-    const playKick = useCallback((time?: number) => {
+    const playKick = useCallback((time?: number, volume = 1.0) => {
         const { context } = audioRef.current;
         if (!context) return;
 
         const when = time ?? context.currentTime;
+        const duration = 0.35; // Shortened from 0.5
 
         // Create oscillator for kick drum (low frequency sweep)
         const osc = context.createOscillator();
         const gain = context.createGain();
 
         osc.frequency.setValueAtTime(150, when);
-        osc.frequency.exponentialRampToValueAtTime(0.01, when + 0.5);
+        osc.frequency.exponentialRampToValueAtTime(0.01, when + duration);
 
-        gain.gain.setValueAtTime(1, when);
-        gain.gain.exponentialRampToValueAtTime(0.01, when + 0.5);
+        gain.gain.setValueAtTime(1 * volume, when);
+        gain.gain.exponentialRampToValueAtTime(0.001, when + duration);
 
         osc.connect(gain);
         gain.connect(context.destination);
 
         osc.start(when);
-        osc.stop(when + 0.5);
+        osc.stop(when + duration + 0.01);
     }, []);
 
-    const playSnare = useCallback((time?: number) => {
+    const playSnare = useCallback((time?: number, volume = 1.0) => {
         const { context } = audioRef.current;
         if (!context) return;
 
@@ -140,7 +141,7 @@ export function useAudioEngine() {
         noise.buffer = buffer;
 
         const noiseGain = context.createGain();
-        noiseGain.gain.setValueAtTime(0.7, when);
+        noiseGain.gain.setValueAtTime(0.7 * volume, when);
         noiseGain.gain.exponentialRampToValueAtTime(0.01, when + 0.2);
 
         // Add tonal component
@@ -148,7 +149,7 @@ export function useAudioEngine() {
         const oscGain = context.createGain();
         osc.frequency.value = 200;
 
-        oscGain.gain.setValueAtTime(0.3, when);
+        oscGain.gain.setValueAtTime(0.3 * volume, when);
         oscGain.gain.exponentialRampToValueAtTime(0.01, when + 0.1);
 
         noise.connect(noiseGain);
@@ -163,7 +164,7 @@ export function useAudioEngine() {
         osc.stop(when + 0.1);
     }, []);
 
-    const playHiHat = useCallback((time?: number) => {
+    const playHiHat = useCallback((time?: number, volume = 1.0) => {
         const { context } = audioRef.current;
         if (!context) return;
 
@@ -186,7 +187,7 @@ export function useAudioEngine() {
         highpass.frequency.value = 7000;
 
         const gain = context.createGain();
-        gain.gain.setValueAtTime(0.3, when);
+        gain.gain.setValueAtTime(0.3 * volume, when);
         gain.gain.exponentialRampToValueAtTime(0.01, when + 0.05);
 
         noise.connect(highpass);

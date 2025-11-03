@@ -42,7 +42,7 @@ export function ChordDisplay() {
 
   const [diatonicSort, setDiatonicSort] = useState<SortMode>('default');
   const [borrowedSort, setBorrowedSort] = useState<SortMode>('default');
-  const [viewMode, _setViewMode] = useState<ViewMode>('compact'); // Default to compact
+  const [viewMode, _setViewMode] = useState<ViewMode>('full'); // Default to full (buttons mode)
 
   const diatonicChords = getScaleChords(key, mode);
   const borrowedChords = getBorrowedChords(key, mode);
@@ -64,7 +64,7 @@ export function ChordDisplay() {
       intervals={chord.intervals}
       type={chord.type}
       isDiatonic={isDiatonic}
-      compact={viewMode === 'compact'}
+      variationMode={viewMode === 'compact' ? 'select' : 'buttons'}
     />
   );
 

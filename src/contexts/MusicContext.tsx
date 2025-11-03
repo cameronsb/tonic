@@ -1,7 +1,9 @@
 import type { ReactNode } from "react";
 import { createContext, useReducer, useCallback } from "react";
-import type { Note, Mode, SelectedChord, ChordDisplayMode, ChordInProgression, Song, ChordBlock } from "../types/music";
+import type { Note, Mode, SelectedChord, ChordDisplayMode, ChordInProgression, Song, ChordBlock, DrumPattern } from "../types/music";
 import { useAudioEngine } from "../hooks/useAudioEngine";
+import { useSettings } from "../hooks/useSettings";
+import type { UserSettings } from "../types/settings";
 
 export type NoteSubdivision = "whole" | "quarter" | "eighth";
 
@@ -334,7 +336,7 @@ function musicReducer(state: MusicState, action: MusicAction): MusicState {
 
             if (patternIndex === -1) {
                 // Create new pattern
-                const newPattern: import('../types/music').DrumPattern = {
+                const newPattern: DrumPattern = {
                     id: `drum-pattern-${Date.now()}-${Math.random()}`,
                     measure,
                     kick: Array(16).fill(false),
@@ -373,12 +375,13 @@ function musicReducer(state: MusicState, action: MusicAction): MusicState {
  
 interface MusicContextType {
     state: MusicState;
+    settings: UserSettings;
     audio: {
-        playNote: (frequency: number, duration?: number) => Promise<void>;
-        playChord: (frequencies: number[], duration?: number) => Promise<void>;
-        playKick: (time?: number) => void;
-        playSnare: (time?: number) => void;
-        playHiHat: (time?: number) => void;
+        playNote: (frequency: number, duration?: number, volume?: number) => Promise<void>;
+        playChord: (frequencies: number[], duration?: number, volume?: number) => Promise<void>;
+        playKick: (time?: number, volume?: number) => void;
+        playSnare: (time?: number, volume?: number) => void;
+        playHiHat: (time?: number, volume?: number) => void;
         loading: boolean;
         audioContext: AudioContext | null;
         instrument: any | null;
@@ -407,6 +410,9 @@ interface MusicContextType {
         updateSong: (updates: Partial<Song>) => void;
         loadSong: (song: Song) => void;
         toggleDrumStep: (measure: number, drumType: 'kick' | 'snare' | 'hihat', step: number) => void;
+        setMasterVolume: (volume: number) => void;
+        setTrackVolume: (track: keyof UserSettings['volume']['tracks'], volume: number) => void;
+        setDrumSoundVolume: (sound: keyof UserSettings['volume']['drumSounds'], volume: number) => void;
     };
 }
  
@@ -422,7 +428,34 @@ interface MusicProviderProps {
 
 export function MusicProvider({ children }: MusicProviderProps) {
     const [state, dispatch] = useReducer(musicReducer, initialState);
-    const { playNote, playChord, playKick, playSnare, playHiHat, loading, audioContext, instrument } = useAudioEngine();
+    const { playNote: rawPlayNote, playChord: rawPlayChord, playKick: rawPlayKick, playSnare: rawPlaySnare, playHiHat: rawPlayHiHat, loading, audioContext, instrument } = useAudioEngine();
+    const { settings, setMasterVolume, setTrackVolume, setDrumSoundVolume } = useSettings();
+
+    // Wrap play functions to apply volume settings
+    const playNote = useCallback((frequency: number, duration = 0.3, volume = 0.8) => {
+        const finalVolume = volume * settings.volume.master * settings.volume.tracks.melody;
+        return rawPlayNote(frequency, duration, finalVolume);
+    }, [rawPlayNote, settings.volume.master, settings.volume.tracks.melody]);
+
+    const playChord = useCallback((frequencies: number[], duration = 0.8, volume = 0.6) => {
+        const finalVolume = volume * settings.volume.master * settings.volume.tracks.chords;
+        return rawPlayChord(frequencies, duration, finalVolume);
+    }, [rawPlayChord, settings.volume.master, settings.volume.tracks.chords]);
+
+    const playKick = useCallback((time?: number, volume?: number) => {
+        const finalVolume = (volume ?? 1.0) * settings.volume.master * settings.volume.tracks.drums * settings.volume.drumSounds.kick;
+        rawPlayKick(time, finalVolume);
+    }, [rawPlayKick, settings.volume.master, settings.volume.tracks.drums, settings.volume.drumSounds.kick]);
+
+    const playSnare = useCallback((time?: number, volume?: number) => {
+        const finalVolume = (volume ?? 1.0) * settings.volume.master * settings.volume.tracks.drums * settings.volume.drumSounds.snare;
+        rawPlaySnare(time, finalVolume);
+    }, [rawPlaySnare, settings.volume.master, settings.volume.tracks.drums, settings.volume.drumSounds.snare]);
+
+    const playHiHat = useCallback((time?: number, volume?: number) => {
+        const finalVolume = (volume ?? 1.0) * settings.volume.master * settings.volume.tracks.drums * settings.volume.drumSounds.hihat;
+        rawPlayHiHat(time, finalVolume);
+    }, [rawPlayHiHat, settings.volume.master, settings.volume.tracks.drums, settings.volume.drumSounds.hihat]);
 
     // Action creators
     const selectKey = useCallback((key: Note) => {
@@ -561,6 +594,7 @@ export function MusicProvider({ children }: MusicProviderProps) {
 
     const value: MusicContextType = {
         state,
+        settings,
         audio: {
             playNote,
             playChord,
@@ -595,6 +629,9 @@ export function MusicProvider({ children }: MusicProviderProps) {
             updateSong,
             loadSong,
             toggleDrumStep,
+            setMasterVolume,
+            setTrackVolume,
+            setDrumSoundVolume,
         },
     };
 
