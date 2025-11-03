@@ -1,4 +1,4 @@
-import { useCallback, useEffect } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { Piano } from './Piano';
 import { ChordDisplay } from './ChordDisplay';
 import { useSettings } from '../hooks/useSettings';
@@ -8,6 +8,16 @@ import './LearnMode.css';
 export function LearnMode() {
   const { settings, setLearnSidebarWidth, setLearnSidebarOpen } = useSettings();
   const isSidebarOpen = settings.ui.learnSidebar.isOpen;
+  const [isTabletView, setIsTabletView] = useState(window.innerWidth <= 1024);
+
+  // Check if we're in tablet view
+  useEffect(() => {
+    const handleResize = () => {
+      setIsTabletView(window.innerWidth <= 1024);
+    };
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   const toggleSidebar = useCallback(() => {
     setLearnSidebarOpen(!isSidebarOpen);
@@ -30,6 +40,24 @@ export function LearnMode() {
     setWidth(settings.ui.learnSidebar.width);
   }, [settings.ui.learnSidebar.width, setWidth]);
 
+  // Tablet-optimized layout
+  if (isTabletView) {
+    return (
+      <div className="learn-mode learn-mode-tablet">
+        <div className="tablet-diatonic-chords">
+          <ChordDisplay layout="diatonic-only" />
+        </div>
+        <div className="tablet-piano-container">
+          <Piano startOctave={4} octaveCount={2} showScaleDegrees={true} />
+        </div>
+        <div className="tablet-borrowed-chords">
+          <ChordDisplay layout="borrowed-only" />
+        </div>
+      </div>
+    );
+  }
+
+  // Desktop layout
   return (
     <div
       className={`learn-mode learn-mode-sidebar ${isSidebarOpen ? 'sidebar-open' : 'sidebar-closed'}`}

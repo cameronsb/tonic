@@ -1,0 +1,164 @@
+.volume-slider {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 8px;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.volume-slider.vertical {
+  flex-direction: column;
+}
+
+.volume-slider-label {
+  font-size: 12px;
+  color: var(--text-secondary);
+  font-weight: 500;
+  min-width: 60px;
+  text-align: right;
+}
+
+.volume-slider.vertical .volume-slider-label {
+  text-align: center;
+  min-width: auto;
+}
+
+.volume-slider-container {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex: 1;
+  position: relative;
+}
+
+.volume-slider.vertical .volume-slider-container {
+  flex-direction: column;
+  height: 120px;
+  width: 60px;
+}
+
+/* Custom range input styling */
+.volume-slider-input {
+  -webkit-appearance: none;
+  appearance: none;
+  background: transparent;
+  cursor: pointer;
+  flex: 1;
+  height: 44px; /* Touch-friendly height */
+  padding: 0;
+  touch-action: none; /* Prevent scroll while sliding */
+}
+
+.volume-slider.vertical .volume-slider-input {
+  writing-mode: bt-lr; /* IE/Edge */
+  -webkit-appearance: slider-vertical; /* WebKit */
+  width: 44px;
+  height: 100%;
+}
+
+/* Track */
+.volume-slider-input::-webkit-slider-runnable-track {
+  background: linear-gradient(
+    to right,
+    var(--slider-color) 0%,
+    var(--slider-color) var(--slider-progress),
+    rgba(255, 255, 255, 0.1) var(--slider-progress),
+    rgba(255, 255, 255, 0.1) 100%
+  );
+  border-radius: 4px;
+  height: 6px;
+}
+
+.volume-slider-input::-moz-range-track {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 4px;
+  height: 6px;
+}
+
+/* Progress fill for Firefox */
+.volume-slider-input::-moz-range-progress {
+  background: var(--slider-color);
+  border-radius: 4px;
+  height: 6px;
+}
+
+/* Thumb */
+.volume-slider-input::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  background: white;
+  border: 3px solid var(--slider-color);
+  border-radius: 50%;
+  cursor: pointer;
+  height: 24px;
+  width: 24px;
+  margin-top: -9px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.volume-slider-input::-moz-range-thumb {
+  background: white;
+  border: 3px solid var(--slider-color);
+  border-radius: 50%;
+  cursor: pointer;
+  height: 24px;
+  width: 24px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+/* Hover/active states */
+.volume-slider-input:hover::-webkit-slider-thumb,
+.volume-slider-input:active::-webkit-slider-thumb {
+  transform: scale(1.2);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+.volume-slider-input:hover::-moz-range-thumb,
+.volume-slider-input:active::-moz-range-thumb {
+  transform: scale(1.2);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+.volume-slider-value {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text);
+  min-width: 40px;
+  text-align: center;
+  background: var(--surface-bg);
+  padding: 4px 8px;
+  border-radius: 4px;
+  border: 1px solid var(--border);
+}
+
+/* Tablet optimizations */
+@media (hover: none) and (pointer: coarse) {
+  .volume-slider-input {
+    height: 48px;
+  }
+
+  .volume-slider-input::-webkit-slider-thumb {
+    height: 32px;
+    width: 32px;
+    margin-top: -13px;
+  }
+
+  .volume-slider-input::-moz-range-thumb {
+    height: 32px;
+    width: 32px;
+  }
+}
+
+/* iOS specific fixes */
+@supports (-webkit-touch-callout: none) {
+  .volume-slider-input {
+    outline: none;
+  }
+
+  .volume-slider-input::-webkit-slider-thumb {
+    -webkit-tap-highlight-color: transparent;
+  }
+}

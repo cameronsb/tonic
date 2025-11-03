@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useMusic } from '../hooks/useMusic';
-import { VolumeKnob } from './VolumeKnob';
+import { VolumeSlider } from './VolumeSlider';
 import './VolumeControl.css';
 
 export function VolumeControl() {
@@ -35,10 +35,9 @@ export function VolumeControl() {
       </button>
 
       <div className={`volume-control-content ${isExpanded ? 'expanded' : ''}`}>
-        <VolumeKnob
+        <VolumeSlider
           value={settings.volume.master}
           onChange={actions.setMasterVolume}
-          size={56}
           color="#667eea"
           label="Master"
         />
@@ -47,24 +46,21 @@ export function VolumeControl() {
           <>
             <div className="volume-divider" />
             <div className="track-volumes">
-              <VolumeKnob
+              <VolumeSlider
                 value={settings.volume.tracks.chords}
                 onChange={(v) => actions.setTrackVolume('chords', v)}
-                size={44}
                 color="#764ba2"
                 label="Chords"
               />
-              <VolumeKnob
+              <VolumeSlider
                 value={settings.volume.tracks.melody}
                 onChange={(v) => actions.setTrackVolume('melody', v)}
-                size={44}
                 color="#f093fb"
                 label="Melody"
               />
-              <VolumeKnob
+              <VolumeSlider
                 value={settings.volume.tracks.drums}
                 onChange={(v) => actions.setTrackVolume('drums', v)}
-                size={44}
                 color="#4facfe"
                 label="Drums"
               />

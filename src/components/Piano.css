@@ -56,6 +56,15 @@
   width: calc(var(--white-key-count) * var(--white-key-width));
   height: var(--white-key-height);
   margin: 0 auto;
+  /* Enable touch events for glissando */
+  touch-action: none;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+/* When glissando is active, prevent pointer events on keys */
+.piano-keys.glissando-active .piano-key {
+  pointer-events: none;
 }
 
 /* Responsive sizing */

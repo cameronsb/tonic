@@ -15,9 +15,24 @@ interface ConfigBarProps {
 export function ConfigBar({ mode, onModeChange }: ConfigBarProps) {
   const { state, actions } = useMusic();
   const [menuOpen, setMenuOpen] = useState(false);
+  const [isCollapsed, setIsCollapsed] = useState(false);
 
   return (
-    <div className="config-bar">
+    <div className={`config-bar ${isCollapsed ? 'collapsed' : ''}`}>
+      {/* Collapse Toggle Button */}
+      <button
+        className="collapse-toggle"
+        onClick={() => setIsCollapsed(!isCollapsed)}
+        aria-label={isCollapsed ? 'Expand config bar' : 'Collapse config bar'}
+      >
+        <svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor">
+          <path d={isCollapsed ?
+            "M6 9l4 4 4-4" : // Down arrow when collapsed
+            "M14 11l-4-4-4 4"  // Up arrow when expanded
+          } stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+        </svg>
+      </button>
+
       <div className="mode-toggle">
         <button
           className={mode === 'learn' ? 'active' : ''}

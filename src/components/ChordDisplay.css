@@ -17,6 +17,69 @@
   overflow-y: auto;
 }
 
+/* Tiles layout for tablets */
+.chord-display-tiles {
+  background: transparent;
+  padding: 0;
+  overflow: visible;
+}
+
+.chord-section-label {
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: rgba(255, 255, 255, 0.5);
+  margin: 0 0 0.5rem 0.5rem;
+}
+
+.chord-tiles-row {
+  display: flex;
+  gap: 0.75rem;
+  padding: 0 0.5rem;
+  overflow-x: auto;
+  overflow-y: hidden;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(102, 126, 234, 0.3) transparent;
+  padding-bottom: 0.5rem;
+}
+
+.chord-tiles-row::-webkit-scrollbar {
+  height: 6px;
+}
+
+.chord-tiles-row::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 3px;
+}
+
+.chord-tiles-row::-webkit-scrollbar-thumb {
+  background: rgba(102, 126, 234, 0.4);
+  border-radius: 3px;
+}
+
+.chord-tile {
+  flex-shrink: 0;
+  background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: rgba(102, 126, 234, 0.2);
+}
+
+.chord-tile:active {
+  transform: scale(0.98);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+/* Different styling for borrowed chords */
+.chord-display-borrowed .chord-tile {
+  background: linear-gradient(135deg, rgba(255, 74, 74, 0.1) 0%, rgba(255, 170, 74, 0.1) 100%);
+  border-color: rgba(255, 170, 74, 0.2);
+}
+
 .chord-display-sidebar .keyboard-preview-text {
   font-size: 12px;
 }

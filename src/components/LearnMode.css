@@ -6,6 +6,38 @@
   overflow: hidden;
 }
 
+/* Tablet layout */
+.learn-mode-tablet {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow: auto;
+  padding: 1rem;
+  gap: 1rem;
+  background: linear-gradient(180deg, #1a1a2e 0%, #16213e 100%);
+}
+
+.tablet-diatonic-chords,
+.tablet-borrowed-chords {
+  width: 100%;
+  overflow-x: auto;
+  overflow-y: hidden;
+  -webkit-overflow-scrolling: touch;
+}
+
+.tablet-piano-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 280px;
+  flex-shrink: 0;
+  background: linear-gradient(135deg, rgba(102, 126, 234, 0.05) 0%, rgba(118, 75, 162, 0.05) 100%);
+  border-radius: 16px;
+  padding: 2rem 1rem;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
 /* Sidebar layout variant */
 .learn-mode-sidebar {
   display: grid;

@@ -34,7 +34,7 @@ const BORROWED_GROUPS = {
   },
 };
 
-type LayoutMode = 'default' | 'sidebar';
+type LayoutMode = 'default' | 'sidebar' | 'tiles' | 'diatonic-only' | 'borrowed-only';
 
 interface ChordDisplayProps {
   layout?: LayoutMode;
@@ -76,6 +76,50 @@ export function ChordDisplay({ layout = 'default' }: ChordDisplayProps) {
       showMiniPreview={settings.ui.piano.showMiniPreview}
     />
   );
+
+  // Diatonic-only layout for tablets (above piano)
+  if (layout === 'diatonic-only') {
+    return (
+      <div className="chord-display chord-display-tiles chord-display-diatonic">
+        <h3 className="chord-section-label">Scale Chords</h3>
+        <div className="chord-tiles-row">
+          {diatonicChords.map((chord) => (
+            <div key={chord.id} className="chord-tile">
+              <ChordCard
+                chord={chord}
+                isSelected={state.selectedChords.some((c) => c.id === chord.id)}
+                onToggle={() => actions.toggleChord(chord)}
+                isDiatonic={true}
+                showMiniPreview={false}
+              />
+            </div>
+          ))}
+        </div>
+      </div>
+    );
+  }
+
+  // Borrowed-only layout for tablets (below piano)
+  if (layout === 'borrowed-only') {
+    return (
+      <div className="chord-display chord-display-tiles chord-display-borrowed">
+        <h3 className="chord-section-label">Borrowed Chords</h3>
+        <div className="chord-tiles-row">
+          {borrowedChords.map((chord) => (
+            <div key={chord.id} className="chord-tile">
+              <ChordCard
+                chord={chord}
+                isSelected={state.selectedChords.some((c) => c.id === chord.id)}
+                onToggle={() => actions.toggleChord(chord)}
+                isDiatonic={false}
+                showMiniPreview={false}
+              />
+            </div>
+          ))}
+        </div>
+      </div>
+    );
+  }
 
   // Sidebar layout: stack all chords vertically
   if (layout === 'sidebar') {

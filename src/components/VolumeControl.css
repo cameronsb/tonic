@@ -47,9 +47,9 @@
 
 .track-volumes {
   display: flex;
-  gap: 16px;
-  justify-content: center;
-  flex-wrap: wrap;
+  flex-direction: column;
+  gap: 8px;
+  width: 100%;
 }
 
 .volume-divider {

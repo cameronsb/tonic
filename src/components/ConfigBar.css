@@ -1,5 +1,8 @@
 .config-bar {
-  position: relative;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
   display: flex;
   align-items: center;
   gap: 2rem;
@@ -7,6 +10,36 @@
   background: linear-gradient(180deg, #1a1a2e 0%, #16213e 100%);
   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  z-index: 100;
+  transition: transform 0.3s ease, padding 0.3s ease;
+}
+
+/* Collapsed state */
+.config-bar.collapsed {
+  transform: translateY(-100%);
+  padding-bottom: 40px; /* Keep collapse button visible */
+}
+
+/* Collapse toggle button */
+.collapse-toggle {
+  position: absolute;
+  bottom: -40px;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 8px 24px;
+  background: linear-gradient(180deg, #1a1a2e 0%, #16213e 100%);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-top: none;
+  border-radius: 0 0 8px 8px;
+  color: rgba(255, 255, 255, 0.7);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  z-index: 101;
+}
+
+.collapse-toggle:hover {
+  background: linear-gradient(180deg, #1e1e32 0%, #1a254a 100%);
+  color: white;
 }
 
 .mode-toggle {

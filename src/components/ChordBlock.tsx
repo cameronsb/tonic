@@ -30,6 +30,7 @@ export function ChordBlock({
     const [isDraggingToMove, setIsDraggingToMove] = useState(false);
     const [isDraggingToReorder, setIsDraggingToReorder] = useState(false);
     const [isResizing, setIsResizing] = useState(false);
+    const [touchId, setTouchId] = useState<number | null>(null);
     const dragStartX = useRef(0);
     const dragStartPosition = useRef(0);
     const resizeStartX = useRef(0);
@@ -40,17 +41,17 @@ export function ChordBlock({
     const width = grid.timeToPixels(block.duration);
 
     useEffect(() => {
-        if (!isResizing && !isDraggingToMove) return;
+        if (!isResizing && !isDraggingToMove && touchId === null) return;
 
-        const handleMouseMove = (e: MouseEvent) => {
+        const handleMove = (clientX: number) => {
             if (isResizing) {
-                const deltaX = e.clientX - resizeStartX.current;
+                const deltaX = clientX - resizeStartX.current;
                 const newDurationPx = grid.timeToPixels(resizeStartDuration.current) + deltaX;
                 const snappedPx = grid.snapToGrid(Math.max(grid.config.pixelsPerEighth, newDurationPx));
                 const newDuration = grid.pixelsToTime(snappedPx);
                 onResize(block.id, Math.max(1, newDuration));
             } else if (isDraggingToMove) {
-                const deltaX = e.clientX - dragStartX.current;
+                const deltaX = clientX - dragStartX.current;
                 const newPositionPx = grid.timeToPixels(dragStartPosition.current) + deltaX;
                 const snappedPx = grid.snapToGrid(Math.max(0, newPositionPx));
                 const newPosition = grid.pixelsToTime(snappedPx);
@@ -58,19 +59,51 @@ export function ChordBlock({
             }
         };
 
-        const handleMouseUp = () => {
+        const handleMouseMove = (e: MouseEvent) => {
+            handleMove(e.clientX);
+        };
+
+        const handleTouchMove = (e: TouchEvent) => {
+            if (touchId !== null) {
+                const touch = Array.from(e.touches).find(t => t.identifier === touchId);
+                if (touch) {
+                    e.preventDefault();
+                    handleMove(touch.clientX);
+                }
+            }
+        };
+
+        const handleEnd = () => {
             setIsResizing(false);
             setIsDraggingToMove(false);
+            setTouchId(null);
+        };
+
+        const handleMouseUp = () => handleEnd();
+
+        const handleTouchEnd = (e: TouchEvent) => {
+            if (touchId !== null) {
+                const changedTouches = Array.from(e.changedTouches);
+                if (changedTouches.some(t => t.identifier === touchId)) {
+                    handleEnd();
+                }
+            }
         };
 
         document.addEventListener('mousemove', handleMouseMove);
         document.addEventListener('mouseup', handleMouseUp);
+        document.addEventListener('touchmove', handleTouchMove, { passive: false });
+        document.addEventListener('touchend', handleTouchEnd);
+        document.addEventListener('touchcancel', handleTouchEnd);
 
         return () => {
             document.removeEventListener('mousemove', handleMouseMove);
             document.removeEventListener('mouseup', handleMouseUp);
+            document.removeEventListener('touchmove', handleTouchMove);
+            document.removeEventListener('touchend', handleTouchEnd);
+            document.removeEventListener('touchcancel', handleTouchEnd);
         };
-    }, [isResizing, isDraggingToMove, block.id, block.position, grid, onResize, onMove]);
+    }, [isResizing, isDraggingToMove, touchId, block.id, block.position, grid, onResize, onMove]);
 
     const handleResizeMouseDown = (e: React.MouseEvent) => {
         e.preventDefault();
@@ -78,6 +111,18 @@ export function ChordBlock({
         setIsResizing(true);
         resizeStartX.current = e.clientX;
         resizeStartDuration.current = block.duration;
+    };
+
+    const handleResizeTouchStart = (e: React.TouchEvent) => {
+        e.preventDefault();
+        e.stopPropagation();
+        if (e.touches.length > 0) {
+            const touch = e.touches[0];
+            setIsResizing(true);
+            setTouchId(touch.identifier);
+            resizeStartX.current = touch.clientX;
+            resizeStartDuration.current = block.duration;
+        }
     };
 
     const handleMouseDown = (e: React.MouseEvent) => {
@@ -91,6 +136,21 @@ export function ChordBlock({
         } else {
             setIsDraggingToMove(true);
             dragStartX.current = e.clientX;
+            dragStartPosition.current = block.position;
+        }
+    };
+
+    const handleTouchStart = (e: React.TouchEvent) => {
+        if ((e.target as HTMLElement).classList.contains('resize-handle')) return;
+        if ((e.target as HTMLElement).classList.contains('delete-btn')) return;
+
+        e.preventDefault();
+        e.stopPropagation();
+        if (e.touches.length > 0) {
+            const touch = e.touches[0];
+            setTouchId(touch.identifier);
+            setIsDraggingToMove(true);
+            dragStartX.current = touch.clientX;
             dragStartPosition.current = block.position;
         }
     };
@@ -142,6 +202,7 @@ export function ChordBlock({
                 width: `${width}px`,
             }}
             onMouseDown={handleMouseDown}
+            onTouchStart={handleTouchStart}
             onClick={handleClick}
             onDragStart={handleDragStart}
             onDragEnd={handleDragEnd}
@@ -163,6 +224,7 @@ export function ChordBlock({
             <div
                 className="resize-handle"
                 onMouseDown={handleResizeMouseDown}
+                onTouchStart={handleResizeTouchStart}
                 title="Drag to resize"
             />
         </div>

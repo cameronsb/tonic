@@ -28,21 +28,59 @@ export function PianoKey({
   showScaleLabels = false
 }: PianoKeyProps) {
   const [isPressed, setIsPressed] = useState(false);
+  const [touchId, setTouchId] = useState<number | null>(null);
 
   const handlePress = useCallback(() => {
     setIsPressed(true);
     onPress(keyData.frequency);
-    setTimeout(() => setIsPressed(false), 200);
   }, [keyData.frequency, onPress]);
+
+  const handleRelease = useCallback(() => {
+    setIsPressed(false);
+  }, []);
 
   const handleMouseDown = (e: React.MouseEvent) => {
     e.preventDefault();
     handlePress();
   };
 
+  const handleMouseUp = (e: React.MouseEvent) => {
+    e.preventDefault();
+    handleRelease();
+  };
+
+  const handleMouseLeave = (e: React.MouseEvent) => {
+    e.preventDefault();
+    handleRelease();
+  };
+
   const handleTouchStart = (e: React.TouchEvent) => {
     e.preventDefault();
-    handlePress();
+    e.stopPropagation();
+    if (e.touches.length > 0 && touchId === null) {
+      const touch = e.touches[0];
+      setTouchId(touch.identifier);
+      handlePress();
+    }
+  };
+
+  const handleTouchEnd = (e: React.TouchEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    // Check if this touch end is for our tracked touch
+    const changedTouches = Array.from(e.changedTouches);
+    if (touchId !== null && changedTouches.some(t => t.identifier === touchId)) {
+      setTouchId(null);
+      handleRelease();
+    }
+  };
+
+  const handleTouchCancel = (e: React.TouchEvent) => {
+    e.preventDefault();
+    if (touchId !== null) {
+      setTouchId(null);
+      handleRelease();
+    }
   };
 
   // Get scale degree numeral if in scale OR if showing labels
@@ -64,7 +102,11 @@ export function PianoKey({
       }`}
       style={{ left: leftPosition }}
       onMouseDown={handleMouseDown}
+      onMouseUp={handleMouseUp}
+      onMouseLeave={handleMouseLeave}
       onTouchStart={handleTouchStart}
+      onTouchEnd={handleTouchEnd}
+      onTouchCancel={handleTouchCancel}
       role="button"
       tabIndex={0}
       aria-label={`${keyData.note}`}
