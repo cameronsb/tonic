@@ -71,22 +71,17 @@ export function ChordDisplay() {
   return (
     <div className="chord-display">
       {/* Keyboard Preview Toggle */}
-      <div className="keyboard-preview-control">
-        <label className="keyboard-preview-label">
-          <input
-            type="checkbox"
-            checked={state.keyboardPreviewEnabled}
-            onChange={actions.toggleKeyboardPreview}
-            className="keyboard-preview-checkbox"
-          />
-          <span className="keyboard-preview-text">
-            Show chords on keyboard
-          </span>
-        </label>
-        <span className="keyboard-preview-hint">
-          {state.keyboardPreviewEnabled ? 'Click any chord card to preview on keyboard' : 'Enable to preview chords on keyboard'}
+      <label className="keyboard-preview-control">
+        <input
+          type="checkbox"
+          checked={state.keyboardPreviewEnabled}
+          onChange={actions.toggleKeyboardPreview}
+          className="keyboard-preview-checkbox"
+        />
+        <span className="keyboard-preview-text">
+          Show chords on keyboard
         </span>
-      </div>
+      </label>
 
       {/* View mode toggle - hidden for now
       <div className="view-mode-toggle">

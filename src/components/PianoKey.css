@@ -1,3 +1,22 @@
+/* Piano key color variables */
+:root {
+  /* In-scale colors (purple theme) */
+  --key-scale-white: #e0e7fb;
+  --key-scale-white-hover: #d0daf8;
+  --key-scale-white-pressed: #bfcdf5;
+  --key-scale-black: #667eea;
+  --key-scale-black-hover: #7e8ff0;
+  --key-scale-black-pressed: #5568d3;
+
+  /* In-chord colors (orange theme) */
+  --key-chord-white: #fff4e5;
+  --key-chord-white-hover: #ffe9cc;
+  --key-chord-white-pressed: #ffddb3;
+  --key-chord-black: #ff9f40;
+  --key-chord-black-hover: #ffb366;
+  --key-chord-black-pressed: #ff8c1a;
+}
+
 .piano-key {
   position: absolute;
   cursor: pointer;
@@ -58,53 +77,58 @@
 
 /* Scale highlighting */
 .piano-key.white.in-scale {
-  background: #baddff;
-  /* border-color: #b3d9ff; */
+  background: var(--key-scale-white);
 }
 
 .piano-key.white.in-scale:hover {
-  /* background: #60a3eb; */
-  background: #b5d8fe;
+  background: var(--key-scale-white-hover);
 }
 
 .piano-key.white.in-scale.pressed {
-  background: #97cfff;
+  background: var(--key-scale-white-pressed);
 }
 
 .piano-key.black.in-scale {
-  /* Cool blue gradient */
-  /* background: linear-gradient(180deg, #1376d9 0%, #4a6a8a 100%); */
-  background: #1376d9;
-  /* border-color: #3a5a7a; */
+  background: var(--key-scale-black);
 }
 
 .piano-key.black.in-scale:hover {
-  background: #1266c2;
+  background: var(--key-scale-black-hover);
 }
 
 .piano-key.black.in-scale.pressed {
-  background: #0d56a9;
+  background: var(--key-scale-black-pressed);
 }
 
 /* Chord highlighting */
 .piano-key.white.in-chord {
-  background: #fff4e5;
-  /* border-color: #ffcc80; */
+  background: var(--key-chord-white);
 }
 
 .piano-key.white.in-chord:hover {
-  background: #ffe9cc;
+  background: var(--key-chord-white-hover);
+}
+
+.piano-key.white.in-chord.pressed {
+  background: var(--key-chord-white-pressed);
 }
 
 .piano-key.black.in-chord {
-  background: orange;
-  /* background: linear-gradient(180deg, #d4a574 0%, #b8935a 100%); */
+  background: var(--key-chord-black);
+}
+
+.piano-key.black.in-chord:hover {
+  background: var(--key-chord-black-hover);
+}
+
+.piano-key.black.in-chord.pressed {
+  background: var(--key-chord-black-pressed);
 }
 
 /* Key labels */
 .key-label {
   display: flex;
-  flex-direction: column;
+  flex-direction: column-reverse;
   align-items: center;
   gap: 0.25rem;
   pointer-events: none;

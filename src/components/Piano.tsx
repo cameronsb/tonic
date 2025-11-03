@@ -17,7 +17,7 @@ export function Piano({
   octaveCount = 2,
   showScaleDegrees = false
 }: PianoProps) {
-  const { state, audio } = useMusic();
+  const { state, audio, actions } = useMusic();
 
   // Generate piano keys
   const keys = useMemo(() => {
@@ -51,6 +51,19 @@ export function Piano({
 
   return (
     <div className="piano">
+      {/* In-scale colors toggle */}
+      <label className="in-scale-colors-control">
+        <input
+          type="checkbox"
+          checked={state.showInScaleColors}
+          onChange={actions.toggleInScaleColors}
+          className="in-scale-colors-checkbox"
+        />
+        <span className="in-scale-colors-text">
+          Highlight scale notes
+        </span>
+      </label>
+
       <div
         className="piano-keys"
         style={{
@@ -62,11 +75,12 @@ export function Piano({
             key={keyData.note}
             keyData={keyData}
             onPress={handleKeyPress}
-            isInScale={scaleNotes.has(keyData.baseNote)}
+            isInScale={state.showInScaleColors && scaleNotes.has(keyData.baseNote)}
             isInChord={chordNotes.has(keyData.baseNote)}
             showScaleDegree={showScaleDegrees}
             selectedKey={state.song.key}
             mode={state.song.mode}
+            showScaleLabels={state.keyboardPreviewEnabled && scaleNotes.has(keyData.baseNote)}
           />
         ))}
       </div>

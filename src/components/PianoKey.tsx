@@ -13,6 +13,7 @@ interface PianoKeyProps {
   showScaleDegree?: boolean;
   selectedKey: Note;
   mode: 'major' | 'minor';
+  showScaleLabels?: boolean; // Show labels even without background highlighting
 }
 
 
@@ -23,7 +24,8 @@ export function PianoKey({
   isInChord,
   showScaleDegree,
   selectedKey,
-  mode
+  mode,
+  showScaleLabels = false
 }: PianoKeyProps) {
   const [isPressed, setIsPressed] = useState(false);
 
@@ -43,8 +45,8 @@ export function PianoKey({
     handlePress();
   };
 
-  // Get scale degree numeral if in scale
-  const scaleDegree = isInScale
+  // Get scale degree numeral if in scale OR if showing labels
+  const scaleDegree = (isInScale || showScaleLabels)
     ? getScaleDegreeNumeral(keyData.baseNote, selectedKey, mode)
     : null;
 

@@ -11,14 +11,15 @@
 /* Keyboard Preview Control */
 .keyboard-preview-control {
   display: flex;
-  flex-direction: column;
-  gap: 6px;
-  padding: 12px 16px;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 12px;
   background: rgba(255, 255, 255, 0.05);
   border: 1px solid rgba(255, 255, 255, 0.15);
   border-radius: 6px;
   align-self: flex-start;
-  min-width: 300px;
+  cursor: pointer;
+  user-select: none;
   transition: all 0.2s ease;
 }
 
@@ -27,32 +28,19 @@
   border-color: rgba(102, 126, 234, 0.3);
 }
 
-.keyboard-preview-label {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  cursor: pointer;
-  user-select: none;
-}
-
 .keyboard-preview-checkbox {
-  width: 18px;
-  height: 18px;
+  width: 16px;
+  height: 16px;
   cursor: pointer;
   accent-color: #667eea;
   flex-shrink: 0;
+  margin: 0;
 }
 
 .keyboard-preview-text {
   color: white;
-  font-size: 14px;
-  font-weight: 600;
-}
-
-.keyboard-preview-hint {
-  color: rgba(255, 255, 255, 0.5);
-  font-size: 12px;
-  padding-left: 28px;
+  font-size: 13px;
+  font-weight: 500;
 }
 
 .view-mode-toggle {
@@ -125,7 +113,7 @@
   border: 1px solid rgba(255, 255, 255, 0.2);
   border-radius: 4px;
   padding: 6px 10px;
-  font-size: 12px;
+  font-size: 14px;
   font-weight: 500;
   cursor: pointer;
   transition: all 0.2s ease;

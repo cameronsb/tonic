@@ -39,6 +39,7 @@ interface MusicState {
     chordProgression: ChordInProgression[];
     scaleViewEnabled: boolean;
     keyboardPreviewEnabled: boolean;
+    showInScaleColors: boolean;
     pianoRange: {
         startMidi: number;
         endMidi: number;
@@ -64,6 +65,7 @@ type MusicAction =
     | { type: "UPDATE_CHORD_DURATION"; payload: { id: string; duration: number } }
     | { type: "TOGGLE_SCALE_VIEW" }
     | { type: "TOGGLE_KEYBOARD_PREVIEW" }
+    | { type: "TOGGLE_IN_SCALE_COLORS" }
     | { type: "SET_PIANO_RANGE"; payload: { startMidi: number; endMidi: number } }
     | { type: "SET_PLAYBACK_PLAYING"; payload: boolean }
     | { type: "SET_PLAYBACK_BEAT"; payload: number }
@@ -87,6 +89,7 @@ const initialState: MusicState = {
     chordProgression: [],
     scaleViewEnabled: false,
     keyboardPreviewEnabled: true, // Default to enabled for better UX
+    showInScaleColors: true, // Default to showing in-scale colors
     pianoRange: {
         startMidi: 60, // C4
         endMidi: 83,   // B5 (2 octaves)
@@ -165,6 +168,12 @@ function musicReducer(state: MusicState, action: MusicAction): MusicState {
                 keyboardPreviewEnabled: !state.keyboardPreviewEnabled,
                 // Clear selected chords when toggling off
                 selectedChords: state.keyboardPreviewEnabled ? [] : state.selectedChords,
+            };
+
+        case "TOGGLE_IN_SCALE_COLORS":
+            return {
+                ...state,
+                showInScaleColors: !state.showInScaleColors,
             };
 
         case "SET_PIANO_RANGE":
@@ -410,6 +419,7 @@ interface MusicContextType {
         updateChordDuration: (id: string, duration: number) => void;
         toggleScaleView: () => void;
         toggleKeyboardPreview: () => void;
+        toggleInScaleColors: () => void;
         setPianoRange: (startMidi: number, endMidi: number) => void;
         setPlaybackPlaying: (playing: boolean) => void;
         setPlaybackBeat: (beat: number) => void;
@@ -554,6 +564,10 @@ export function MusicProvider({ children }: MusicProviderProps) {
         dispatch({ type: "TOGGLE_KEYBOARD_PREVIEW" });
     }, []);
 
+    const toggleInScaleColors = useCallback(() => {
+        dispatch({ type: "TOGGLE_IN_SCALE_COLORS" });
+    }, []);
+
     const setPianoRange = useCallback((startMidi: number, endMidi: number) => {
         dispatch({ type: "SET_PIANO_RANGE", payload: { startMidi, endMidi } });
     }, []);
@@ -634,6 +648,7 @@ export function MusicProvider({ children }: MusicProviderProps) {
             updateChordDuration,
             toggleScaleView,
             toggleKeyboardPreview,
+            toggleInScaleColors,
             setPianoRange,
             setPlaybackPlaying,
             setPlaybackBeat,
