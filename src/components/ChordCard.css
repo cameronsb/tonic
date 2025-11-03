@@ -5,7 +5,6 @@
   /* Muted gray background */
   background: rgba(150, 150, 150, 0.5);
   border-radius: 6px;
-  padding: 10px 12px;
   cursor: pointer;
   transition: all 0.2s ease;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
@@ -17,6 +16,7 @@
 .chord-card-main {
   overflow: hidden; /* Constrain ripple to card bounds */
   position: relative;
+  padding: 8px 12px;
 }
 
 /* Ripple effect - starts small and expands outward on click */
@@ -181,16 +181,6 @@
 
 .chord-card-buttons .chord-card-main {
   gap: 16px; /* More space between chord info and buttons */
-}
-
-/* Select mode styles (compact) */
-.chord-card-select {
-  padding: 8px 12px;
-}
-
-/* Legacy compact class for backwards compatibility */
-.chord-card-compact {
-  padding: 8px 12px;
 }
 
 .chord-card-select .chord-card-main::before,
