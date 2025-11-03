@@ -31,6 +31,10 @@
   align-items: center;
   padding-bottom: 0.5rem;
   border-color: black;
+  /* Touch optimizations - tells browser we're handling touch */
+  touch-action: none;
+  -webkit-touch-callout: none;
+  -webkit-tap-highlight-color: transparent;
 }
 
 /* White keys */
