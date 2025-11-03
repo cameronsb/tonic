@@ -3,17 +3,19 @@ import { Piano } from './Piano';
 import { ChordDisplay } from './ChordDisplay';
 import { useSettings } from '../hooks/useSettings';
 import { useResizableHorizontal } from '../hooks/useResizableHorizontal';
+import { isIPad } from '../utils/deviceDetection';
 import './LearnMode.css';
 
 export function LearnMode() {
   const { settings, setLearnSidebarWidth, setLearnSidebarOpen } = useSettings();
   const isSidebarOpen = settings.ui.learnSidebar.isOpen;
-  const [isTabletView, setIsTabletView] = useState(window.innerWidth <= 1024);
+  const [useTabletLayout, setUseTabletLayout] = useState(isIPad());
 
-  // Check if we're in tablet view
+  // Check if we're on iPad
   useEffect(() => {
+    // iPad detection is static, but we can re-check on resize in case of orientation change
     const handleResize = () => {
-      setIsTabletView(window.innerWidth <= 1024);
+      setUseTabletLayout(isIPad());
     };
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
@@ -40,8 +42,8 @@ export function LearnMode() {
     setWidth(settings.ui.learnSidebar.width);
   }, [settings.ui.learnSidebar.width, setWidth]);
 
-  // Tablet-optimized layout
-  if (isTabletView) {
+  // iPad-optimized layout
+  if (useTabletLayout) {
     return (
       <div className="learn-mode learn-mode-tablet">
         <div className="tablet-diatonic-chords">

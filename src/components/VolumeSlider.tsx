@@ -1,4 +1,5 @@
 import { useCallback } from 'react';
+import type { ChangeEvent, CSSProperties } from 'react';
 import './VolumeSlider.css';
 
 interface VolumeSliderProps {
@@ -18,7 +19,7 @@ export function VolumeSlider({
 }: VolumeSliderProps) {
   const percentage = Math.round(value * 100);
 
-  const handleChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = useCallback((e: ChangeEvent<HTMLInputElement>) => {
     const newValue = Number(e.target.value) / 100;
     onChange(newValue);
   }, [onChange]);
@@ -38,7 +39,7 @@ export function VolumeSlider({
           style={{
             '--slider-color': color,
             '--slider-progress': `${percentage}%`
-          } as React.CSSProperties}
+          } as CSSProperties}
           aria-label={`${label} volume: ${percentage}%`}
         />
         <span className="volume-slider-value">{percentage}%</span>

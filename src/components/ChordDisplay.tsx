@@ -84,14 +84,8 @@ export function ChordDisplay({ layout = 'default' }: ChordDisplayProps) {
         <h3 className="chord-section-label">Scale Chords</h3>
         <div className="chord-tiles-row">
           {diatonicChords.map((chord) => (
-            <div key={chord.id} className="chord-tile">
-              <ChordCard
-                chord={chord}
-                isSelected={state.selectedChords.some((c) => c.id === chord.id)}
-                onToggle={() => actions.toggleChord(chord)}
-                isDiatonic={true}
-                showMiniPreview={false}
-              />
+            <div key={chord.numeral} className="chord-tile">
+              {renderChordCard(chord, true)}
             </div>
           ))}
         </div>
@@ -106,14 +100,8 @@ export function ChordDisplay({ layout = 'default' }: ChordDisplayProps) {
         <h3 className="chord-section-label">Borrowed Chords</h3>
         <div className="chord-tiles-row">
           {borrowedChords.map((chord) => (
-            <div key={chord.id} className="chord-tile">
-              <ChordCard
-                chord={chord}
-                isSelected={state.selectedChords.some((c) => c.id === chord.id)}
-                onToggle={() => actions.toggleChord(chord)}
-                isDiatonic={false}
-                showMiniPreview={false}
-              />
+            <div key={chord.numeral} className="chord-tile">
+              {renderChordCard(chord, false)}
             </div>
           ))}
         </div>
