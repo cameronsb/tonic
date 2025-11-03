@@ -27,9 +27,9 @@
   transition: width 0.2s ease, height 0.2s ease;
 }
 
-/* When glissando is active, prevent pointer events on keys */
-.piano-keys.glissando-active .piano-key {
-  pointer-events: none;
+/* When glissando is active, keys should still receive mouseEnter events */
+.piano-keys.glissando-active {
+  /* Container styling during glissando - keys need pointer events! */
 }
 
 /* Responsive sizing */
