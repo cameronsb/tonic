@@ -223,11 +223,11 @@ export function ChordStripRework({ layout = 'default' }: ChordStripReworkProps) 
               </h5>
               <div className="chord-preview-piano-container">
                 <Piano
-                  startOctave={4}
-                  octaveCount={1}
+                  startOctave={3}
+                  octaveCount={2}
                   showScaleDegrees={true}
                   flexible={false}
-                  adjustHeight={false}
+                  adjustHeight={true}
                 />
               </div>
             </div>

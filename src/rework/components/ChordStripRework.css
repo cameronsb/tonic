@@ -220,10 +220,18 @@
 }
 
 .chord-preview-piano-container {
-  height: 80px;
+  height: 70px;
   background: rgba(255, 255, 255, 0.03);
   border-radius: 4px;
   overflow: hidden;
+}
+
+/* Scale down piano keys in preview */
+.chord-preview-piano-container .piano {
+  transform: scale(0.7);
+  transform-origin: top left;
+  width: 142.857%; /* 100 / 0.7 to compensate for scale */
+  height: 142.857%;
 }
 
 @media (max-width: 834px) {
