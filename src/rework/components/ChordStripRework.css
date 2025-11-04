@@ -32,11 +32,12 @@
 .header-toggle {
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: 8px;
   cursor: pointer;
-  padding: 4px 8px;
-  border-radius: 6px;
+  padding: 6px 12px;
+  border-radius: 8px;
   transition: background 0.2s ease;
+  min-height: 44px;
 }
 
 .header-toggle:hover {
@@ -44,7 +45,36 @@
 }
 
 .toggle-checkbox {
+  appearance: none;
+  width: 44px;
+  height: 24px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  position: relative;
   cursor: pointer;
+  transition: background 0.3s ease;
+  border: 2px solid rgba(255, 255, 255, 0.2);
+}
+
+.toggle-checkbox:checked {
+  background: var(--primary-accent, #5b5fc7);
+  border-color: var(--primary-accent, #5b5fc7);
+}
+
+.toggle-checkbox::after {
+  content: '';
+  position: absolute;
+  width: 16px;
+  height: 16px;
+  background: white;
+  border-radius: 50%;
+  top: 2px;
+  left: 2px;
+  transition: transform 0.3s ease;
+}
+
+.toggle-checkbox:checked::after {
+  transform: translateX(20px);
 }
 
 .toggle-label {

@@ -99,14 +99,15 @@
 .piano-control-toggle {
   display: flex;
   align-items: center;
-  gap: 6px;
-  padding: 8px 12px;
+  gap: 8px;
+  padding: 10px 14px;
   background: rgba(0, 0, 0, 0.6);
   border-radius: 8px;
   border: 1px solid rgba(255, 255, 255, 0.15);
   cursor: pointer;
   transition: all 0.2s ease;
   backdrop-filter: blur(4px);
+  min-height: 44px;
 }
 
 .piano-control-toggle:hover {
@@ -115,12 +116,42 @@
 }
 
 .control-checkbox {
+  appearance: none;
+  width: 44px;
+  height: 24px;
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 12px;
+  position: relative;
   cursor: pointer;
+  transition: background 0.3s ease;
+  border: 2px solid rgba(255, 255, 255, 0.25);
+}
+
+.control-checkbox:checked {
+  background: var(--chord-highlight, #f4a261);
+  border-color: var(--chord-highlight, #f4a261);
+}
+
+.control-checkbox::after {
+  content: '';
+  position: absolute;
+  width: 16px;
+  height: 16px;
+  background: white;
+  border-radius: 50%;
+  top: 2px;
+  left: 2px;
+  transition: transform 0.3s ease;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+}
+
+.control-checkbox:checked::after {
+  transform: translateX(20px);
 }
 
 .control-label {
   color: var(--text-primary, #e8e9f0);
-  font-size: 12px;
+  font-size: 13px;
   font-weight: 500;
   user-select: none;
   white-space: nowrap;
