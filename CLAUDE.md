@@ -1,5 +1,18 @@
 # Claude Agent Instructions for Piano Redesign Project
 
+## 📁 Project Documentation Structure
+
+**The `ai/` folder** contains all AI-generated documentation, analysis, and work logs:
+- Analysis documents (codebase structure, architecture reviews)
+- Progress tracking and session summaries
+- Refactoring plans and roadmaps
+- Work logs and commit summaries
+- Feature proposals and implementation guides
+
+**Keep in root:** Only essential documentation (README.md, DEVELOPMENT.md, this CLAUDE.md file)
+
+**When generating new documentation:** Place analysis, summaries, and work logs in `ai/` folder to keep the root clean.
+
 ## 🚨 CRITICAL: Test Early, Test Often
 
 **THINGS WILL BREAK.** This is a complex audio application with multiple interacting systems. Every change you make has the potential to break something else. Your job is to catch breaks early before they cascade.
