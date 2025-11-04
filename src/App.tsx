@@ -1,25 +1,18 @@
-import { useState } from 'react';
-import { MusicProvider } from './contexts/MusicContext';
-import { ConfigBar } from './components/ConfigBar';
-import { LearnMode } from './components/LearnMode';
-import { BuildMode } from './components/BuildMode';
-import './App.css';
-
-type Mode = 'learn' | 'build';
+import { useMemo } from 'react';
+import AppLegacy from './AppLegacy';
+import AppRework from './rework/AppRework';
 
 function App() {
-  const [mode, setMode] = useState<Mode>('learn');
+  const isLegacy = useMemo(() => {
+    const params = new URLSearchParams(window.location.search);
+    return params.get('legacy') === 'true';
+  }, []);
 
-  return (
-    <MusicProvider>
-      <div className="app">
-        <ConfigBar mode={mode} onModeChange={setMode} />
-        <main className="main-content">
-          {mode === 'learn' ? <LearnMode /> : <BuildMode />}
-        </main>
-      </div>
-    </MusicProvider>
-  );
+  if (isLegacy) {
+    return <AppLegacy />;
+  }
+
+  return <AppRework />;
 }
 
 export default App;

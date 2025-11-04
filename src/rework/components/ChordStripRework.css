@@ -1,0 +1,168 @@
+/* Chord Strip Container - Horizontal layout for all diatonic chords */
+.chord-strip-container {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 16px;
+  background: var(--surface, #252938);
+  border-radius: 12px;
+}
+
+.chord-strip-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 8px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.chord-strip-header-title {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--text-primary, #e8e9f0);
+}
+
+.borrowed-toggle-btn {
+  padding: 6px 12px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 8px;
+  background: transparent;
+  color: var(--text-secondary, #a0a5b8);
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.borrowed-toggle-btn:hover {
+  background: rgba(255, 255, 255, 0.05);
+  border-color: rgba(255, 255, 255, 0.3);
+}
+
+.borrowed-toggle-btn.active {
+  background: var(--primary-accent, #5b5fc7);
+  border-color: var(--primary-accent, #5b5fc7);
+  color: white;
+}
+
+/* Horizontal chord tabs - all 7 diatonic chords visible */
+.chord-tabs-horizontal {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 8px;
+  width: 100%;
+}
+
+/* Ensure minimum touch target size on iPad Pro 12.9" */
+@media (min-width: 1024px) {
+  .chord-tabs-horizontal {
+    gap: 12px;
+  }
+}
+
+.borrowed-chords-row {
+  margin-top: 4px;
+  grid-template-columns: repeat(auto-fit, minmax(72px, 1fr));
+}
+
+/* Chord detail panel - appears below tabs when chord is active */
+.chord-detail-panel {
+  background: var(--surface-elevated, #2a2d3e);
+  border-radius: 8px;
+  padding: 16px;
+  margin-top: 8px;
+}
+
+.chord-detail-header {
+  margin-bottom: 12px;
+}
+
+.chord-detail-title {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-primary, #e8e9f0);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+/* Modifier button grid - 6 columns, 2 rows */
+.chord-modifier-grid {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 8px;
+}
+
+.chord-modifier-btn {
+  min-width: 56px;
+  min-height: 32px;
+  padding: 6px 8px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--text-primary, #e8e9f0);
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.chord-modifier-btn:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.3);
+}
+
+.chord-modifier-btn.active {
+  background: var(--chord-highlight, #f4a261);
+  border-color: var(--chord-highlight, #f4a261);
+  color: #000;
+}
+
+@media (max-width: 834px) {
+  .chord-modifier-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+/* Sidebar layout */
+.chord-strip-sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  padding: 16px;
+}
+
+.chord-strip-section {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.chord-strip-title {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-primary, #e8e9f0);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.chord-tabs-vertical {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+/* Responsive adjustments for smaller iPads */
+@media (max-width: 834px) {
+  .chord-tabs-horizontal {
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .chord-tabs-horizontal > * {
+    scroll-snap-align: start;
+  }
+}

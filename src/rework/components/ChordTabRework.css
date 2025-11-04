@@ -1,0 +1,166 @@
+/* Chord Tab - Individual chord button in horizontal strip */
+.chord-tab {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-width: 72px;
+  min-height: 52px;
+  padding: 8px;
+  border: 2px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  background: var(--surface, #252938);
+  color: var(--text-primary, #e8e9f0);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  position: relative;
+}
+
+.chord-tab:hover {
+  background: var(--surface-elevated, #2a2d3e);
+  border-color: rgba(255, 255, 255, 0.2);
+  transform: translateY(-1px);
+}
+
+.chord-tab.active {
+  background: var(--primary-accent, #5b5fc7);
+  border-color: var(--primary-accent, #5b5fc7);
+  box-shadow: 0 4px 12px rgba(91, 95, 199, 0.3);
+}
+
+.chord-tab.selected {
+  border-color: var(--chord-highlight, #f4a261);
+  box-shadow: 0 0 0 2px rgba(244, 162, 97, 0.3);
+}
+
+.chord-tab.diatonic {
+  border-color: rgba(91, 95, 199, 0.3);
+}
+
+.chord-tab.borrowed {
+  border-color: rgba(117, 121, 215, 0.3);
+}
+
+.chord-tab-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  width: 100%;
+}
+
+.chord-tab-numeral {
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 1;
+  color: inherit;
+}
+
+.chord-tab-name {
+  font-size: 11px;
+  font-weight: 500;
+  line-height: 1;
+  color: var(--text-secondary, #a0a5b8);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
+}
+
+.chord-tab.active .chord-tab-name {
+  color: rgba(255, 255, 255, 0.9);
+}
+
+/* Mini keyboard preview */
+.mini-keyboard-preview {
+  width: 100%;
+  max-width: 45px;
+  height: 15px;
+  margin-top: 4px;
+}
+
+.mini-white-key {
+  fill: #f0f0f0;
+  stroke: #333;
+  stroke-width: 0.5;
+}
+
+.mini-white-key.active {
+  fill: var(--chord-highlight, #f4a261);
+}
+
+.mini-black-key {
+  fill: #333;
+  stroke: #111;
+  stroke-width: 0.3;
+}
+
+.mini-black-key.active {
+  fill: var(--chord-highlight, #f4a261);
+}
+
+/* Sidebar layout variant */
+.chord-tab-sidebar {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  width: 100%;
+  min-height: 44px;
+  padding: 10px 12px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 6px;
+  background: var(--surface, #252938);
+  color: var(--text-primary, #e8e9f0);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-align: left;
+}
+
+.chord-tab-sidebar:hover {
+  background: var(--surface-elevated, #2a2d3e);
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+.chord-tab-sidebar.active {
+  background: var(--primary-accent, #5b5fc7);
+  border-color: var(--primary-accent, #5b5fc7);
+}
+
+.chord-tab-sidebar.selected {
+  border-color: var(--chord-highlight, #f4a261);
+  box-shadow: 0 0 0 1px rgba(244, 162, 97, 0.3);
+}
+
+.chord-tab-info {
+  display: flex;
+  gap: 8px;
+  align-items: baseline;
+}
+
+.chord-tab-sidebar .chord-tab-numeral {
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.chord-tab-sidebar .chord-tab-name {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-secondary, #a0a5b8);
+}
+
+.chord-tab-sidebar.active .chord-tab-name {
+  color: rgba(255, 255, 255, 0.8);
+}
+
+/* Touch target optimization for iPad */
+@media (pointer: coarse) {
+  .chord-tab {
+    min-width: 76px;
+    min-height: 56px;
+  }
+
+  .chord-tab-sidebar {
+    min-height: 48px;
+    padding: 12px;
+  }
+}

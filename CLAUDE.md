@@ -13,6 +13,18 @@
 
 **When generating new documentation:** Place analysis, summaries, and work logs in `ai/` folder to keep the root clean.
 
+## ✍️ Code Comments Policy
+
+**DO NOT include meta-commentary in code:**
+- No references to "Priority 1.1", "Sprint 2", or similar planning artifacts
+- No mentions of "AI session", "Claude", or coding session references
+- No references to design specs, OPUS documents, or other planning documents
+- Comments should explain WHAT and WHY the code does something, not where it came from
+- Write comments as if a human developer implemented the feature naturally
+
+**Good:** `// Horizontal chord tabs showing all diatonic chords`
+**Bad:** `// Priority 1.1: Compact horizontal chord strip per OPUS spec`
+
 ## 🚨 CRITICAL: Test Early, Test Often
 
 **THINGS WILL BREAK.** This is a complex audio application with multiple interacting systems. Every change you make has the potential to break something else. Your job is to catch breaks early before they cascade.
