@@ -116,13 +116,32 @@ export function ChordTimeline() {
               onClick={handlePlayPause}
               disabled={chordBlocks.length === 0}
             >
-              {state.playbackState.isPlaying ? '⏸ Pause' : '▶ Play'}
+              {state.playbackState.isPlaying ? (
+                <>
+                  <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+                    <rect x="3" y="2" width="4" height="12" rx="1" />
+                    <rect x="9" y="2" width="4" height="12" rx="1" />
+                  </svg>
+                  <span>Pause</span>
+                </>
+              ) : (
+                <>
+                  <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+                    <path d="M4 2.5L13 8L4 13.5V2.5Z" />
+                  </svg>
+                  <span>Play</span>
+                </>
+              )}
             </button>
             <button
               className={`loop-button ${state.playbackState.loop ? 'active' : ''}`}
               onClick={() => actions.toggleLoop()}
             >
-              🔁 Loop
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+                <path d="M11 4.5L14 7.5L11 10.5V8.5H5C3.9 8.5 3 7.6 3 6.5C3 5.4 3.9 4.5 5 4.5H6V6H5C4.7 6 4.5 6.2 4.5 6.5C4.5 6.8 4.7 7 5 7H11V4.5Z" />
+                <path d="M5 11.5L2 8.5L5 5.5V7.5H11C12.1 7.5 13 8.4 13 9.5C13 10.6 12.1 11.5 11 11.5H10V10H11C11.3 10 11.5 9.8 11.5 9.5C11.5 9.2 11.3 9 11 9H5V11.5Z" />
+              </svg>
+              <span>Loop</span>
             </button>
             <div className="tempo-control">
               <label>Tempo:</label>

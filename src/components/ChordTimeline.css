@@ -164,6 +164,9 @@
     font-size: 14px;
     font-weight: 600;
     transition: background 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 6px;
 }
 
 .play-button:hover:not(:disabled) {
@@ -186,6 +189,9 @@
     font-size: 14px;
     font-weight: 600;
     transition: background 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 6px;
 }
 
 .loop-button:hover {

@@ -27,8 +27,8 @@
 - [x] Piano highlighting toggle (floating on piano)
 - [x] Both discoverable within 30 seconds
 
-### 📋 Phase 4: Visual Polish (Specs 1.4-1.7)
-- [ ] Replace emoji icons with proper icons
+### 🚧 Phase 4: Visual Polish (Specs 1.4-1.7)
+- [x] Replace emoji icons with proper icons
 - [ ] Convert rotary volume knobs to sliders
 - [ ] Persistent playback controls (transport bar)
 - [ ] Tempo/BPM editor UI
@@ -80,6 +80,24 @@
 - Both settings now visible and discoverable within 30 seconds
 
 **Status:** Phase 3 complete, ready for Phase 4
+
+### 2025-11-03: Session 2
+
+**Replaced Emoji Icons with Proper SVG Icons (Spec 1.4):**
+- Updated `ChordTimeline.tsx` - Replaced Play/Pause/Loop emoji icons with SVG icons
+- Updated `ChordTimeline.css` - Added flexbox layout for icon + text alignment
+- Icons implemented:
+  - Play icon: Triangle SVG (▶ → proper play.fill style)
+  - Pause icon: Two rectangles SVG (⏸ → proper pause.fill style)
+  - Loop icon: Circular arrows SVG (🔁 → proper repeat style)
+- All buttons now display icon + text label with 6px gap
+- Professional appearance matching modern UI standards
+
+**Files Modified:**
+- `src/components/ChordTimeline.tsx`
+- `src/components/ChordTimeline.css`
+
+**Status:** Phase 4 partially complete (Spec 1.4 done)
 
 ---
 
