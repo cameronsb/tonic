@@ -1,13 +1,13 @@
 .chord-card {
     /* Cool purple gradient */
-  /* background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); */
+  /* background: var(--gradient-purple); */
 
   /* Muted gray background */
   background: rgba(150, 150, 150, 0.5);
   border-radius: 6px;
   cursor: pointer;
   transition: box-shadow 0.2s ease, opacity 0.2s ease;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+  box-shadow: var(--shadow-sm);
   position: relative;
   overflow: visible; /* Changed from hidden to allow dropdown to show */
   isolation: isolate; /* Create stacking context */
@@ -30,7 +30,7 @@
   width: 20px;
   height: 20px;
   border-radius: 50%;
-  background: rgba(255, 255, 255, 0.4);
+  background: var(--text-muted);
   transform: translate(-50%, -50%);
   transition: width 0.8s ease-out, height 0.8s ease-out, opacity 0.8s ease-out;
   opacity: 0;
@@ -47,7 +47,7 @@
 
 .chord-card.borrowed {
     /* Cool pink gradient */
-  /* background: linear-gradient(135deg, #c44dc7 0%, #d63a51 100%); */
+  /* background: var(--gradient-pink); */
 
   /* Muted gray background */
   background: rgba(100, 100, 100, 0.5);
@@ -73,7 +73,7 @@
 .chord-numeral {
   font-size: 16px;
   font-weight: 700;
-  color: white;
+  color: var(--text-white);
   text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
   white-space: nowrap;
 }
@@ -81,7 +81,7 @@
 .chord-name {
   font-size: 20px; /* Increased by ~50% from 13px */
   font-weight: 600;
-  color: rgba(255, 255, 255, 0.95);
+  color: var(--text-primary);
   white-space: nowrap;
   min-width: 140px; /* Fixed width to accommodate longest chord name (e.g., "C#maj13") */
   max-width: 140px; /* Prevent expansion beyond intended width */
@@ -117,9 +117,9 @@
 }
 
 .modifier-btn {
-  background: rgba(255, 255, 255, 0.15);
-  border: 1px solid rgba(255, 255, 255, 0.25);
-  color: white;
+  background: var(--bg-overlay-4);
+  border: 1px solid var(--bg-overlay-5);
+  color: var(--text-white);
   padding: 2px 6px;
   border-radius: 3px;
   font-size: 12px;
@@ -139,43 +139,43 @@
 }
 
 .modifier-btn:hover {
-  background: rgba(255, 255, 255, 0.25);
+  background: var(--bg-overlay-5);
   /* Removed border-color change to prevent any layout shift */
 }
 
 .modifier-btn.active {
-  background: rgba(255, 255, 255, 0.95);
-  color: black;
+  background: var(--text-primary);
+  color: var(--text-black);
   /* Removed border-color change to prevent any layout shift */
 }
 
 /* Golden highlighting when chord is selected on keyboard */
 .chord-card.chord-selected .modifier-btn.active {
-  background: rgba(255, 193, 7, 1);
+  background: var(--golden);
   color: #1a1a2e;
-  border-color: rgba(255, 193, 7, 1);
+  border-color: var(--golden);
   font-weight: 700;
 }
 
 .chord-card.borrowed.chord-selected .modifier-btn.active {
-  background: rgba(255, 193, 7, 0.95);
+  background: var(--golden-muted);
   color: #1a1a2e;
   border-color: rgba(255, 193, 7, 0.6);
 }
 
 .chord-card.borrowed .chord-numeral,
 .chord-card.borrowed .chord-name {
-  color: white;
+  color: var(--text-white);
   text-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
 }
 
 .chord-card.playing {
-  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+  box-shadow: var(--shadow-accent);
   opacity: 0.85;
 }
 
 .chord-card.borrowed.playing {
-  box-shadow: 0 4px 12px rgba(245, 87, 108, 0.4);
+  box-shadow: var(--shadow-danger);
 }
 
 /* Button mode - slightly more padding to accommodate 40px buttons */
@@ -215,7 +215,7 @@
     3px 3px 0 rgba(0, 0, 0, 0.2),
     4px 4px 0 rgba(0, 0, 0, 0.1);
   padding-right: 10px;
-  border-right: 1px solid rgba(255, 255, 255, 0.2);
+  border-right: 1px solid var(--border-strong);
 }
 
 .chord-card-select .chord-name,
@@ -228,9 +228,9 @@
 
 /* Native select for variations */
 .variations-select {
-  background: rgba(255, 255, 255, 0.15);
-  border: 1px solid rgba(255, 255, 255, 0.25);
-  color: white;
+  background: var(--bg-overlay-4);
+  border: 1px solid var(--bg-overlay-5);
+  color: var(--text-white);
   border-radius: 4px;
   padding: 4px 8px;
   font-size: 11px;
@@ -243,18 +243,18 @@
 }
 
 .variations-select:hover {
-  background: rgba(255, 255, 255, 0.25);
-  border-color: rgba(255, 255, 255, 0.4);
+  background: var(--bg-overlay-5);
+  border-color: var(--text-muted);
 }
 
 .variations-select:focus {
-  background: rgba(255, 255, 255, 0.3);
-  border-color: rgba(102, 126, 234, 0.6);
+  background: var(--bg-overlay-3);
+  border-color: var(--accent-border);
 }
 
 .variations-select option {
   background: #1a1a2e;
-  color: white;
+  color: var(--text-white);
 }
 
 /* Piano visualization */
@@ -273,28 +273,28 @@
 }
 
 .piano-visualization .black-key {
-    stroke: black;
-    fill: black;
+    stroke: var(--text-black);
+    fill: var(--text-black);
     fill-opacity: .9;
     stroke-opacity: 0.3;
 }
 
 .piano-visualization .black-key.active {
-    stroke: black;
+    stroke: var(--text-black);
     /* fill: blue; */
     fill: orange;
     filter: drop-shadow(0 0 2px rgba(0, 0, 0, 0.8));
     /* stroke-opacity: 1; */
 }
 .piano-visualization .white-key {
-    stroke: black;
-    fill: white;
+    stroke: var(--text-black);
+    fill: var(--text-white);
     fill-opacity: .3;
     stroke-opacity: .4;
 }
 
 .piano-visualization .white-key.active {
-    stroke: black;
+    stroke: var(--text-black);
     stroke-width: 0.8;
     fill: orange;
     fill-opacity: 1;

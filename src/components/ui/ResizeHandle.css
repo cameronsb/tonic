@@ -14,7 +14,7 @@
   z-index: 10;
   flex-shrink: 0;
   transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-  background: rgba(255, 255, 255, 0.08);
+  background: var(--bg-overlay-2);
   touch-action: none;
   -webkit-tap-highlight-color: transparent;
 }
@@ -24,8 +24,8 @@
   height: 16px;
   width: 100%;
   cursor: ns-resize;
-  border-top: 1px solid rgba(255, 255, 255, 0.15);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+  border-top: 1px solid var(--border-medium);
+  border-bottom: 1px solid var(--border-medium);
 }
 
 /* Horizontal resize handle (width/ew-resize) */
@@ -33,48 +33,48 @@
   width: 12px;
   height: 100%;
   cursor: ew-resize;
-  border-left: 1px solid rgba(255, 255, 255, 0.15);
-  border-right: 1px solid rgba(255, 255, 255, 0.15);
+  border-left: 1px solid var(--border-medium);
+  border-right: 1px solid var(--border-medium);
 }
 
 /* Hover and active states */
 .resize-handle:hover,
 .resize-handle:active {
-  background-color: rgba(102, 126, 234, 0.2);
+  background-color: var(--accent-hover);
 }
 
 .resize-handle-vertical:hover,
 .resize-handle-vertical:active {
-  border-top-color: rgba(102, 126, 234, 0.4);
-  border-bottom-color: rgba(102, 126, 234, 0.4);
+  border-top-color: var(--accent-border);
+  border-bottom-color: var(--accent-border);
 }
 
 .resize-handle-horizontal:hover,
 .resize-handle-horizontal:active {
-  border-left-color: rgba(102, 126, 234, 0.4);
-  border-right-color: rgba(102, 126, 234, 0.4);
+  border-left-color: var(--accent-border);
+  border-right-color: var(--accent-border);
 }
 
 /* Resizing state */
 .resize-handle.resizing {
-  background-color: rgba(102, 126, 234, 0.25);
+  background-color: var(--accent-active);
 }
 
 .resize-handle-vertical.resizing {
-  border-top-color: rgba(102, 126, 234, 0.5);
-  border-bottom-color: rgba(102, 126, 234, 0.5);
+  border-top-color: var(--accent-border-strong);
+  border-bottom-color: var(--accent-border-strong);
 }
 
 .resize-handle-horizontal.resizing {
-  border-left-color: rgba(102, 126, 234, 0.5);
-  border-right-color: rgba(102, 126, 234, 0.5);
+  border-left-color: var(--accent-border-strong);
+  border-right-color: var(--accent-border-strong);
 }
 
 /* Resize indicator (visual grab handle) */
 .resize-handle-indicator {
   border-radius: 4px;
   transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-  background: rgba(255, 255, 255, 0.5);
+  background: var(--text-disabled);
   pointer-events: none;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
@@ -94,8 +94,8 @@
 /* Hover state - indicator grows */
 .resize-handle:hover .resize-handle-indicator,
 .resize-handle:active .resize-handle-indicator {
-  background: rgba(102, 126, 234, 0.9);
-  box-shadow: 0 0 12px rgba(102, 126, 234, 0.5);
+  background: rgba(var(--accent-purple-rgb), 0.9);
+  box-shadow: 0 0 12px rgba(var(--accent-purple-rgb), 0.5);
 }
 
 .resize-handle-vertical:hover .resize-handle-indicator,
@@ -112,8 +112,8 @@
 
 /* Resizing state - indicator is largest with gradient */
 .resize-handle.resizing .resize-handle-indicator {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  box-shadow: 0 0 16px rgba(102, 126, 234, 0.8);
+  background: var(--gradient-purple);
+  box-shadow: 0 0 16px rgba(var(--accent-purple-rgb), 0.8);
 }
 
 .resize-handle-vertical.resizing .resize-handle-indicator {

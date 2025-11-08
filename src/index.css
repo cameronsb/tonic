@@ -1,16 +1,72 @@
 :root {
+  /* Background colors */
   --bg: #1a1a1a;
   --surface-bg: #242424;
   --hover-bg: #2a2a2a;
+
+  /* Text colors - primary to disabled */
   --text: #e0e0e0;
-  --text-secondary: #999;
+  --text-primary: rgba(255, 255, 255, 0.95);
+  --text-secondary: rgba(255, 255, 255, 0.8);
+  --text-tertiary: rgba(255, 255, 255, 0.7);
+  --text-quaternary: rgba(255, 255, 255, 0.6);
+  --text-disabled: rgba(255, 255, 255, 0.5);
+  --text-muted: rgba(255, 255, 255, 0.4);
+  --text-gray: #999;
+  --text-black: #000;
+  --text-white: #fff;
+
+  /* Border colors */
   --border: #333;
+  --border-light: rgba(255, 255, 255, 0.1);
+  --border-medium: rgba(255, 255, 255, 0.15);
+  --border-strong: rgba(255, 255, 255, 0.2);
+  --border-accent: rgba(102, 126, 234, 0.5);
+
+  /* Background overlays - for hover/active states */
+  --bg-overlay-1: rgba(255, 255, 255, 0.05);
+  --bg-overlay-2: rgba(255, 255, 255, 0.08);
+  --bg-overlay-3: rgba(255, 255, 255, 0.12);
+  --bg-overlay-4: rgba(255, 255, 255, 0.15);
+  --bg-overlay-5: rgba(255, 255, 255, 0.25);
+  --bg-dark-1: rgba(0, 0, 0, 0.2);
+  --bg-dark-2: rgba(0, 0, 0, 0.3);
+
+  /* Accent colors (primary purple) */
   --accent: #4a9eff;
   --accent-dark: #3a8eef;
+  --accent-purple: #667eea;
+  --accent-purple-dark: #764ba2;
+  --accent-purple-rgb: 102, 126, 234;
+  --accent-hover: rgba(102, 126, 234, 0.2);
+  --accent-active: rgba(102, 126, 234, 0.25);
+  --accent-border: rgba(102, 126, 234, 0.4);
+  --accent-border-strong: rgba(102, 126, 234, 0.5);
+  --accent-bg: rgba(102, 126, 234, 0.1);
+
+  /* Gradients */
+  --gradient-purple: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  --gradient-purple-hover: linear-gradient(135deg, #7e8ff0 0%, #8d5bb0 100%);
+  --gradient-pink: linear-gradient(135deg, #c44dc7 0%, #d63a51 100%);
+  --gradient-header: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+  --gradient-header-vertical: linear-gradient(180deg, #1a1a2e 0%, #16213e 100%);
+  --gradient-dark: linear-gradient(180deg, #0f0f1e 0%, #1a1a2e 100%);
+
+  /* Status colors */
   --danger: #ff4a4a;
   --danger-bg: rgba(255, 74, 74, 0.1);
+  --danger-rgb: 245, 87, 108;
   --success: #4aff4a;
   --warning: #ffaa4a;
+  --golden: rgba(255, 193, 7, 1);
+  --golden-muted: rgba(255, 193, 7, 0.95);
+
+  /* Shadows */
+  --shadow-sm: 0 2px 6px rgba(0, 0, 0, 0.15);
+  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.4);
+  --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.6);
+  --shadow-accent: 0 4px 12px rgba(102, 126, 234, 0.4);
+  --shadow-danger: 0 4px 12px rgba(245, 87, 108, 0.4);
 }
 
 * {
@@ -22,7 +78,7 @@
 /* Custom scrollbar styling - globally */
 * {
   scrollbar-width: thin;
-  scrollbar-color: rgba(102, 126, 234, 0.6) transparent;
+  scrollbar-color: rgba(var(--accent-purple-rgb), 0.6) transparent;
 }
 
 *::-webkit-scrollbar {
@@ -35,14 +91,14 @@
 }
 
 *::-webkit-scrollbar-thumb {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: var(--gradient-purple);
   border-radius: 5px;
   border: 2px solid transparent;
   background-clip: padding-box;
 }
 
 *::-webkit-scrollbar-thumb:hover {
-  background: linear-gradient(135deg, #7e8ff0 0%, #8d5bb0 100%);
+  background: var(--gradient-purple-hover);
   background-clip: padding-box;
 }
 

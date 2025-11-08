@@ -40,15 +40,15 @@
 .bottom-view-tabs {
   display: flex;
   gap: 0;
-  border-bottom: 2px solid rgba(255, 255, 255, 0.1);
-  background: rgba(0, 0, 0, 0.2);
+  border-bottom: 2px solid var(--border-light);
+  background: var(--bg-dark-1);
 }
 
 .view-tab {
   padding: 12px 24px;
   background: transparent;
   border: none;
-  color: rgba(255, 255, 255, 0.6);
+  color: var(--text-quaternary);
   font-size: 14px;
   font-weight: 600;
   cursor: pointer;
@@ -59,14 +59,14 @@
 }
 
 .view-tab:hover {
-  color: rgba(255, 255, 255, 0.8);
-  background: rgba(255, 255, 255, 0.05);
+  color: var(--text-secondary);
+  background: var(--bg-overlay-1);
 }
 
 .view-tab.active {
-  color: white;
-  border-bottom-color: #667eea;
-  background: rgba(102, 126, 234, 0.1);
+  color: var(--text-white);
+  border-bottom-color: var(--accent-purple);
+  background: var(--accent-bg);
 }
 
 .bottom-view-content {
@@ -100,30 +100,30 @@
   z-index: 10;
   flex-shrink: 0;
   transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-  background: rgba(255, 255, 255, 0.08);
-  border-top: 1px solid rgba(255, 255, 255, 0.15);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+  background: var(--bg-overlay-2);
+  border-top: 1px solid var(--border-medium);
+  border-bottom: 1px solid var(--border-medium);
   touch-action: none;
   -webkit-tap-highlight-color: transparent;
 }
 
 .panel-resize-handle:hover,
 .panel-resize-handle:active {
-  background-color: rgba(102, 126, 234, 0.2);
-  border-top-color: rgba(102, 126, 234, 0.4);
-  border-bottom-color: rgba(102, 126, 234, 0.4);
+  background-color: var(--accent-hover);
+  border-top-color: var(--accent-border);
+  border-bottom-color: var(--accent-border);
 }
 
 .panel-resize-handle.resizing {
-  background-color: rgba(102, 126, 234, 0.25);
-  border-top-color: rgba(102, 126, 234, 0.5);
-  border-bottom-color: rgba(102, 126, 234, 0.5);
+  background-color: var(--accent-active);
+  border-top-color: var(--accent-border-strong);
+  border-bottom-color: var(--accent-border-strong);
 }
 
 .panel-resize-indicator {
   width: 140px;
   height: 5px;
-  background: rgba(255, 255, 255, 0.5);
+  background: var(--text-disabled);
   border-radius: 4px;
   transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
   pointer-events: none;
@@ -134,13 +134,13 @@
 .panel-resize-handle:active .panel-resize-indicator {
   width: 180px;
   height: 6px;
-  background: rgba(102, 126, 234, 0.9);
-  box-shadow: 0 0 12px rgba(102, 126, 234, 0.5);
+  background: rgba(var(--accent-purple-rgb), 0.9);
+  box-shadow: 0 0 12px rgba(var(--accent-purple-rgb), 0.5);
 }
 
 .panel-resize-handle.resizing .panel-resize-indicator {
   width: 220px;
   height: 6px;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  box-shadow: 0 0 16px rgba(102, 126, 234, 0.8);
+  background: var(--gradient-purple);
+  box-shadow: 0 0 16px rgba(var(--accent-purple-rgb), 0.8);
 }

@@ -7,9 +7,9 @@
   align-items: center;
   gap: 1rem;
   padding: 0.75rem 1.5rem;
-  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
-  border-bottom: 2px solid rgba(102, 126, 234, 0.2);
-  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.4);
+  background: var(--gradient-header);
+  border-bottom: 2px solid var(--accent-hover);
+  box-shadow: var(--shadow-md);
   z-index: 100;
   transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   min-height: 56px;
@@ -27,13 +27,13 @@
   left: 50%;
   transform: translateX(-50%);
   padding: 6px 18px;
-  background: linear-gradient(135deg, rgba(102, 126, 234, 0.15) 0%, rgba(118, 75, 162, 0.15) 100%);
+  background: linear-gradient(135deg, rgba(var(--accent-purple-rgb), 0.15) 0%, rgba(118, 75, 162, 0.15) 100%);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
-  border: 1px solid rgba(102, 126, 234, 0.3);
+  border: 1px solid rgba(var(--accent-purple-rgb), 0.3);
   border-top: none;
   border-radius: 0 0 12px 12px;
-  color: rgba(255, 255, 255, 0.8);
+  color: var(--text-secondary);
   cursor: pointer;
   transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
   z-index: 101;
@@ -45,26 +45,26 @@
 
 .collapse-toggle:hover,
 .collapse-toggle:active {
-  background: linear-gradient(135deg, rgba(102, 126, 234, 0.25) 0%, rgba(118, 75, 162, 0.25) 100%);
-  border-color: rgba(102, 126, 234, 0.5);
-  color: white;
-  box-shadow: 0 4px 16px rgba(102, 126, 234, 0.3);
+  background: linear-gradient(135deg, var(--accent-active) 0%, rgba(118, 75, 162, 0.25) 100%);
+  border-color: var(--accent-border-strong);
+  color: var(--text-white);
+  box-shadow: 0 4px 16px rgba(var(--accent-purple-rgb), 0.3);
 }
 
 .mode-toggle {
   display: flex;
   gap: 0;
-  background: rgba(0, 0, 0, 0.3);
+  background: var(--bg-dark-2);
   border-radius: 8px;
   padding: 3px;
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border: 1px solid var(--border-light);
 }
 
 .mode-toggle button {
   padding: 0.5rem 1.25rem;
   border: none;
   background: transparent;
-  color: rgba(255, 255, 255, 0.7);
+  color: var(--text-tertiary);
   border-radius: 6px;
   cursor: pointer;
   font-size: 14px;
@@ -75,23 +75,23 @@
 }
 
 .mode-toggle button:hover:not(.active) {
-  background: rgba(255, 255, 255, 0.08);
-  color: rgba(255, 255, 255, 0.9);
+  background: var(--bg-overlay-2);
+  color: var(--text-primary);
 }
 
 .mode-toggle button.active {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  color: white;
-  box-shadow: 0 2px 8px rgba(102, 126, 234, 0.4);
+  background: var(--gradient-purple);
+  color: var(--text-white);
+  box-shadow: var(--shadow-accent);
 }
 
 .menu-toggle {
   display: none; /* Hidden by default, shown only on mobile */
   margin-left: auto;
   padding: 0.6rem;
-  border: 1px solid rgba(255, 255, 255, 0.15);
-  background: rgba(255, 255, 255, 0.08);
-  color: rgba(255, 255, 255, 0.8);
+  border: 1px solid var(--border-medium);
+  background: var(--bg-overlay-2);
+  color: var(--text-secondary);
   border-radius: 8px;
   cursor: pointer;
   transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
@@ -103,9 +103,9 @@
 
 .menu-toggle:hover,
 .menu-toggle:active {
-  background: rgba(102, 126, 234, 0.2);
-  border-color: rgba(102, 126, 234, 0.4);
-  color: white;
+  background: var(--accent-hover);
+  border-color: var(--accent-border);
+  color: var(--text-white);
 }
 
 .menu-overlay {
@@ -131,7 +131,7 @@
 
 .control-group label {
   font-size: 11px;
-  color: rgba(255, 255, 255, 0.6);
+  color: var(--text-quaternary);
   text-transform: uppercase;
   letter-spacing: 0.5px;
   font-weight: 600;
@@ -139,10 +139,10 @@
 
 .control-group select {
   padding: 7px 12px;
-  border: 1px solid rgba(255, 255, 255, 0.15);
+  border: 1px solid var(--border-medium);
   border-radius: 6px;
-  background: rgba(0, 0, 0, 0.3);
-  color: white;
+  background: var(--bg-dark-2);
+  color: var(--text-white);
   font-size: 14px;
   font-weight: 500;
   cursor: pointer;
@@ -153,19 +153,19 @@
 
 .control-group select option {
   background: #16213e;
-  color: white;
+  color: var(--text-white);
   padding: 8px;
 }
 
 .control-group select:hover {
-  background: rgba(255, 255, 255, 0.08);
-  border-color: rgba(255, 255, 255, 0.25);
+  background: var(--bg-overlay-2);
+  border-color: var(--bg-overlay-5);
 }
 
 .control-group select:focus {
-  background: rgba(102, 126, 234, 0.15);
-  border-color: rgba(102, 126, 234, 0.5);
-  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+  background: var(--accent-bg);
+  border-color: var(--accent-border-strong);
+  box-shadow: 0 0 0 3px var(--accent-bg);
 }
 
 /* Tablet responsive (iPad and similar) */
@@ -215,14 +215,14 @@
     height: 100vh;
     margin: 0;
     padding: 2rem 1.5rem;
-    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+    background: var(--gradient-header);
     box-shadow: -4px 0 24px rgba(0, 0, 0, 0.6);
     flex-direction: column;
     align-items: stretch;
     gap: 1.5rem;
     transition: right 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     z-index: 1000;
-    border-left: 2px solid rgba(102, 126, 234, 0.2);
+    border-left: 2px solid var(--accent-hover);
   }
 
   .config-controls.open {

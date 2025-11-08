@@ -12,7 +12,7 @@
   flex-direction: column;
   height: 100%;
   overflow: hidden;
-  background: linear-gradient(180deg, #1a1a2e 0%, #16213e 100%);
+  background: var(--gradient-header-vertical);
 }
 
 /* Chord area - takes remaining space, scrollable */
@@ -45,30 +45,30 @@
   z-index: 10;
   flex-shrink: 0;
   transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-  background: rgba(255, 255, 255, 0.08);
-  border-top: 1px solid rgba(255, 255, 255, 0.15);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+  background: var(--bg-overlay-2);
+  border-top: 1px solid var(--border-medium);
+  border-bottom: 1px solid var(--border-medium);
   touch-action: none;
   -webkit-tap-highlight-color: transparent;
 }
 
 .tablet-piano-resize-handle:hover,
 .tablet-piano-resize-handle:active {
-  background-color: rgba(102, 126, 234, 0.2);
-  border-top-color: rgba(102, 126, 234, 0.4);
-  border-bottom-color: rgba(102, 126, 234, 0.4);
+  background-color: var(--accent-hover);
+  border-top-color: var(--accent-border);
+  border-bottom-color: var(--accent-border);
 }
 
 .tablet-piano-resize-handle.resizing {
-  background-color: rgba(102, 126, 234, 0.25);
-  border-top-color: rgba(102, 126, 234, 0.5);
-  border-bottom-color: rgba(102, 126, 234, 0.5);
+  background-color: var(--accent-active);
+  border-top-color: var(--accent-border-strong);
+  border-bottom-color: var(--accent-border-strong);
 }
 
 .tablet-piano-resize-indicator {
   width: 140px;
   height: 5px;
-  background: rgba(255, 255, 255, 0.5);
+  background: var(--text-disabled);
   border-radius: 4px;
   transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
   pointer-events: none;
@@ -79,23 +79,23 @@
 .tablet-piano-resize-handle:active .tablet-piano-resize-indicator {
   width: 180px;
   height: 6px;
-  background: rgba(102, 126, 234, 0.9);
-  box-shadow: 0 0 12px rgba(102, 126, 234, 0.5);
+  background: rgba(var(--accent-purple-rgb), 0.9);
+  box-shadow: 0 0 12px rgba(var(--accent-purple-rgb), 0.5);
 }
 
 .tablet-piano-resize-handle.resizing .tablet-piano-resize-indicator {
   width: 220px;
   height: 6px;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  box-shadow: 0 0 16px rgba(102, 126, 234, 0.8);
+  background: var(--gradient-purple);
+  box-shadow: 0 0 16px rgba(var(--accent-purple-rgb), 0.8);
 }
 
 /* Piano container at bottom */
 .tablet-piano-container {
   position: relative;
   flex-shrink: 0;
-  background: linear-gradient(135deg, rgba(102, 126, 234, 0.05) 0%, rgba(118, 75, 162, 0.05) 100%);
-  border-top: 2px solid rgba(102, 126, 234, 0.1);
+  background: linear-gradient(135deg, rgba(var(--accent-purple-rgb), 0.05) 0%, rgba(118, 75, 162, 0.05) 100%);
+  border-top: 2px solid var(--accent-bg);
   box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.2);
 }
 
@@ -109,8 +109,8 @@
   gap: 0.5rem;
   cursor: pointer;
   padding: 0.5rem 1rem;
-  background: rgba(255, 255, 255, 0.08);
-  border: 1px solid rgba(255, 255, 255, 0.15);
+  background: var(--bg-overlay-2);
+  border: 1px solid var(--border-medium);
   border-radius: 8px;
   transition: all 0.2s ease;
   user-select: none;
@@ -120,19 +120,19 @@
 
 .tablet-piano-control:hover,
 .tablet-piano-control:active {
-  background: rgba(255, 255, 255, 0.12);
-  border-color: rgba(102, 126, 234, 0.4);
+  background: var(--bg-overlay-3);
+  border-color: var(--accent-border);
 }
 
 .piano-control-checkbox {
   width: 20px;
   height: 20px;
   cursor: pointer;
-  accent-color: #667eea;
+  accent-color: var(--accent-purple);
 }
 
 .piano-control-text {
-  color: rgba(255, 255, 255, 0.9);
+  color: var(--text-primary);
   font-size: 14px;
   font-weight: 600;
   letter-spacing: 0.3px;
@@ -148,8 +148,8 @@
 }
 
 .chord-sidebar {
-  background: linear-gradient(180deg, #1a1a2e 0%, #16213e 100%);
-  border-right: 2px solid rgba(255, 255, 255, 0.1);
+  background: var(--gradient-header-vertical);
+  border-right: 2px solid var(--border-light);
   overflow-y: auto;
   overflow-x: hidden;
   position: relative;
@@ -189,25 +189,25 @@
 .sidebar-resize-handle:hover,
 .sidebar-resize-handle:active,
 .sidebar-resize-handle.resizing {
-  background-color: rgba(102, 126, 234, 0.2);
+  background-color: var(--accent-hover);
 }
 
 .sidebar-resize-indicator {
   width: 4px;
   height: 60px;
-  background: rgba(255, 255, 255, 0.4);
+  background: var(--text-muted);
   border-radius: 3px;
   transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+  box-shadow: var(--shadow-sm);
 }
 
 .sidebar-resize-handle:hover .sidebar-resize-indicator,
 .sidebar-resize-handle:active .sidebar-resize-indicator,
 .sidebar-resize-handle.resizing .sidebar-resize-indicator {
-  background: rgba(102, 126, 234, 0.9);
+  background: rgba(var(--accent-purple-rgb), 0.9);
   height: 80px;
   width: 5px;
-  box-shadow: 0 0 12px rgba(102, 126, 234, 0.6);
+  box-shadow: 0 0 12px rgba(var(--accent-purple-rgb), 0.6);
 }
 
 /* Close button inside sidebar */
@@ -217,10 +217,10 @@
   right: 12px;
   width: 32px;
   height: 32px;
-  background: rgba(255, 255, 255, 0.1);
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: var(--bg-overlay-2);
+  border: 1px solid var(--border-strong);
   border-radius: 6px;
-  color: white;
+  color: var(--text-white);
   font-size: 24px;
   line-height: 1;
   cursor: pointer;
@@ -233,8 +233,8 @@
 }
 
 .sidebar-close-btn:hover {
-  background: rgba(255, 255, 255, 0.2);
-  border-color: rgba(255, 255, 255, 0.3);
+  background: var(--bg-overlay-5);
+  border-color: var(--border-strong);
 }
 
 .sidebar-close-btn:active {
@@ -267,7 +267,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background: linear-gradient(180deg, #0f0f1e 0%, #1a1a2e 100%);
+  background: var(--gradient-dark);
   padding: 20px;
   position: relative;
 }
@@ -279,23 +279,23 @@
   left: 20px;
   width: 48px;
   height: 48px;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: var(--gradient-purple);
   border: none;
   border-radius: 12px;
-  color: white;
+  color: var(--text-white);
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4),
-              0 2px 6px rgba(0, 0, 0, 0.2);
+  box-shadow: var(--shadow-accent),
+              var(--shadow-sm);
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   z-index: 100;
 }
 
 .sidebar-fab:hover {
   transform: scale(1.1);
-  box-shadow: 0 6px 16px rgba(102, 126, 234, 0.6),
+  box-shadow: 0 6px 16px rgba(var(--accent-purple-rgb), 0.6),
               0 3px 8px rgba(0, 0, 0, 0.3);
 }
 
@@ -312,16 +312,16 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background: linear-gradient(180deg, #0f0f1e 0%, #1a1a2e 100%);
-  border-bottom: 2px solid rgba(255, 255, 255, 0.05);
+  background: var(--gradient-dark);
+  border-bottom: 2px solid var(--bg-overlay-1);
 }
 
 .piano-placeholder {
-  background: white;
+  background: var(--text-white);
   border: 2px dashed #ddd;
   border-radius: 8px;
   padding: 4rem;
-  color: #999;
+  color: var(--text-gray);
   font-size: 18px;
   width: 100%;
   max-width: 800px;
@@ -341,7 +341,7 @@
     bottom: 0;
     width: 320px;
     max-width: 85vw;
-    border-right: 2px solid rgba(255, 255, 255, 0.2);
+    border-right: 2px solid var(--border-strong);
     box-shadow: 4px 0 12px rgba(0, 0, 0, 0.3);
     z-index: 10;
   }
