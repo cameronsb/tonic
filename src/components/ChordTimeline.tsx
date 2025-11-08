@@ -180,14 +180,14 @@ export function ChordTimeline() {
         </div>
       </div>
 
-      <Ruler totalMeasures={totalMeasures} />
-
       <div className="timeline-scroll-container">
         <div
           ref={timelineRef}
           className="timeline-canvas"
           style={{ width: timelineWidth }}
         >
+          <Ruler totalMeasures={totalMeasures} />
+
           <div className="timeline-grid-background">
             {Array.from({ length: totalMeasures }, (_, i) => (
               <div
