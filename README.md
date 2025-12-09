@@ -22,9 +22,13 @@ An interactive music theory learning tool that visualizes chord relationships wi
 ## Features
 
 ### Diatonic Chord Display
-All seven chords in a key shown simultaneously with:
-- Roman numeral notation (I, ii, iii, IV, V, vi, vii°)
-- Chord name (C, Dm, Em, F, G, Am, B°)
+All seven chords in a key shown simultaneously. Each chord displays:
+- Roman numeral by scale degree
+  - **major**: I, ii, iii, IV, V, vi, vii°
+  - **minor**: i, ii°, III, iv, v, VI, VII
+- Chord name
+  - **C major**: C, Dm, Em, F, G, Am, B°
+  - **A minor**: Am, B°, C, Dm, Em, F, G
 - Mini keyboard preview showing the chord shape
 
 ### Chord Variations
@@ -34,16 +38,14 @@ Click any chord to reveal 12 different modifications:
 
 ### Borrowed Chords
 Toggle "Borrowed" to see chords from parallel modes:
-- iv (minor four)
-- ♭VI (flat six major)
-- ♭VII (flat seven major)
-- ♭III (flat three major)
+- **In major keys**: iv, ♭VI, ♭VII, ♭III (borrowed from parallel minor)
+- **In minor keys**: IV, VI, VII, III (borrowed from parallel major)
 
 ### Interactive Piano
-- Two-octave piano responds to clicks/taps
+- Responsive piano keyboard (adapts to screen size, typically 2 octaves)
 - **Scale highlighting** shows all notes in the current scale
 - **Chord highlighting** shows the selected chord's notes in orange
-- Scale degree labels on each white key
+- Scale degree labels show roman numerals and note names
 
 ## Tech Stack
 
