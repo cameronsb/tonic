@@ -36,6 +36,7 @@ export function ConfigBar() {
         <div className="header-brand">
           <span className="header-title">Theory Tool</span>
           <select
+            id="key-scale-select"
             className="header-key-badge-select"
             value={`${state.song.key}-${state.song.mode}`}
             onChange={(e) => {
