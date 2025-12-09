@@ -25,25 +25,9 @@ function mergeWithDefaults(stored: Partial<UserSettings>): UserSettings {
     ui: {
       ...DEFAULT_SETTINGS.ui,
       ...(stored.ui || {}),
-      builderPanel: {
-        ...DEFAULT_SETTINGS.ui.builderPanel,
-        ...(stored.ui?.builderPanel || {}),
-        rememberedHeights: {
-          ...DEFAULT_SETTINGS.ui.builderPanel.rememberedHeights,
-          ...(stored.ui?.builderPanel?.rememberedHeights || {}),
-        },
-      },
-      learnSidebar: {
-        ...DEFAULT_SETTINGS.ui.learnSidebar,
-        ...(stored.ui?.learnSidebar || {}),
-      },
       learnTabletPiano: {
         ...DEFAULT_SETTINGS.ui.learnTabletPiano,
         ...(stored.ui?.learnTabletPiano || {}),
-      },
-      chordSort: {
-        ...DEFAULT_SETTINGS.ui.chordSort,
-        ...(stored.ui?.chordSort || {}),
       },
       piano: {
         ...DEFAULT_SETTINGS.ui.piano,
@@ -91,79 +75,11 @@ export function useSettings() {
     }));
   };
 
-  const setTrackVolume = (track: keyof UserSettings['volume']['tracks'], volume: number) => {
-    setSettings((prev) => ({
-      ...prev,
-      volume: {
-        ...prev.volume,
-        tracks: {
-          ...prev.volume.tracks,
-          [track]: Math.max(0, Math.min(1, volume)),
-        },
-      },
-    }));
-  };
-
-  const setDrumSoundVolume = (sound: keyof UserSettings['volume']['drumSounds'], volume: number) => {
-    setSettings((prev) => ({
-      ...prev,
-      volume: {
-        ...prev.volume,
-        drumSounds: {
-          ...prev.volume.drumSounds,
-          [sound]: Math.max(0, Math.min(1, volume)),
-        },
-      },
-    }));
-  };
-
   const resetSettings = () => {
     setSettings(DEFAULT_SETTINGS);
   };
 
   // UI settings helpers
-  const setBuilderPanelHeight = (height: number) => {
-    setSettings((prev) => ({
-      ...prev,
-      ui: {
-        ...prev.ui,
-        builderPanel: {
-          ...prev.ui.builderPanel,
-          height: Math.max(150, Math.min(600, height)),
-        },
-      },
-    }));
-  };
-
-  const setBuilderPanelTab = (tab: 'piano' | 'drums') => {
-    setSettings((prev) => ({
-      ...prev,
-      ui: {
-        ...prev.ui,
-        builderPanel: {
-          ...prev.ui.builderPanel,
-          activeTab: tab,
-        },
-      },
-    }));
-  };
-
-  const setBuilderPanelRememberedHeight = (tab: 'piano' | 'drums', height: number) => {
-    setSettings((prev) => ({
-      ...prev,
-      ui: {
-        ...prev.ui,
-        builderPanel: {
-          ...prev.ui.builderPanel,
-          rememberedHeights: {
-            ...prev.ui.builderPanel.rememberedHeights,
-            [tab]: Math.max(150, Math.min(600, height)),
-          },
-        },
-      },
-    }));
-  };
-
   const setShowInScaleColors = (show: boolean) => {
     setSettings((prev) => ({
       ...prev,
@@ -190,32 +106,6 @@ export function useSettings() {
     }));
   };
 
-  const setLearnSidebarWidth = (width: number) => {
-    setSettings((prev) => ({
-      ...prev,
-      ui: {
-        ...prev.ui,
-        learnSidebar: {
-          ...prev.ui.learnSidebar,
-          width: Math.max(280, Math.min(600, width)),
-        },
-      },
-    }));
-  };
-
-  const setLearnSidebarOpen = (isOpen: boolean) => {
-    setSettings((prev) => ({
-      ...prev,
-      ui: {
-        ...prev.ui,
-        learnSidebar: {
-          ...prev.ui.learnSidebar,
-          isOpen,
-        },
-      },
-    }));
-  };
-
   const setLearnTabletPianoHeight = (height: number) => {
     setSettings((prev) => ({
       ...prev,
@@ -224,32 +114,6 @@ export function useSettings() {
         learnTabletPiano: {
           ...prev.ui.learnTabletPiano,
           height: Math.max(200, Math.min(500, height)),
-        },
-      },
-    }));
-  };
-
-  const setDiatonicChordSort = (sortMode: 'default' | 'grouped') => {
-    setSettings((prev) => ({
-      ...prev,
-      ui: {
-        ...prev.ui,
-        chordSort: {
-          ...prev.ui.chordSort,
-          diatonic: sortMode,
-        },
-      },
-    }));
-  };
-
-  const setBorrowedChordSort = (sortMode: 'default' | 'grouped') => {
-    setSettings((prev) => ({
-      ...prev,
-      ui: {
-        ...prev.ui,
-        chordSort: {
-          ...prev.ui.chordSort,
-          borrowed: sortMode,
         },
       },
     }));
@@ -272,19 +136,10 @@ export function useSettings() {
     settings,
     setSettings,
     setMasterVolume,
-    setTrackVolume,
-    setDrumSoundVolume,
     resetSettings,
-    setBuilderPanelHeight,
-    setBuilderPanelTab,
-    setBuilderPanelRememberedHeight,
     setShowInScaleColors,
     setKeyboardPreviewEnabled,
-    setLearnSidebarWidth,
-    setLearnSidebarOpen,
     setLearnTabletPianoHeight,
-    setDiatonicChordSort,
-    setBorrowedChordSort,
     setShowMiniPreview,
   };
 }

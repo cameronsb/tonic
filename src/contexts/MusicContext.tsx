@@ -524,8 +524,6 @@ interface MusicContextType {
         updateDrumPattern: (pattern: DrumPattern) => void;
         createCustomPattern: (pattern: DrumPattern) => void;
         setMasterVolume: (volume: number) => void;
-        setTrackVolume: (track: keyof UserSettings['volume']['tracks'], volume: number) => void;
-        setDrumSoundVolume: (sound: keyof UserSettings['volume']['drumSounds'], volume: number) => void;
     };
 }
 
@@ -540,7 +538,7 @@ interface MusicProviderProps {
 }
 
 export function MusicProvider({ children }: MusicProviderProps) {
-    const { settings, setMasterVolume, setTrackVolume, setDrumSoundVolume, setShowInScaleColors, setKeyboardPreviewEnabled } = useSettings();
+    const { settings, setMasterVolume, setShowInScaleColors, setKeyboardPreviewEnabled } = useSettings();
 
     // Initialize state with settings from localStorage
     const [state, dispatch] = useReducer(musicReducer, {
@@ -794,8 +792,6 @@ export function MusicProvider({ children }: MusicProviderProps) {
             updateDrumPattern,
             createCustomPattern,
             setMasterVolume,
-            setTrackVolume,
-            setDrumSoundVolume,
         },
     };
 

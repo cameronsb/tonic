@@ -5,19 +5,19 @@
  * Settings are stored in localStorage with a well-organized key structure.
  */
 
-// Volume settings - extensible for future per-note/per-track volumes
+// Volume settings
 export interface VolumeSettings {
   // Master volume (0-1)
   master: number;
 
-  // Track volumes (0-1)
+  // Track volumes (0-1) - applied as multipliers in audio playback
   tracks: {
     chords: number;
     melody: number;
     drums: number;
   };
 
-  // Individual drum sounds (0-1) - for future per-drum volume control
+  // Individual drum sounds (0-1) - applied as multipliers per drum type
   drumSounds: {
     kick: number;
     snare: number;
@@ -27,31 +27,9 @@ export interface VolumeSettings {
 
 // UI/Layout settings
 export interface UISettings {
-  // Builder panel configuration
-  builderPanel: {
-    height: number;              // Current height of bottom panel (150-600px)
-    activeTab: 'piano' | 'drums'; // Which tab is currently selected
-    rememberedHeights: {         // Remember height per tab
-      piano: number;
-      drums: number;
-    };
-  };
-
-  // Learn mode sidebar configuration
-  learnSidebar: {
-    width: number;      // Width of sidebar (280-600px)
-    isOpen: boolean;    // Whether sidebar is open or closed
-  };
-
   // Learn mode tablet piano configuration
   learnTabletPiano: {
     height: number;     // Height of tablet piano panel (200-500px)
-  };
-
-  // Chord display sort preferences
-  chordSort: {
-    diatonic: 'default' | 'grouped';  // Sort mode for diatonic chords
-    borrowed: 'default' | 'grouped';  // Sort mode for borrowed chords
   };
 
   // Piano/keyboard display settings
@@ -66,17 +44,12 @@ export interface UISettings {
 export interface UserSettings {
   volume: VolumeSettings;
   ui: UISettings;
-  // Future settings can be added here:
-  // workflow: WorkflowSettings;
-  // midi: MIDISettings;
-  // audio: AudioSettings;
-  // etc.
 }
 
 // Default settings
 export const DEFAULT_SETTINGS: UserSettings = {
   volume: {
-    master: 0.7,
+    master: 0.5,  // ~unity gain with new exponential curve
     tracks: {
       chords: 0.75,
       melody: 0.8,
@@ -89,29 +62,13 @@ export const DEFAULT_SETTINGS: UserSettings = {
     },
   },
   ui: {
-    builderPanel: {
-      height: 250,
-      activeTab: 'piano',
-      rememberedHeights: {
-        piano: 250,
-        drums: 300,
-      },
-    },
-    learnSidebar: {
-      width: 420,       // Default: 420px width
-      isOpen: true,     // Default: open
-    },
     learnTabletPiano: {
-      height: 280,      // Default: 280px height
-    },
-    chordSort: {
-      diatonic: 'default',  // Default: default order
-      borrowed: 'default',  // Default: default order
+      height: 280,
     },
     piano: {
-      showInScaleColors: true,        // Default: highlight scale notes
-      keyboardPreviewEnabled: true,    // Default: show chords on keyboard
-      showMiniPreview: true,           // Default: show mini preview on cards
+      showInScaleColors: true,
+      keyboardPreviewEnabled: true,
+      showMiniPreview: true,
     },
   },
 };
@@ -121,5 +78,4 @@ export const STORAGE_KEYS = {
   SETTINGS: 'enso-piano:settings',
   SONGS: 'enso-piano:songs',
   ACTIVE_SONG_ID: 'enso-piano:active-song-id',
-  // Future keys can be added here
 } as const;

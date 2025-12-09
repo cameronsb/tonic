@@ -213,9 +213,20 @@ export function useAudioEngine() {
     const setMasterVolume = useCallback((volume: number) => {
         const { masterGain } = audioRef.current;
         if (!masterGain) return;
-        // Scale volume: 0.0 = silent, 1.0 = 1.5x gain for louder output
-        const scaledVolume = volume * 1.5;
-        masterGain.gain.value = Math.max(0, Math.min(1.5, scaledVolume));
+        /*
+          Exponential scaling for volume:
+
+            gain = maxGain * (volume ^ exponent)
+
+          - 0% volume → gain 0 (silent)
+          - ~40% volume → gain 1.0 (unity/comfortable)
+          - 100% volume → gain 4.0 (very loud)
+        */
+        const maxGain = 4.0;
+        const exponent = 2.0; // Quadratic curve - more range at the top
+        const scaledVolume = maxGain * Math.pow(volume, exponent);
+
+        masterGain.gain.value = Math.max(0, scaledVolume);
     }, []);
 
     return {
