@@ -56,6 +56,7 @@
   border-top: none;
   box-shadow: 0 3px 6px rgba(0, 0, 0, 0.3);
   z-index: 2;
+  padding-bottom: 0.35rem;
 }
 
 .piano-key.black:hover {
@@ -124,19 +125,38 @@
   font-size: 14px;
 }
 
-.piano-key.in-chord .note-name {
-  color: black;
-  font-weight: 600;
-}
-
 .scale-degree {
   color: black;
   font-size: 14px;
   font-weight: 600;
 }
 
-.piano-key.in-chord .scale-degree {
+/* Black key labels — light text for contrast */
+.piano-key.black .key-label {
+  gap: 0.15rem;
+}
+
+.piano-key.black .note-name {
+  color: rgba(255, 255, 255, 0.9);
+  font-size: 12px;
+}
+
+.piano-key.black .scale-degree {
+  color: rgba(255, 255, 255, 0.75);
+  font-size: 11px;
+}
+
+/* Black key in-chord labels — dark text on orange background */
+.piano-key.black.in-chord .note-name,
+.piano-key.black.in-chord .scale-degree {
+  color: rgba(0, 0, 0, 0.85);
+}
+
+/* White key in-chord labels */
+.piano-key.white.in-chord .note-name,
+.piano-key.white.in-chord .scale-degree {
   color: black;
+  font-weight: 600;
 }
 
 /* Responsive font sizes */
@@ -150,6 +170,14 @@
   }
 
   .scale-degree {
+    font-size: 8px;
+  }
+
+  .piano-key.black .note-name {
+    font-size: 9px;
+  }
+
+  .piano-key.black .scale-degree {
     font-size: 8px;
   }
 }
@@ -169,6 +197,14 @@
   }
 
   .scale-degree {
+    font-size: 7px;
+  }
+
+  .piano-key.black .note-name {
+    font-size: 8px;
+  }
+
+  .piano-key.black .scale-degree {
     font-size: 7px;
   }
 }

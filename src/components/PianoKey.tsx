@@ -131,13 +131,9 @@ export function PianoKey({
       aria-label={`${keyData.note}`}
     >
       <div className="key-label">
-        {!keyData.isBlack && (
-          <>
-            <span className="note-name">{keyData.baseNote}</span>
-            {showScaleDegree && scaleDegree && (
-              <span className="scale-degree">{scaleDegree}</span>
-            )}
-          </>
+        <span className="note-name">{keyData.baseNote}</span>
+        {showScaleDegree && scaleDegree && (
+          <span className="scale-degree">{scaleDegree}</span>
         )}
       </div>
     </div>
