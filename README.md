@@ -50,14 +50,16 @@ Toggle "Borrowed" to see chords from parallel modes:
 
 ## Why I Built This
 
-As a musician learning jazz piano, I found myself constantly referencing chord charts to understand what notes made up different chord voicings. Most apps either:
+As an amateur music producer and songwriter, I found myself constantly referencing chord charts to understand what notes made up different chord voicings. Most apps either:
 
 1. Show you chords in isolation (great for lookup, bad for understanding *context*)
 2. Focus on sheet music notation (assumes you already read music fluently)
 
-I wanted something that showed the **relationship between chords in a key** — the thing that makes the I-IV-V-I progression feel like "home." And I wanted to be able to quickly hear what a Dm9 sounds like versus a Dm7, without leaving the context of the scale.
+I wanted a free app that showed the **relationship between chords in a key** and could act as a **quick learning reference** for myself. Furthermore, I wanted a tool that could help me write songs without navigating between too many different resources/tools.
 
-This tool sits in that gap: visual enough to understand at a glance, interactive enough to explore, and theory-focused enough to actually teach something.
+This tool sits in that gap: visual enough to understand at a glance, interactive enough to explore and experiment, and practical enough to reference mid-songwriting session.
+
+It's optimized for my own personal use on an iPad/tablet, but should work on any device.
 
 ## Local Development
 
