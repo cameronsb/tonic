@@ -9,11 +9,5 @@
 .main-content {
   flex: 1;
   overflow: hidden;
-  padding-top: 70px; /* Space for fixed header */
-  transition: padding-top 0.3s ease;
-}
-
-/* When header is collapsed, reduce padding */
-.config-bar.collapsed ~ .main-content {
-  padding-top: 36px;
+  padding-top: 56px; /* Space for fixed header */
 }

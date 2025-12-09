@@ -4,7 +4,7 @@ import type { Note, Mode, SelectedChord, ChordDisplayMode, ChordInProgression, S
 import { useAudioEngine } from "../hooks/useAudioEngine";
 import { useSettings } from "../hooks/useSettings";
 import type { UserSettings } from "../types/settings";
-import { defaultDrumPatterns } from "../data/drumPatterns";
+// Note: Drum patterns feature removed (was only used in Build mode)
 
 export type NoteSubdivision = "whole" | "quarter" | "eighth";
 
@@ -25,7 +25,7 @@ function createEmptySong(): Song {
             chords: { blocks: [] },
             melody: { notes: [] },
             drums: {
-                patterns: [...defaultDrumPatterns], // Include default patterns
+                patterns: [],
                 blocks: []
             },
         },

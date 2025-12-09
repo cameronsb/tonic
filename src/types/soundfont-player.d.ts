@@ -20,6 +20,7 @@ declare module "soundfont-player" {
         soundfont?: string;
         format?: string;
         nameToUrl?: (name: string, soundfont: string, format: string) => string;
+        destination?: AudioNode;
         gain?: number;
         attack?: number;
         decay?: number;

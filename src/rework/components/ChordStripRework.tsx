@@ -1,7 +1,7 @@
-import { useState, useMemo } from 'react';
+import { useState } from 'react';
 import { useMusic } from '../../hooks/useMusic';
 import { useSettings } from '../../hooks/useSettings';
-import { getScaleChords, getBorrowedChords, getChordFrequencies, NOTES } from '../../utils/musicTheory';
+import { getScaleChords, getBorrowedChords, getChordFrequencies } from '../../utils/musicTheory';
 import { ChordTabRework } from './ChordTabRework';
 import { ChordInfoBlock } from './ChordInfoBlock';
 import { PianoVisualization } from '../../components/PianoVisualization';
@@ -171,7 +171,6 @@ export function ChordStripRework({ layout = 'default' }: ChordStripReworkProps) 
             isDiatonic={true}
             isActive={activeChordIndex === index && !showBorrowed}
             onActivate={() => {
-              setShowBorrowed(false);
               handleChordActivate(index, chord.intervals);
             }}
             showMiniPreview={settings.ui.piano.showMiniPreview}

@@ -6,7 +6,8 @@ interface MidiInputOptions {
 }
 
 export function useMidiInput({ onNoteOn, onNoteOff }: MidiInputOptions) {
-  const [midiAccess, setMidiAccess] = useState<WebMidi.MIDIAccess | null>(null);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const [midiAccess, setMidiAccess] = useState<any>(null);
   const [isSupported, setIsSupported] = useState(false);
   const [devices, setDevices] = useState<string[]>([]);
   const activeNotesRef = useRef<Set<number>>(new Set());
@@ -32,7 +33,8 @@ export function useMidiInput({ onNoteOn, onNoteOff }: MidiInputOptions) {
         });
         setDevices(deviceNames);
 
-        const handleMIDIMessage = (event: WebMidi.MIDIMessageEvent) => {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        const handleMIDIMessage = (event: any) => {
           const [command, note, velocity] = event.data;
           const channel = command & 0x0f;
           const messageType = command & 0xf0;
@@ -55,7 +57,8 @@ export function useMidiInput({ onNoteOn, onNoteOff }: MidiInputOptions) {
           input.addEventListener('midimessage', handleMIDIMessage as any);
         });
 
-        const handleStateChange = (event: WebMidi.MIDIConnectionEvent) => {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        const handleStateChange = (event: any) => {
           console.log('MIDI device state changed:', event.port.state, event.port.name);
 
           const updatedDevices: string[] = [];
@@ -65,7 +68,7 @@ export function useMidiInput({ onNoteOn, onNoteOff }: MidiInputOptions) {
           setDevices(updatedDevices);
 
           if (event.port.state === 'connected' && event.port.type === 'input') {
-            (event.port as WebMidi.MIDIInput).addEventListener('midimessage', handleMIDIMessage as any);
+            event.port.addEventListener('midimessage', handleMIDIMessage);
           }
         };
 

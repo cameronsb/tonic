@@ -19,7 +19,7 @@ export function ChordTabRework({
   numeral,
   rootNote,
   intervals,
-  type,
+  type: _type,
   isDiatonic,
   isActive,
   onActivate,
