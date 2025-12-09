@@ -202,7 +202,6 @@
   flex: 1;
   overflow-y: auto;
   padding: var(--space-2) 0;
-  -webkit-overflow-scrolling: touch;
 }
 
 /* ========================================

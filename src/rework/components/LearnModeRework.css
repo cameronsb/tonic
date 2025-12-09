@@ -30,7 +30,6 @@
   overflow-x: hidden;
   display: flex;
   flex-direction: column;
-  -webkit-overflow-scrolling: touch;
 }
 
 /* Chord strip area */
@@ -194,7 +193,6 @@
   border-right: 1px solid var(--border);
   transition: transform 0.3s ease-in-out, width 0.3s ease-in-out;
   position: relative;
-  -webkit-overflow-scrolling: touch;
 }
 
 .chord-sidebar.closed {
