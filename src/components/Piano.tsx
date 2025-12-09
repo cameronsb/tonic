@@ -70,7 +70,6 @@ export function Piano({
   }, [state.selectedChords]);
 
   const handleKeyPress = async (frequency: number) => {
-    console.log('Piano: Key press detected, playing frequency:', frequency);
     await audio.playNote(frequency);
   };
 
@@ -83,7 +82,6 @@ export function Piano({
   const handleMidiNoteOn = useCallback((midiNote: number, velocity: number) => {
     const frequency = midiToFrequency(midiNote);
     const volume = (velocity / 127) * 0.8; // Normalize velocity to 0-0.8
-    console.log(`MIDI Note On: ${midiNote}, frequency: ${frequency}Hz, velocity: ${velocity}`);
 
     // Add to active MIDI notes
     setActiveMidiNotes(prev => new Set(prev).add(midiNote));
@@ -92,8 +90,6 @@ export function Piano({
   }, [midiToFrequency, audio]);
 
   const handleMidiNoteOff = useCallback((midiNote: number) => {
-    console.log(`MIDI Note Off: ${midiNote}`);
-
     // Remove from active MIDI notes
     setActiveMidiNotes(prev => {
       const next = new Set(prev);
@@ -108,28 +104,15 @@ export function Piano({
     onNoteOff: handleMidiNoteOff,
   });
 
-  // Log MIDI status
-  useEffect(() => {
-    if (midi.isSupported) {
-      if (midi.isConnected) {
-        console.log('MIDI keyboard connected:', midi.devices);
-      } else {
-        console.log('MIDI supported but no devices connected');
-      }
-    } else {
-      console.log('MIDI not supported in this browser');
-    }
-  }, [midi.isSupported, midi.isConnected, midi.devices]);
+  // MIDI status is available via midi.isConnected and midi.devices
 
   // Global mouse up listener to end glissando
   useEffect(() => {
     const handleGlobalMouseUp = () => {
-      console.log('Piano: Global mouse up detected, ending glissando.');
       setIsGlissandoActive(false);
     };
 
     const handleGlobalTouchEnd = () => {
-      console.log('Piano: Global touch end detected, ending glissando.');
       setIsGlissandoActive(false);
     };
 
@@ -178,22 +161,17 @@ export function Piano({
           '--black-key-width': flexible ? `${layout.blackKeyWidth}px` : undefined,
           '--black-key-height': flexible ? `${layout.blackKeyHeight}px` : undefined,
         } as React.CSSProperties}
-        onMouseDown={() => {
-          console.log('Piano: Mouse down on piano keys, starting glissando.');
-          setIsGlissandoActive(true);
-        }}
-        onTouchStart={() => {
-          console.log('Piano: Touch start on piano keys, starting glissando.');
-          setIsGlissandoActive(true);
-        }}
+        onMouseDown={() => setIsGlissandoActive(true)}
+        onTouchStart={() => setIsGlissandoActive(true)}
       >
         {keys.map((keyData) => (
           <PianoKey
             key={keyData.note}
             keyData={keyData}
             onPress={handleKeyPress}
-            isInScale={state.showInScaleColors && scaleNotes.has(keyData.baseNote)}
+            isInScale={scaleNotes.has(keyData.baseNote)}
             isInChord={chordNotes.has(keyData.baseNote)}
+            showScaleHighlighting={state.showInScaleColors}
             showScaleDegree={showScaleDegrees}
             selectedKey={state.song.key}
             mode={state.song.mode}

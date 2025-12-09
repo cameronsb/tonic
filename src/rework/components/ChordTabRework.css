@@ -1,166 +1,198 @@
-/* Chord Tab - Individual chord button in horizontal strip */
+/* ========================================
+ * Chord Tab — Individual chord button
+ * ======================================== */
+
 .chord-tab {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   min-width: 72px;
-  min-height: 52px;
-  padding: 8px;
-  border: 2px solid rgba(255, 255, 255, 0.1);
-  border-radius: 8px;
-  background: var(--surface, #252938);
-  color: var(--text-primary, #e8e9f0);
+  min-height: 56px;
+  padding: var(--space-2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  background: var(--bg-elevated);
+  color: var(--text-primary);
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: all var(--transition-fast);
   position: relative;
 }
 
 .chord-tab:hover {
-  background: var(--surface-elevated, #2a2d3e);
-  border-color: rgba(255, 255, 255, 0.2);
+  background: var(--bg-muted);
+  border-color: var(--text-muted);
   transform: translateY(-1px);
 }
 
 .chord-tab.active {
-  background: var(--primary-accent, #5b5fc7);
-  border-color: var(--primary-accent, #5b5fc7);
-  box-shadow: 0 4px 12px rgba(91, 95, 199, 0.3);
+  background: var(--accent-bg);
+  border-color: var(--accent);
+  box-shadow: 0 0 0 1px var(--accent), var(--shadow-glow);
 }
 
 .chord-tab.selected {
-  border-color: var(--chord-highlight, #f4a261);
-  box-shadow: 0 0 0 2px rgba(244, 162, 97, 0.3);
+  border-color: var(--chord-highlight);
+  box-shadow: 0 0 0 2px var(--chord-highlight-bg);
 }
 
 .chord-tab.diatonic {
-  border-color: rgba(91, 95, 199, 0.3);
+  border-color: var(--border);
 }
 
 .chord-tab.borrowed {
-  border-color: rgba(117, 121, 215, 0.3);
+  border-color: var(--borrowed);
+  border-style: dashed;
 }
+
+.chord-tab.borrowed:hover {
+  border-style: solid;
+}
+
+/* ========================================
+ * Chord Tab Content
+ * ======================================== */
 
 .chord-tab-content {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 4px;
+  gap: var(--space-1);
   width: 100%;
 }
 
 .chord-tab-numeral {
-  font-size: 16px;
+  font-family: var(--font-mono);
+  font-size: var(--text-lg);
   font-weight: 700;
   line-height: 1;
-  color: inherit;
+  color: var(--text-primary);
+  letter-spacing: -0.02em;
 }
 
 .chord-tab-name {
-  font-size: 11px;
+  font-family: var(--font-ui);
+  font-size: var(--text-sm);
   font-weight: 500;
   line-height: 1;
-  color: var(--text-secondary, #a0a5b8);
+  color: var(--text-secondary);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
   max-width: 100%;
 }
 
-.chord-tab.active .chord-tab-name {
-  color: rgba(255, 255, 255, 0.9);
+.chord-tab:hover .chord-tab-numeral,
+.chord-tab:hover .chord-tab-name {
+  color: var(--text-primary);
 }
 
-/* Mini keyboard preview */
+.chord-tab.active .chord-tab-name,
+.chord-tab.active .chord-tab-numeral {
+  color: var(--accent);
+}
+
+/* ========================================
+ * Mini Keyboard Preview
+ * ======================================== */
+
 .mini-keyboard-preview {
   width: 100%;
-  max-width: 45px;
-  height: 15px;
-  margin-top: 4px;
+  max-width: 60px;
+  height: 20px;
+  margin-top: var(--space-1);
 }
 
 .mini-white-key {
-  fill: #f0f0f0;
-  stroke: #333;
+  fill: rgba(255, 255, 255, 0.85);
+  stroke: rgba(255, 255, 255, 0.3);
   stroke-width: 0.5;
 }
 
 .mini-white-key.active {
-  fill: var(--chord-highlight, #f4a261);
+  fill: var(--key-chord-black);
+  stroke: var(--key-chord-black);
 }
 
 .mini-black-key {
-  fill: #333;
-  stroke: #111;
+  fill: var(--bg-elevated);
+  stroke: var(--bg);
   stroke-width: 0.3;
 }
 
 .mini-black-key.active {
-  fill: var(--chord-highlight, #f4a261);
+  fill: var(--key-chord-black);
+  stroke: var(--key-chord-black);
 }
 
-/* Sidebar layout variant */
+/* ========================================
+ * Sidebar Layout Variant
+ * ======================================== */
+
 .chord-tab-sidebar {
   display: flex;
   align-items: center;
   justify-content: flex-start;
   width: 100%;
   min-height: 44px;
-  padding: 10px 12px;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 6px;
-  background: var(--surface, #252938);
-  color: var(--text-primary, #e8e9f0);
+  padding: var(--space-3);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  background: var(--bg-elevated);
+  color: var(--text-primary);
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: all var(--transition-fast);
   text-align: left;
 }
 
 .chord-tab-sidebar:hover {
-  background: var(--surface-elevated, #2a2d3e);
-  border-color: rgba(255, 255, 255, 0.2);
+  background: var(--bg-muted);
+  border-color: var(--text-muted);
 }
 
 .chord-tab-sidebar.active {
-  background: var(--primary-accent, #5b5fc7);
-  border-color: var(--primary-accent, #5b5fc7);
+  background: var(--accent-bg);
+  border-color: var(--accent);
 }
 
 .chord-tab-sidebar.selected {
-  border-color: var(--chord-highlight, #f4a261);
-  box-shadow: 0 0 0 1px rgba(244, 162, 97, 0.3);
+  border-color: var(--chord-highlight);
+  box-shadow: inset 0 0 0 1px var(--chord-highlight-bg);
 }
 
 .chord-tab-info {
   display: flex;
-  gap: 8px;
+  gap: var(--space-2);
   align-items: baseline;
 }
 
 .chord-tab-sidebar .chord-tab-numeral {
-  font-size: 14px;
+  font-size: var(--text-base);
   font-weight: 700;
 }
 
 .chord-tab-sidebar .chord-tab-name {
-  font-size: 13px;
+  font-size: var(--text-sm);
   font-weight: 500;
-  color: var(--text-secondary, #a0a5b8);
+  color: var(--text-secondary);
 }
 
 .chord-tab-sidebar.active .chord-tab-name {
-  color: rgba(255, 255, 255, 0.8);
+  color: var(--accent);
 }
 
-/* Touch target optimization for iPad */
+/* ========================================
+ * Touch target optimization
+ * ======================================== */
+
 @media (pointer: coarse) {
   .chord-tab {
-    min-width: 76px;
-    min-height: 56px;
+    min-width: 80px;
+    min-height: 60px;
   }
 
   .chord-tab-sidebar {
     min-height: 48px;
-    padding: 12px;
+    padding: var(--space-3) var(--space-4);
   }
 }

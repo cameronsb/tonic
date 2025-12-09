@@ -10,6 +10,7 @@ interface PianoKeyProps {
   onPress: (frequency: number) => void;
   isInScale: boolean;
   isInChord: boolean;
+  showScaleHighlighting?: boolean; // Whether scale toggle is ON (dims non-scale keys)
   showScaleDegree?: boolean;
   selectedKey: Note;
   mode: 'major' | 'minor';
@@ -24,6 +25,7 @@ export function PianoKey({
   onPress,
   isInScale,
   isInChord,
+  showScaleHighlighting = false,
   showScaleDegree,
   selectedKey,
   mode,
@@ -106,11 +108,16 @@ export function PianoKey({
     ? `calc(${keyData.whiteKeyIndex} * var(--white-key-width) + var(--white-key-width) * 0.65)`
     : `calc(${keyData.whiteKeyIndex} * var(--white-key-width))`;
 
+  // Determine CSS classes
+  // - in-chord: orange highlighting (takes priority)
+  // - not-in-scale: dimmed (only when scale toggle is ON and key is NOT in scale AND NOT in chord)
+  const notInScale = showScaleHighlighting && !isInScale && !isInChord;
+
   return (
     <div
       className={`piano-key ${keyData.isBlack ? 'black' : 'white'} ${isPressed || isMidiActive ? 'pressed' : ''} ${
-        isInChord ? 'in-chord' : isInScale ? 'in-scale' : ''
-      } ${isMidiActive ? 'midi-active' : ''}`}
+        isInChord ? 'in-chord' : ''
+      } ${notInScale ? 'not-in-scale' : ''} ${isMidiActive ? 'midi-active' : ''}`}
       style={{ left: leftPosition }}
       onMouseDown={handleMouseDown}
       onMouseEnter={handleMouseEnter}

@@ -1,21 +1,10 @@
-/* Piano key color variables */
-:root {
-  /* In-scale colors (purple theme) */
-  --key-scale-white: #e0e7fb;
-  --key-scale-white-hover: #d0daf8;
-  --key-scale-white-pressed: #bfcdf5;
-  --key-scale-black: #667eea;
-  --key-scale-black-hover: #7e8ff0;
-  --key-scale-black-pressed: #5568d3;
-
-  /* In-chord colors (orange theme) */
-  --key-chord-white: #fff4e5;
-  --key-chord-white-hover: #ffe9cc;
-  --key-chord-white-pressed: #ffddb3;
-  --key-chord-black: #ff9f40;
-  --key-chord-black-hover: #ffb366;
-  --key-chord-black-pressed: #ff8c1a;
-}
+/*
+ * Piano Key Styles
+ *
+ * Colors are defined in src/index.css (design system)
+ * - Chord highlighting: orange-based (--key-chord-*)
+ * - Scale highlighting: opacity-based (dims non-scale keys)
+ */
 
 .piano-key {
   position: absolute;
@@ -79,29 +68,20 @@
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
 }
 
-/* Scale highlighting */
-.piano-key.white.in-scale {
-  background: var(--key-scale-white);
+/* ========================================
+ * Scale highlighting — Opacity-based approach
+ * Instead of coloring in-scale keys, we dim non-scale keys.
+ * This allows chord highlighting (orange) to coexist cleanly.
+ * ======================================== */
+
+.piano-key.not-in-scale {
+  opacity: 0.35;
+  filter: grayscale(0.3);
 }
 
-.piano-key.white.in-scale:hover {
-  background: var(--key-scale-white-hover);
-}
-
-.piano-key.white.in-scale.pressed {
-  background: var(--key-scale-white-pressed);
-}
-
-.piano-key.black.in-scale {
-  background: var(--key-scale-black);
-}
-
-.piano-key.black.in-scale:hover {
-  background: var(--key-scale-black-hover);
-}
-
-.piano-key.black.in-scale.pressed {
-  background: var(--key-scale-black-pressed);
+.piano-key.not-in-scale:hover {
+  opacity: 0.5;
+  filter: grayscale(0.2);
 }
 
 /* Chord highlighting */
@@ -139,38 +119,23 @@
 }
 
 .note-name {
-  /* color: #666; */
   color: black;
   font-weight: 500;
   font-size: 14px;
 }
 
-.piano-key.in-scale .note-name {
-  /* color: #1976d2; */
-  color: black;
-  font-weight: 600;
-}
-
 .piano-key.in-chord .note-name {
-  /* color: #667eea; */
   color: black;
   font-weight: 600;
 }
 
 .scale-degree {
-  /* color: #999; */
   color: black;
   font-size: 14px;
   font-weight: 600;
 }
 
-.piano-key.in-scale .scale-degree {
-  /* color: #1976d2; */
-  color: black;
-}
-
 .piano-key.in-chord .scale-degree {
-  /* color: #667eea; */
   color: black;
 }
 
