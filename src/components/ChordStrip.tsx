@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useMusic } from '../hooks/useMusic';
 import { useSettings } from '../hooks/useSettings';
 import { getScaleChords, getBorrowedChords, getChordFrequencies } from '../utils/musicTheory';
@@ -15,9 +15,9 @@ interface ChordStripProps {
 
 export function ChordStrip({ layout = 'default' }: ChordStripProps) {
   const { state, audio, actions } = useMusic();
-  const { settings, setShowMiniPreview } = useSettings();
-  const { key, mode } = state.song;
-  const [showBorrowed, setShowBorrowed] = useState(false);
+  const { settings, setShowMiniPreview, setShowBorrowed } = useSettings();
+  const { key, mode } = state;
+  const showBorrowed = settings.ui.chordStrip.showBorrowed;
   const [activeChordIndex, setActiveChordIndex] = useState<number | null>(null);
   const [activeModifiers, setActiveModifiers] = useState<Set<string>>(new Set());
   const [currentIntervals, setCurrentIntervals] = useState<number[]>([]);

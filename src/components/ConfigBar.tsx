@@ -38,7 +38,7 @@ export function ConfigBar() {
           <select
             id="key-scale-select"
             className="header-key-badge-select"
-            value={`${state.song.key}-${state.song.mode}`}
+            value={`${state.key}-${state.mode}`}
             onChange={(e) => {
               const [key, mode] = e.target.value.split('-') as [typeof NOTES[number], 'major' | 'minor'];
               actions.selectKey(key);
@@ -125,7 +125,7 @@ export function ConfigBar() {
               <select
                 id="key-select"
                 className="setting-select"
-                value={state.song.key}
+                value={state.key}
                 onChange={(e) => actions.selectKey(e.target.value as typeof NOTES[number])}
               >
                 {NOTES.map((note) => (
@@ -141,7 +141,7 @@ export function ConfigBar() {
               <select
                 id="scale-select"
                 className="setting-select"
-                value={state.song.mode}
+                value={state.mode}
                 onChange={(e) => actions.setMode(e.target.value as 'major' | 'minor')}
               >
                 <option value="major">Major</option>
