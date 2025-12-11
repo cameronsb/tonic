@@ -10,6 +10,40 @@ interface AudioEngine {
     loading: boolean;
 }
 
+// Global reference to AudioContext for iOS unlock
+let globalAudioContext: AudioContext | null = null;
+let unlockListenersAdded = false;
+
+// iOS audio unlock handler - must be called synchronously within user gesture
+function unlockAudioContext() {
+    if (globalAudioContext && globalAudioContext.state === 'suspended') {
+        globalAudioContext.resume();
+    }
+}
+
+// Set up global unlock listeners once (called early, before context may exist)
+function setupUnlockListeners() {
+    if (unlockListenersAdded) return;
+    unlockListenersAdded = true;
+
+    const events = ['touchstart', 'touchend', 'click', 'keydown'];
+
+    const handleUnlock = () => {
+        unlockAudioContext();
+        // Only remove listeners once audio is actually running
+        if (globalAudioContext && globalAudioContext.state === 'running') {
+            events.forEach(event => {
+                document.removeEventListener(event, handleUnlock, true);
+            });
+        }
+    };
+
+    // Use capture phase to ensure we intercept before any other handler
+    events.forEach(event => {
+        document.addEventListener(event, handleUnlock, true);
+    });
+}
+
 export function useAudioEngine() {
     const [loading, setLoading] = useState(false);
     const audioRef = useRef<AudioEngine>({
@@ -21,6 +55,9 @@ export function useAudioEngine() {
     });
 
     useEffect(() => {
+        // Set up unlock listeners immediately on mount
+        setupUnlockListeners();
+
         const initAudio = async () => {
             if (audioRef.current.initialized || audioRef.current.loading)
                 return;
@@ -32,6 +69,9 @@ export function useAudioEngine() {
                 const AudioContextClass =
                     window.AudioContext || (window as unknown as { webkitAudioContext?: typeof AudioContext }).webkitAudioContext;
                 const context = new AudioContextClass();
+
+                // Store reference for global unlock handler
+                globalAudioContext = context;
 
                 const masterGain = context.createGain();
                 masterGain.gain.value = 1.5;
