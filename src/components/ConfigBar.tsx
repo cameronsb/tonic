@@ -34,7 +34,7 @@ export function ConfigBar() {
       {/* Minimal header bar */}
       <header className="header-bar">
         <div className="header-brand">
-          <span className="header-title">Theory Tool</span>
+          <span className="header-title">Tonic</span>
           <select
             id="key-scale-select"
             className="header-key-badge-select"

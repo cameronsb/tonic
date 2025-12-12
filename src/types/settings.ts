@@ -49,11 +49,12 @@ export const DEFAULT_SETTINGS: UserSettings = {
 };
 
 export const STORAGE_KEYS = {
-  SETTINGS: 'theory-tool:settings',
+  SETTINGS: 'tonic:settings',
 } as const;
 
 export const LEGACY_STORAGE_KEYS = {
-  SETTINGS: 'enso-piano:settings',
+  SETTINGS: 'theory-tool:settings', // Previous name
+  SETTINGS_V1: 'enso-piano:settings', // Original name
   SONGS: 'enso-piano:songs',
   ACTIVE_SONG_ID: 'enso-piano:active-song-id',
 } as const;
