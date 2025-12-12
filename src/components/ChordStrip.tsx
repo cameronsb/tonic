@@ -235,6 +235,8 @@ export function ChordStrip({ layout = 'default' }: ChordStripProps) {
               <PianoVisualization
                 rootNote={activeChord.rootNote}
                 intervals={currentIntervals}
+                keyRoot={key}
+                mode={mode}
                 showLabels={true}
                 labelFontSize={5}
               />

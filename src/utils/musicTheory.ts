@@ -445,6 +445,85 @@ export function getScaleDegreeNumeral(
     return null;
 }
 
+/**
+ * Get the scale degree label for a chromatic position relative to a key.
+ * Returns numeric scale degrees (1-7) for diatonic notes, with accidentals for chromatic notes.
+ *
+ * @param chromaticPosition - Chromatic position (0-11) where C=0, C#=1, D=2, etc.
+ * @param keyRoot - The root note of the key (tonic)
+ * @param mode - 'major' or 'minor'
+ * @returns Scale degree label (e.g., '1', '2', '♭3', '♯4', '5', '♭7')
+ *
+ * @example
+ * // In C major, D (position 2) is the 2nd scale degree
+ * getScaleDegreeLabel(2, 'C', 'major') // returns '2'
+ *
+ * // In C major, Eb (position 3) is a chromatic note (flat 3)
+ * getScaleDegreeLabel(3, 'C', 'major') // returns '♭3'
+ */
+export function getScaleDegreeLabel(
+    chromaticPosition: number,
+    keyRoot: Note,
+    mode: Mode
+): string {
+    const keyRootIndex = NOTES.indexOf(keyRoot);
+    const scale = SCALES[mode];
+
+    // Normalize chromatic position to 0-11
+    const normalizedPosition = ((chromaticPosition % 12) + 12) % 12;
+
+    // Calculate the interval from the key root to this note
+    const intervalFromRoot = (normalizedPosition - keyRootIndex + 12) % 12;
+
+    // Check if this note is a diatonic scale degree
+    const scaleDegreeIndex = scale.indexOf(intervalFromRoot);
+
+    if (scaleDegreeIndex !== -1) {
+        // Note is in the scale - return the scale degree number (1-7)
+        return String(scaleDegreeIndex + 1);
+    }
+
+    // Note is chromatic - determine the appropriate accidental label
+    // Strategy: find which diatonic degree this chromatic note is closest to
+    // and label it as a raised or lowered version of that degree
+
+    if (mode === 'major') {
+        // Major scale chromatic labels (interval from root -> label)
+        // These follow standard music theory conventions
+        const majorChromaticLabels: Record<number, string> = {
+            1: '♭2',   // Minor 2nd (e.g., Db in C major)
+            3: '♭3',   // Minor 3rd (e.g., Eb in C major)
+            6: '♭5',   // Tritone / diminished 5th (e.g., Gb in C major)
+            8: '♭6',   // Minor 6th (e.g., Ab in C major)
+            10: '♭7',  // Minor 7th (e.g., Bb in C major)
+        };
+        return majorChromaticLabels[intervalFromRoot] || `♯${findNearestLowerDegree(intervalFromRoot, scale)}`;
+    }
+
+    // Minor scale chromatic labels
+    const minorChromaticLabels: Record<number, string> = {
+        1: '♭2',   // Minor 2nd
+        4: '3',    // Major 3rd (raised 3rd in minor context)
+        6: '♭5',   // Tritone
+        9: '6',    // Major 6th (raised 6th in minor context)
+        11: '7',   // Major 7th (raised 7th / leading tone)
+    };
+    return minorChromaticLabels[intervalFromRoot] || `♯${findNearestLowerDegree(intervalFromRoot, scale)}`;
+}
+
+/**
+ * Helper: Find the nearest lower diatonic degree for a chromatic interval.
+ * Used to label raised chromatic notes (e.g., ♯4 for interval 6 if 5 is not matched).
+ */
+function findNearestLowerDegree(interval: number, scale: number[]): number {
+    for (let i = scale.length - 1; i >= 0; i--) {
+        if (scale[i] < interval) {
+            return i + 1; // Scale degrees are 1-indexed
+        }
+    }
+    return 1;
+}
+
 // ============================================================================
 // 88-Key Piano Generation and Utilities
 // ============================================================================

@@ -1,4 +1,4 @@
-import { useState, useCallback, useRef } from 'react';
+import { useState, useCallback, useRef, type MouseEvent, type TouchEvent } from 'react';
 import type { PianoKeyData } from '../utils/pianoUtils';
 import { getScaleDegreeNumeral } from '../utils/musicTheory';
 import type { Note } from '../types/music';
@@ -51,13 +51,13 @@ export function PianoKey({
 
   // ===== Mouse Handlers =====
 
-  const handleMouseDown = useCallback((e: React.MouseEvent) => {
+  const handleMouseDown = useCallback((e: MouseEvent) => {
     e.preventDefault();
     setIsMousePressed(true);
     playNote();
   }, [playNote]);
 
-  const handleMouseUp = useCallback((e: React.MouseEvent) => {
+  const handleMouseUp = useCallback((e: MouseEvent) => {
     e.preventDefault();
     setIsMousePressed(false);
   }, []);
@@ -70,7 +70,7 @@ export function PianoKey({
     }
   }, [isGlissandoActive, isMousePressed, playNote]);
 
-  const handleMouseLeave = useCallback((e: React.MouseEvent) => {
+  const handleMouseLeave = useCallback((e: MouseEvent) => {
     e.preventDefault();
     setIsMousePressed(false);
   }, []);
@@ -78,7 +78,7 @@ export function PianoKey({
   // ===== Touch Handlers =====
   // Properly handles multi-touch: tracks each touch by ID
 
-  const handleTouchStart = useCallback((e: React.TouchEvent) => {
+  const handleTouchStart = useCallback((e: TouchEvent) => {
     e.preventDefault();
 
     const wasEmpty = activeTouchesRef.current.size === 0;
@@ -98,7 +98,7 @@ export function PianoKey({
     }
   }, [playNote]);
 
-  const handleTouchEnd = useCallback((e: React.TouchEvent) => {
+  const handleTouchEnd = useCallback((e: TouchEvent) => {
     e.preventDefault();
 
     // Remove all touches that ended
@@ -112,7 +112,7 @@ export function PianoKey({
     }
   }, []);
 
-  const handleTouchCancel = useCallback((e: React.TouchEvent) => {
+  const handleTouchCancel = useCallback((e: TouchEvent) => {
     e.preventDefault();
 
     // Remove all cancelled touches

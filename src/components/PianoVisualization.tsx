@@ -1,11 +1,13 @@
 import React from 'react';
-import type { Note } from '../types/music';
-import { NOTES } from '../utils/musicTheory';
+import type { Note, Mode } from '../types/music';
+import { NOTES, getScaleDegreeLabel } from '../utils/musicTheory';
 import './PianoVisualization.css';
 
 interface PianoVisualizationProps {
   rootNote: Note;
   intervals: number[];
+  keyRoot: Note;
+  mode: Mode;
   showLabels?: boolean;
   labelFontSize?: number;
   onClick?: (e: React.MouseEvent) => void;
@@ -16,6 +18,8 @@ interface PianoVisualizationProps {
 export function PianoVisualization({
   rootNote,
   intervals,
+  keyRoot,
+  mode,
   showLabels = true,
   labelFontSize = 10,
   onClick,
@@ -44,32 +48,10 @@ export function PianoVisualization({
 
   const isNoteActive = (chromaticKey: number) => activeKeys.has(chromaticKey);
 
+  // Get scale degree label for a highlighted key
   const getNoteLabel = (chromaticKey: number): string | null => {
-    const interval = activeKeys.get(chromaticKey);
-    if (interval === undefined) return null;
-    return getIntervalLabel(interval);
-  };
-
-  // Helper: Get interval label for display (1, 3, 5, ♭7, 9, etc.)
-  const getIntervalLabel = (interval: number): string => {
-    const labels: Record<number, string> = {
-      0: '1',
-      1: '♭2',
-      2: '2',
-      3: '♭3',
-      4: '3',
-      5: '4',
-      6: '♭5',
-      7: '5',
-      8: '♯5',
-      9: '6',
-      10: '♭7',
-      11: '7',
-      14: '9',
-      17: '11',
-      21: '13',
-    };
-    return labels[interval] || String(interval);
+    if (!activeKeys.has(chromaticKey)) return null;
+    return getScaleDegreeLabel(chromaticKey, keyRoot, mode);
   };
 
   return (
