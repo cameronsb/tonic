@@ -24,15 +24,15 @@ export function PianoVisualization({
   labelFontSize = 10,
   onClick,
   isSelected = false,
-  className = ''
+  className = '',
 }: PianoVisualizationProps) {
   const whiteKeyPositions = [0, 2, 4, 5, 7, 9, 11]; // C, D, E, F, G, A, B
   const blackKeyPositions = [
-    { key: 1, x: 8 },    // C#
-    { key: 3, x: 18 },   // D#
-    { key: 6, x: 38 },   // F#
-    { key: 8, x: 48 },   // G#
-    { key: 10, x: 58 }   // A#
+    { key: 1, x: 8 }, // C#
+    { key: 3, x: 18 }, // D#
+    { key: 6, x: 38 }, // F#
+    { key: 8, x: 48 }, // G#
+    { key: 10, x: 58 }, // A#
   ];
 
   // Get the chromatic position of the root note (0-11 where C=0)
@@ -41,7 +41,7 @@ export function PianoVisualization({
   // Calculate which chromatic keys should be highlighted
   // Map chord intervals to actual chromatic positions based on root note
   const activeKeys = new Map<number, number>(); // chromatic position -> interval
-  intervals.forEach(interval => {
+  intervals.forEach((interval) => {
     const chromaticPosition = (rootIndex + interval) % 12;
     activeKeys.set(chromaticPosition, interval);
   });
@@ -73,7 +73,7 @@ export function PianoVisualization({
               y="0"
               width="10"
               height="24"
-              className={`white-key ${active ? "active" : ""}`}
+              className={`white-key ${active ? 'active' : ''}`}
             />
             {showLabels && label && (
               <text
@@ -103,7 +103,7 @@ export function PianoVisualization({
               y="0"
               width="4"
               height="14"
-              className={`black-key ${active ? "active" : ""}`}
+              className={`black-key ${active ? 'active' : ''}`}
             />
             {showLabels && label && (
               <text

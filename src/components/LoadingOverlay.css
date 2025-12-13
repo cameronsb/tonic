@@ -10,8 +10,12 @@
 }
 
 @keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
 
 .loading-content {
@@ -51,17 +55,34 @@
   z-index: 1;
 }
 
-.loading-key:nth-child(1) { animation-delay: 0s; }
-.loading-key:nth-child(2) { animation-delay: 0.1s; }
-.loading-key:nth-child(3) { animation-delay: 0.2s; }
-.loading-key:nth-child(4) { animation-delay: 0.3s; }
-.loading-key:nth-child(5) { animation-delay: 0.4s; }
-.loading-key:nth-child(6) { animation-delay: 0.5s; }
-.loading-key:nth-child(7) { animation-delay: 0.6s; }
-.loading-key:nth-child(8) { animation-delay: 0.7s; }
+.loading-key:nth-child(1) {
+  animation-delay: 0s;
+}
+.loading-key:nth-child(2) {
+  animation-delay: 0.1s;
+}
+.loading-key:nth-child(3) {
+  animation-delay: 0.2s;
+}
+.loading-key:nth-child(4) {
+  animation-delay: 0.3s;
+}
+.loading-key:nth-child(5) {
+  animation-delay: 0.4s;
+}
+.loading-key:nth-child(6) {
+  animation-delay: 0.5s;
+}
+.loading-key:nth-child(7) {
+  animation-delay: 0.6s;
+}
+.loading-key:nth-child(8) {
+  animation-delay: 0.7s;
+}
 
 @keyframes pulse {
-  0%, 100% {
+  0%,
+  100% {
     opacity: 0.4;
     transform: scaleY(0.95);
   }
@@ -157,4 +178,3 @@
     transform: translateY(0);
   }
 }
-

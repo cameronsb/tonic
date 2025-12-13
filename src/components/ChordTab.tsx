@@ -24,7 +24,7 @@ export function ChordTab({
   isActive,
   onActivate,
   showMiniPreview = false,
-  layout = 'default'
+  layout = 'default',
 }: ChordTabProps) {
   const { audio, actions, state } = useMusic();
 
@@ -50,7 +50,8 @@ export function ChordTab({
   const chordName = getFullChordName(rootNote, intervals);
 
   // Check if this chord is currently selected on the keyboard
-  const isChordSelected = state.selectedChords.length > 0 &&
+  const isChordSelected =
+    state.selectedChords.length > 0 &&
     state.selectedChords[0].rootNote === rootNote &&
     state.selectedChords[0].numeral === numeral &&
     JSON.stringify(state.selectedChords[0].intervals) === JSON.stringify(intervals);
@@ -61,11 +62,11 @@ export function ChordTab({
 
     const whiteKeyPositions = [0, 2, 4, 5, 7, 9, 11]; // C, D, E, F, G, A, B
     const blackKeyPositions = [
-      { key: 1, x: 5.5 },    // C#
-      { key: 3, x: 12 },     // D#
-      { key: 6, x: 25 },     // F#
-      { key: 8, x: 31.5 },   // G#
-      { key: 10, x: 38 }     // A#
+      { key: 1, x: 5.5 }, // C#
+      { key: 3, x: 12 }, // D#
+      { key: 6, x: 25 }, // F#
+      { key: 8, x: 31.5 }, // G#
+      { key: 10, x: 38 }, // A#
     ];
 
     // Get the chromatic position of the root note (0-11 where C=0)
@@ -73,7 +74,7 @@ export function ChordTab({
 
     // Calculate which chromatic keys should be highlighted
     const activeKeys = new Set<number>();
-    intervals.forEach(interval => {
+    intervals.forEach((interval) => {
       const chromaticPosition = (rootIndex + interval) % 12;
       activeKeys.add(chromaticPosition);
     });
@@ -94,7 +95,7 @@ export function ChordTab({
               y="0"
               width="6"
               height="15"
-              className={`mini-white-key ${active ? "active" : ""}`}
+              className={`mini-white-key ${active ? 'active' : ''}`}
             />
           );
         })}
@@ -110,7 +111,7 @@ export function ChordTab({
               y="0"
               width="3"
               height="9"
-              className={`mini-black-key ${active ? "active" : ""}`}
+              className={`mini-black-key ${active ? 'active' : ''}`}
             />
           );
         })}

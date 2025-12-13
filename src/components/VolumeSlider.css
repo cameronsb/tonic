@@ -105,7 +105,9 @@
   width: 16px;
   margin-top: -7px;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
-  transition: transform 0.15s ease, box-shadow 0.15s ease;
+  transition:
+    transform 0.15s ease,
+    box-shadow 0.15s ease;
 }
 
 .volume-slider-input:active::-webkit-slider-thumb {
@@ -120,7 +122,9 @@
   height: 16px;
   width: 16px;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
-  transition: transform 0.15s ease, box-shadow 0.15s ease;
+  transition:
+    transform 0.15s ease,
+    box-shadow 0.15s ease;
   border: none;
   border: 2px solid var(--slider-color);
 }

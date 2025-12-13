@@ -21,7 +21,7 @@ export function Piano({
   octaveCount = 2,
   showScaleDegrees = false,
   flexible = true,
-  adjustHeight = false
+  adjustHeight = false,
 }: PianoProps) {
   const { state, audio } = useMusic();
   const pianoContainerRef = useRef<HTMLDivElement>(null);
@@ -81,19 +81,22 @@ export function Piano({
   }, []);
 
   // MIDI note handlers
-  const handleMidiNoteOn = useCallback((midiNote: number, velocity: number) => {
-    const frequency = midiToFrequency(midiNote);
-    const volume = (velocity / 127) * 0.8; // Normalize velocity to 0-0.8
+  const handleMidiNoteOn = useCallback(
+    (midiNote: number, velocity: number) => {
+      const frequency = midiToFrequency(midiNote);
+      const volume = (velocity / 127) * 0.8; // Normalize velocity to 0-0.8
 
-    // Add to active MIDI notes
-    setActiveMidiNotes(prev => new Set(prev).add(midiNote));
+      // Add to active MIDI notes
+      setActiveMidiNotes((prev) => new Set(prev).add(midiNote));
 
-    audio.playNote(frequency, 0.3, volume);
-  }, [midiToFrequency, audio]);
+      audio.playNote(frequency, 0.3, volume);
+    },
+    [midiToFrequency, audio]
+  );
 
   const handleMidiNoteOff = useCallback((midiNote: number) => {
     // Remove from active MIDI notes
-    setActiveMidiNotes(prev => {
+    setActiveMidiNotes((prev) => {
       const next = new Set(prev);
       next.delete(midiNote);
       return next;
@@ -130,39 +133,45 @@ export function Piano({
   return (
     <div className="piano" ref={pianoContainerRef}>
       {midi.isConnected && (
-        <div style={{
-          position: 'absolute',
-          top: '8px',
-          right: '8px',
-          padding: '4px 8px',
-          background: '#22c55e',
-          color: 'white',
-          fontSize: '12px',
-          borderRadius: '4px',
-          zIndex: 10,
-          display: 'flex',
-          alignItems: 'center',
-          gap: '6px'
-        }}>
-          <span style={{
-            width: '8px',
-            height: '8px',
-            background: 'white',
-            borderRadius: '50%',
-            animation: 'pulse 2s infinite'
-          }} />
+        <div
+          style={{
+            position: 'absolute',
+            top: '8px',
+            right: '8px',
+            padding: '4px 8px',
+            background: '#22c55e',
+            color: 'white',
+            fontSize: '12px',
+            borderRadius: '4px',
+            zIndex: 10,
+            display: 'flex',
+            alignItems: 'center',
+            gap: '6px',
+          }}
+        >
+          <span
+            style={{
+              width: '8px',
+              height: '8px',
+              background: 'white',
+              borderRadius: '50%',
+              animation: 'pulse 2s infinite',
+            }}
+          />
           MIDI: {midi.devices[0]}
         </div>
       )}
       <div
         className={`piano-keys ${isGlissandoActive ? 'glissando-active' : ''}`}
-        style={{
-          '--white-key-count': whiteKeyCount,
-          '--white-key-width': flexible ? `${layout.whiteKeyWidth}px` : undefined,
-          '--white-key-height': flexible ? `${layout.whiteKeyHeight}px` : undefined,
-          '--black-key-width': flexible ? `${layout.blackKeyWidth}px` : undefined,
-          '--black-key-height': flexible ? `${layout.blackKeyHeight}px` : undefined,
-        } as React.CSSProperties}
+        style={
+          {
+            '--white-key-count': whiteKeyCount,
+            '--white-key-width': flexible ? `${layout.whiteKeyWidth}px` : undefined,
+            '--white-key-height': flexible ? `${layout.whiteKeyHeight}px` : undefined,
+            '--black-key-width': flexible ? `${layout.blackKeyWidth}px` : undefined,
+            '--black-key-height': flexible ? `${layout.blackKeyHeight}px` : undefined,
+          } as React.CSSProperties
+        }
         onMouseDown={() => setIsGlissandoActive(true)}
         onTouchStart={() => setIsGlissandoActive(true)}
       >

@@ -10,7 +10,20 @@ export interface PianoKeyData {
   whiteKeyIndex: number; // Index among white keys only (for white keys) or left white key (for black keys)
 }
 
-const BLACK_KEY_PATTERN = [false, true, false, true, false, false, true, false, true, false, true, false];
+const BLACK_KEY_PATTERN = [
+  false,
+  true,
+  false,
+  true,
+  false,
+  false,
+  true,
+  false,
+  true,
+  false,
+  true,
+  false,
+];
 const NOTE_NAMES: Note[] = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
 
 /**
@@ -67,5 +80,5 @@ export function generatePianoKeys(startOctave: number, octaveCount: number): Pia
  * Get the white key count for a range
  */
 export function getWhiteKeyCount(keys: PianoKeyData[]): number {
-  return keys.filter(k => !k.isBlack).length;
+  return keys.filter((k) => !k.isBlack).length;
 }

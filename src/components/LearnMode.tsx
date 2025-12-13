@@ -12,16 +12,19 @@ export function LearnMode() {
   const { state, actions } = useMusic();
 
   // Resizable piano height
-  const handlePianoResize = useCallback((newHeight: number) => {
-    setLearnTabletPianoHeight(newHeight);
-  }, [setLearnTabletPianoHeight]);
+  const handlePianoResize = useCallback(
+    (newHeight: number) => {
+      setLearnTabletPianoHeight(newHeight);
+    },
+    [setLearnTabletPianoHeight]
+  );
 
   const {
     height: pianoHeight,
     isResizing: isPianoResizing,
     handleMouseDown: handlePianoMouseDown,
     handleTouchStart: handlePianoTouchStart,
-    setHeight: setPianoHeight
+    setHeight: setPianoHeight,
   } = useResizable({
     initialHeight: settings.ui.learnTabletPiano.height,
     minHeight: SIZES.learnTabletPiano.min,

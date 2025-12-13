@@ -37,7 +37,8 @@ export function useMidiInput({ onNoteOn, onNoteOff }: MidiInputOptions) {
 
     setIsSupported(true);
 
-    navigator.requestMIDIAccess()
+    navigator
+      .requestMIDIAccess()
       .then((access) => {
         setMidiAccess(access as unknown as MIDIAccess);
 

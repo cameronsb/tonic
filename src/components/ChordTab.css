@@ -28,7 +28,9 @@
 .chord-tab.active {
   background: var(--accent-bg);
   border-color: var(--accent);
-  box-shadow: 0 0 0 1px var(--accent), var(--shadow-glow);
+  box-shadow:
+    0 0 0 1px var(--accent),
+    var(--shadow-glow);
 }
 
 .chord-tab.selected {

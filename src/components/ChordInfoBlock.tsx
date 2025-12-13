@@ -17,7 +17,7 @@ export function ChordInfoBlock({
   baseType,
   baseIntervals,
   intervals: _intervals,
-  activeModifiers
+  activeModifiers,
 }: ChordInfoBlockProps) {
   const chordName = getChordDisplayName(rootNote, baseType, baseIntervals, activeModifiers);
 

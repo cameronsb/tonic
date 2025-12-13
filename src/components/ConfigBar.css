@@ -123,8 +123,12 @@
 }
 
 @keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
 
 /* ========================================
@@ -306,6 +310,29 @@
   font-size: var(--text-xs);
   color: var(--text-muted);
   margin: 0;
+}
+
+.replay-tutorial-btn {
+  background: transparent;
+  border: 1px solid var(--border);
+  color: var(--text-secondary);
+  padding: var(--space-2) var(--space-4);
+  border-radius: var(--radius-md);
+  font-size: var(--text-sm);
+  cursor: pointer;
+  margin-top: var(--space-3);
+  transition: var(--transition-base);
+  width: 100%;
+}
+
+.replay-tutorial-btn:hover {
+  border-color: var(--accent);
+  color: var(--text-primary);
+}
+
+.replay-tutorial-btn:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
 }
 
 /* ========================================

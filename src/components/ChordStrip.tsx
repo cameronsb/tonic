@@ -52,14 +52,14 @@ export function ChordStrip({ layout = 'default' }: ChordStripProps) {
 
     let newIntervals = [...baseIntervals];
 
-    newModifiers.forEach(modLabel => {
-      const mod = CHORD_MODIFIERS.find(m => m.label === modLabel);
+    newModifiers.forEach((modLabel) => {
+      const mod = CHORD_MODIFIERS.find((m) => m.label === modLabel);
       if (!mod) return;
 
       if (mod.replaceWith) {
         newIntervals = mod.replaceWith;
       } else if (mod.intervalsToAdd) {
-        mod.intervalsToAdd.forEach(interval => {
+        mod.intervalsToAdd.forEach((interval) => {
           if (!newIntervals.includes(interval)) {
             newIntervals.push(interval);
           }
@@ -69,7 +69,7 @@ export function ChordStrip({ layout = 'default' }: ChordStripProps) {
           newIntervals.push(mod.intervalToAdd);
         }
       } else if (mod.intervalToRemove !== undefined) {
-        newIntervals = newIntervals.filter(i => i !== mod.intervalToRemove);
+        newIntervals = newIntervals.filter((i) => i !== mod.intervalToRemove);
       }
     });
 
@@ -197,7 +197,7 @@ export function ChordStrip({ layout = 'default' }: ChordStripProps) {
               intervals={chord.intervals}
               type={chord.type}
               isDiatonic={false}
-              isActive={activeChordIndex === (index + diatonicChords.length)}
+              isActive={activeChordIndex === index + diatonicChords.length}
               onActivate={() => handleChordActivate(index + diatonicChords.length, chord.intervals)}
               showMiniPreview={settings.ui.piano.showMiniPreview}
             />
@@ -210,11 +210,13 @@ export function ChordStrip({ layout = 'default' }: ChordStripProps) {
           <div className="chord-detail-left">
             <h4 className="chord-detail-title">Variations</h4>
             <div className="chord-modifier-grid">
-              {CHORD_MODIFIERS.map(modifier => (
+              {CHORD_MODIFIERS.map((modifier) => (
                 <button
                   key={modifier.label}
                   className={`chord-modifier-btn ${activeModifiers.has(modifier.label) ? 'active' : ''}`}
-                  onClick={() => applyModifier(modifier.label, activeChord.rootNote, activeChord.intervals)}
+                  onClick={() =>
+                    applyModifier(modifier.label, activeChord.rootNote, activeChord.intervals)
+                  }
                   title={modifier.label}
                 >
                   {modifier.label}
@@ -245,7 +247,9 @@ export function ChordStrip({ layout = 'default' }: ChordStripProps) {
         </div>
       ) : (
         <div className="chord-detail-panel chord-detail-empty">
-          <p className="chord-detail-hint">Select a chord above to explore variations and see it on the keyboard</p>
+          <p className="chord-detail-hint">
+            Select a chord above to explore variations and see it on the keyboard
+          </p>
         </div>
       )}
     </div>

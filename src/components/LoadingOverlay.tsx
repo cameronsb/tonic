@@ -3,16 +3,16 @@ import { useState, useEffect } from 'react';
 import './LoadingOverlay.css';
 
 const MUSIC_TIPS = [
-  "The Circle of Fifths helps you understand key relationships and chord progressions",
-  "Borrowed chords come from parallel modes and add color to progressions",
-  "The I-V-vi-IV progression is one of the most popular in modern music",
-  "Seventh chords add complexity and tension to basic triads",
-  "The diminished vii° chord functions as a dominant and wants to resolve to I",
-  "Sus chords create tension by replacing the third with a second or fourth",
-  "Modal interchange lets you borrow chords from parallel scales",
-  "The ii-V-I progression is the foundation of jazz harmony",
-  "Adding 9ths and 11ths creates more sophisticated, jazzy sounds",
-  "The ♭VII borrowed chord creates a strong pull back to the tonic",
+  'The Circle of Fifths helps you understand key relationships and chord progressions',
+  'Borrowed chords come from parallel modes and add color to progressions',
+  'The I-V-vi-IV progression is one of the most popular in modern music',
+  'Seventh chords add complexity and tension to basic triads',
+  'The diminished vii° chord functions as a dominant and wants to resolve to I',
+  'Sus chords create tension by replacing the third with a second or fourth',
+  'Modal interchange lets you borrow chords from parallel scales',
+  'The ii-V-I progression is the foundation of jazz harmony',
+  'Adding 9ths and 11ths creates more sophisticated, jazzy sounds',
+  'The ♭VII borrowed chord creates a strong pull back to the tonic',
 ];
 
 export function LoadingOverlay() {
@@ -29,7 +29,7 @@ export function LoadingOverlay() {
     const increment = (interval / duration) * 100;
 
     const timer = setInterval(() => {
-      setProgress(prev => {
+      setProgress((prev) => {
         // Slow down as we approach 95% to avoid completing before actual load
         if (prev >= 95) return prev;
         return Math.min(prev + increment * (1 - prev / 150), 95);
@@ -44,7 +44,7 @@ export function LoadingOverlay() {
     if (!audio.loading) return;
 
     const tipTimer = setInterval(() => {
-      setCurrentTip(prev => (prev + 1) % MUSIC_TIPS.length);
+      setCurrentTip((prev) => (prev + 1) % MUSIC_TIPS.length);
     }, 4000);
 
     return () => clearInterval(tipTimer);
@@ -80,10 +80,7 @@ export function LoadingOverlay() {
           <p className="loading-text">Loading high-quality piano samples...</p>
           <div className="loading-progress-container">
             <div className="loading-progress-bar">
-              <div
-                className="loading-progress-fill"
-                style={{ width: `${progress}%` }}
-              />
+              <div className="loading-progress-fill" style={{ width: `${progress}%` }} />
             </div>
             <span className="loading-percentage">{Math.round(progress)}%</span>
           </div>
@@ -97,4 +94,3 @@ export function LoadingOverlay() {
     </div>
   );
 }
-

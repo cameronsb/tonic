@@ -59,6 +59,10 @@ function mergeWithDefaults(stored: Partial<UserSettings>): UserSettings {
         ...(stored.ui?.scale || {}),
       },
     },
+    onboarding: {
+      ...DEFAULT_SETTINGS.onboarding,
+      ...(stored.onboarding || {}),
+    },
   };
 }
 
@@ -175,6 +179,39 @@ export function useSettings() {
     }));
   };
 
+  const completeOnboarding = () => {
+    setSettings((prev) => ({
+      ...prev,
+      onboarding: {
+        ...prev.onboarding,
+        completed: true,
+        completedAt: new Date().toISOString(),
+      },
+    }));
+  };
+
+  const skipOnboarding = () => {
+    setSettings((prev) => ({
+      ...prev,
+      onboarding: {
+        ...prev.onboarding,
+        completed: true,
+        skippedAt: new Date().toISOString(),
+      },
+    }));
+  };
+
+  const resetOnboarding = () => {
+    setSettings((prev) => ({
+      ...prev,
+      onboarding: {
+        completed: false,
+        completedAt: null,
+        skippedAt: null,
+      },
+    }));
+  };
+
   return {
     settings,
     setSettings,
@@ -186,5 +223,8 @@ export function useSettings() {
     setShowMiniPreview,
     setShowBorrowed,
     setScaleViewEnabled,
+    completeOnboarding,
+    skipOnboarding,
+    resetOnboarding,
   };
 }

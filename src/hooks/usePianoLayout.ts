@@ -156,4 +156,3 @@ export function usePianoLayout<T extends HTMLElement>(
 
   return layout;
 }
-

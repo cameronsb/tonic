@@ -23,7 +23,7 @@
  * ```
  */
 
-import { useState, useCallback, useRef, type TouchEvent, type MouseEvent} from 'react';
+import { useState, useCallback, useRef, type TouchEvent, type MouseEvent } from 'react';
 
 /**
  * Glissando options
@@ -103,16 +103,8 @@ export interface UseGlissandoReturn {
  * Provides consistent drag-to-play behavior across all input devices.
  * Handles pointer tracking, element detection, and duplicate prevention.
  */
-export function useGlissando<T = string>(
-  options: UseGlissandoOptions<T>
-): UseGlissandoReturn {
-  const {
-    onTrigger,
-    selector,
-    getIdentifier,
-    preventDefault = true,
-    throttleMs = 0,
-  } = options;
+export function useGlissando<T = string>(options: UseGlissandoOptions<T>): UseGlissandoReturn {
+  const { onTrigger, selector, getIdentifier, preventDefault = true, throttleMs = 0 } = options;
 
   // Track pointer state
   const [isMouseDown, setIsMouseDown] = useState(false);
@@ -125,124 +117,157 @@ export function useGlissando<T = string>(
   /**
    * Check if element should be triggered
    */
-  const shouldTrigger = useCallback((identifier: T | null): boolean => {
-    if (!identifier) return false;
+  const shouldTrigger = useCallback(
+    (identifier: T | null): boolean => {
+      if (!identifier) return false;
 
-    // Check if same as last triggered
-    if (identifier === lastTriggeredRef.current) return false;
+      // Check if same as last triggered
+      if (identifier === lastTriggeredRef.current) return false;
 
-    // Check throttle
-    if (throttleMs > 0) {
-      const now = Date.now();
-      if (now - lastTriggerTimeRef.current < throttleMs) return false;
-    }
+      // Check throttle
+      if (throttleMs > 0) {
+        const now = Date.now();
+        if (now - lastTriggerTimeRef.current < throttleMs) return false;
+      }
 
-    return true;
-  }, [throttleMs]);
+      return true;
+    },
+    [throttleMs]
+  );
 
   /**
    * Trigger element and update tracking
    */
-  const triggerElement = useCallback((identifier: T | null) => {
-    if (!shouldTrigger(identifier)) return;
+  const triggerElement = useCallback(
+    (identifier: T | null) => {
+      if (!shouldTrigger(identifier)) return;
 
-    lastTriggeredRef.current = identifier;
-    lastTriggerTimeRef.current = Date.now();
+      lastTriggeredRef.current = identifier;
+      lastTriggerTimeRef.current = Date.now();
 
-    if (identifier) {
-      onTrigger(identifier);
-    }
-  }, [shouldTrigger, onTrigger]);
+      if (identifier) {
+        onTrigger(identifier);
+      }
+    },
+    [shouldTrigger, onTrigger]
+  );
 
   /**
    * Find and trigger element at pointer position
    */
-  const findAndTriggerAt = useCallback((clientX: number, clientY: number) => {
-    const element = document.elementFromPoint(clientX, clientY);
-    if (!element) return;
+  const findAndTriggerAt = useCallback(
+    (clientX: number, clientY: number) => {
+      const element = document.elementFromPoint(clientX, clientY);
+      if (!element) return;
 
-    const targetElement = element.closest(selector);
-    if (!targetElement) return;
+      const targetElement = element.closest(selector);
+      if (!targetElement) return;
 
-    const identifier = getIdentifier(targetElement);
-    triggerElement(identifier);
-  }, [selector, getIdentifier, triggerElement]);
+      const identifier = getIdentifier(targetElement);
+      triggerElement(identifier);
+    },
+    [selector, getIdentifier, triggerElement]
+  );
 
   // ===== Mouse Handlers =====
 
-  const handleMouseDown = useCallback((e: MouseEvent) => {
-    if (preventDefault) e.preventDefault();
+  const handleMouseDown = useCallback(
+    (e: MouseEvent) => {
+      if (preventDefault) e.preventDefault();
 
-    setIsMouseDown(true);
-    lastTriggeredRef.current = null; // Reset for new drag
+      setIsMouseDown(true);
+      lastTriggeredRef.current = null; // Reset for new drag
 
-    // Trigger element under cursor
-    findAndTriggerAt(e.clientX, e.clientY);
-  }, [preventDefault, findAndTriggerAt]);
+      // Trigger element under cursor
+      findAndTriggerAt(e.clientX, e.clientY);
+    },
+    [preventDefault, findAndTriggerAt]
+  );
 
-  const handleMouseMove = useCallback((e: MouseEvent) => {
-    if (!isMouseDown) return;
-    if (preventDefault) e.preventDefault();
+  const handleMouseMove = useCallback(
+    (e: MouseEvent) => {
+      if (!isMouseDown) return;
+      if (preventDefault) e.preventDefault();
 
-    findAndTriggerAt(e.clientX, e.clientY);
-  }, [isMouseDown, preventDefault, findAndTriggerAt]);
+      findAndTriggerAt(e.clientX, e.clientY);
+    },
+    [isMouseDown, preventDefault, findAndTriggerAt]
+  );
 
-  const handleMouseUp = useCallback((e: MouseEvent) => {
-    if (preventDefault) e.preventDefault();
-    setIsMouseDown(false);
-    lastTriggeredRef.current = null;
-  }, [preventDefault]);
+  const handleMouseUp = useCallback(
+    (e: MouseEvent) => {
+      if (preventDefault) e.preventDefault();
+      setIsMouseDown(false);
+      lastTriggeredRef.current = null;
+    },
+    [preventDefault]
+  );
 
-  const handleMouseLeave = useCallback((e: MouseEvent) => {
-    if (preventDefault) e.preventDefault();
-    setIsMouseDown(false);
-    lastTriggeredRef.current = null;
-  }, [preventDefault]);
+  const handleMouseLeave = useCallback(
+    (e: MouseEvent) => {
+      if (preventDefault) e.preventDefault();
+      setIsMouseDown(false);
+      lastTriggeredRef.current = null;
+    },
+    [preventDefault]
+  );
 
   // ===== Touch Handlers =====
 
-const handleTouchStart = useCallback((e: TouchEvent) => {
-    if (preventDefault) e.preventDefault();
+  const handleTouchStart = useCallback(
+    (e: TouchEvent) => {
+      if (preventDefault) e.preventDefault();
 
-    if (e.touches.length > 0 && touchId === null) {
-      const touch = e.touches[0];
-      setTouchId(touch.identifier);
-      lastTriggeredRef.current = null; // Reset for new touch
+      if (e.touches.length > 0 && touchId === null) {
+        const touch = e.touches[0];
+        setTouchId(touch.identifier);
+        lastTriggeredRef.current = null; // Reset for new touch
 
-      // Trigger element under touch
+        // Trigger element under touch
+        findAndTriggerAt(touch.clientX, touch.clientY);
+      }
+    },
+    [preventDefault, touchId, findAndTriggerAt]
+  );
+
+  const handleTouchMove = useCallback(
+    (e: TouchEvent) => {
+      if (touchId === null) return;
+      if (preventDefault) e.preventDefault();
+
+      // Find the active touch
+      const touch = Array.from(e.touches).find((t) => t.identifier === touchId);
+      if (!touch) return;
+
       findAndTriggerAt(touch.clientX, touch.clientY);
-    }
-  }, [preventDefault, touchId, findAndTriggerAt]);
+    },
+    [touchId, preventDefault, findAndTriggerAt]
+  );
 
-  const handleTouchMove = useCallback((e: TouchEvent) => {
-    if (touchId === null) return;
-    if (preventDefault) e.preventDefault();
+  const handleTouchEnd = useCallback(
+    (e: TouchEvent) => {
+      if (preventDefault) e.preventDefault();
 
-    // Find the active touch
-    const touch = Array.from(e.touches).find(t => t.identifier === touchId);
-    if (!touch) return;
+      const changedTouches = Array.from(e.changedTouches);
+      if (touchId !== null && changedTouches.some((t) => t.identifier === touchId)) {
+        setTouchId(null);
+        lastTriggeredRef.current = null;
+      }
+    },
+    [touchId, preventDefault]
+  );
 
-    findAndTriggerAt(touch.clientX, touch.clientY);
-  }, [touchId, preventDefault, findAndTriggerAt]);
+  const handleTouchCancel = useCallback(
+    (e: TouchEvent) => {
+      if (preventDefault) e.preventDefault();
 
-  const handleTouchEnd = useCallback((e: TouchEvent) => {
-    if (preventDefault) e.preventDefault();
-
-    const changedTouches = Array.from(e.changedTouches);
-    if (touchId !== null && changedTouches.some(t => t.identifier === touchId)) {
-      setTouchId(null);
-      lastTriggeredRef.current = null;
-    }
-  }, [touchId, preventDefault]);
-
-  const handleTouchCancel = useCallback((e: TouchEvent) => {
-    if (preventDefault) e.preventDefault();
-
-    if (touchId !== null) {
-      setTouchId(null);
-      lastTriggeredRef.current = null;
-    }
-  }, [touchId, preventDefault]);
+      if (touchId !== null) {
+        setTouchId(null);
+        lastTriggeredRef.current = null;
+      }
+    },
+    [touchId, preventDefault]
+  );
 
   // Manual control
   const activate = useCallback(() => {
@@ -271,4 +296,3 @@ const handleTouchStart = useCallback((e: TouchEvent) => {
     deactivate,
   };
 }
-

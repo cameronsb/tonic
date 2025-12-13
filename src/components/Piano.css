@@ -24,7 +24,9 @@
   -webkit-user-select: none;
   user-select: none;
   /* Smooth transitions when dimensions change */
-  transition: width 0.2s ease, height 0.2s ease;
+  transition:
+    width 0.2s ease,
+    height 0.2s ease;
 }
 
 /* When glissando is active, keys should still receive mouseEnter events */

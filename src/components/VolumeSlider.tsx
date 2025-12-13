@@ -15,14 +15,17 @@ export function VolumeSlider({
   onChange,
   color = '#667eea',
   label,
-  orientation = 'horizontal'
+  orientation = 'horizontal',
 }: VolumeSliderProps) {
   const percentage = Math.round(value * 100);
 
-  const handleChange = useCallback((e: ChangeEvent<HTMLInputElement>) => {
-    const newValue = Number(e.target.value) / 100;
-    onChange(newValue);
-  }, [onChange]);
+  const handleChange = useCallback(
+    (e: ChangeEvent<HTMLInputElement>) => {
+      const newValue = Number(e.target.value) / 100;
+      onChange(newValue);
+    },
+    [onChange]
+  );
 
   // Touch-friendly slider with native HTML5 range input
   return (
@@ -36,10 +39,12 @@ export function VolumeSlider({
           value={percentage}
           onChange={handleChange}
           className="volume-slider-input"
-          style={{
-            '--slider-color': color,
-            '--slider-progress': `${percentage}%`
-          } as CSSProperties}
+          style={
+            {
+              '--slider-color': color,
+              '--slider-progress': `${percentage}%`,
+            } as CSSProperties
+          }
           aria-label={label ? `${label} volume: ${percentage}%` : `Volume: ${percentage}%`}
         />
         <span className="volume-slider-value">{percentage}%</span>

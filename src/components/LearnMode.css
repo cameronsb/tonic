@@ -191,7 +191,9 @@
   overflow-x: hidden;
   background: var(--bg-elevated);
   border-right: 1px solid var(--border);
-  transition: transform 0.3s ease-in-out, width 0.3s ease-in-out;
+  transition:
+    transform 0.3s ease-in-out,
+    width 0.3s ease-in-out;
   position: relative;
 }
 

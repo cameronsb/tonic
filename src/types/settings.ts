@@ -1,3 +1,5 @@
+import type { OnboardingSettings } from './onboarding';
+
 export interface VolumeSettings {
   master: number;
   chords: number;
@@ -23,6 +25,7 @@ export interface UISettings {
 export interface UserSettings {
   volume: VolumeSettings;
   ui: UISettings;
+  onboarding: OnboardingSettings;
 }
 
 export const DEFAULT_SETTINGS: UserSettings = {
@@ -45,6 +48,11 @@ export const DEFAULT_SETTINGS: UserSettings = {
     scale: {
       viewEnabled: false,
     },
+  },
+  onboarding: {
+    completed: false,
+    completedAt: null,
+    skippedAt: null,
   },
 };
 

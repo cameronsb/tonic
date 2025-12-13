@@ -12,7 +12,10 @@
   padding: var(--space-2);
   border-radius: var(--radius-md);
   background: transparent;
-  transition: opacity var(--transition-base), background-color var(--transition-base), filter var(--transition-base);
+  transition:
+    opacity var(--transition-base),
+    background-color var(--transition-base),
+    filter var(--transition-base);
   color: var(--text-primary);
   user-select: none;
 }
