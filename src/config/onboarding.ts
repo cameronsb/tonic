@@ -25,7 +25,7 @@ export const ONBOARDING_STEPS: OnboardingStep[] = [
   },
   {
     id: 'chord-strip',
-    target: '.chord-tabs-horizontal',
+    target: '.chord-cards-horizontal',
     title: 'Your 7 Chords',
     body: 'These are the chords built from the scale. Roman numerals show their role—uppercase means major, lowercase means minor.',
     primaryButton: 'Got it',
@@ -35,9 +35,9 @@ export const ONBOARDING_STEPS: OnboardingStep[] = [
   },
   {
     id: 'play-chord',
-    target: '.chord-tabs-horizontal',
+    target: '.chord-cards-horizontal',
     title: 'Hear the Harmony',
-    body: 'Tap any chord to hear it. The piano below lights up to show which notes are playing.',
+    body: 'Tap any chord card to hear it. The piano below lights up to show which notes are playing.',
     primaryButton: null,
     showSkip: true,
     advanceTrigger: 'chord-played',
@@ -67,7 +67,7 @@ export const ONBOARDING_STEPS: OnboardingStep[] = [
   },
   {
     id: 'play-progression',
-    target: '.chord-tabs-horizontal',
+    target: '.chord-cards-horizontal',
     title: 'The Hit Progression',
     body: 'Now play: I → V → vi → IV. This four-chord pattern powers countless pop songs.',
     primaryButton: 'Next',
@@ -77,13 +77,13 @@ export const ONBOARDING_STEPS: OnboardingStep[] = [
   },
   {
     id: 'variations',
-    target: '.chord-detail-panel',
+    target: '.chord-card-modifiers',
     title: 'Add Color',
-    body: 'Make any chord richer with variations—try adding a 7th, maj7, or sus4 for different flavors.',
+    body: 'Each chord card has variation buttons below—try adding a 7th, maj7, or sus4 for different flavors.',
     primaryButton: 'Got it',
     showSkip: true,
     advanceTrigger: 'button',
-    tooltipPosition: 'top',
+    tooltipPosition: 'bottom',
   },
   {
     id: 'borrowed-chords',

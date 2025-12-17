@@ -1,0 +1,256 @@
+/* ========================================
+ * ChordCard — Self-contained chord card
+ * with embedded variations and piano preview
+ * ======================================== */
+
+.chord-card {
+  display: flex;
+  flex-direction: column;
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-xl);
+  overflow: hidden;
+  transition: all var(--transition-fast);
+}
+
+.chord-card:hover {
+  border-color: var(--border-accent);
+}
+
+.chord-card.selected {
+  border-color: var(--chord-highlight);
+  box-shadow: 0 0 0 1px var(--chord-highlight-bg);
+}
+
+.chord-card.borrowed {
+  border-style: dashed;
+  border-color: var(--borrowed);
+}
+
+.chord-card.borrowed:hover {
+  border-style: solid;
+}
+
+/* ========================================
+ * Card Header — Clickable chord area
+ * ======================================== */
+
+.chord-card-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-1);
+  padding: var(--space-3) var(--space-2);
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  transition: background var(--transition-fast);
+  width: 100%;
+}
+
+.chord-card-header:hover {
+  background: var(--bg-muted);
+}
+
+.chord-card-header:active {
+  background: var(--bg-subtle);
+}
+
+.chord-card-numeral {
+  font-family: var(--font-mono);
+  font-size: var(--text-xl);
+  font-weight: 700;
+  line-height: 1;
+  color: var(--text-primary);
+  letter-spacing: -0.02em;
+}
+
+.chord-card.selected .chord-card-numeral {
+  color: var(--chord-highlight);
+}
+
+.chord-card-name {
+  font-family: var(--font-ui);
+  font-size: var(--text-sm);
+  font-weight: 500;
+  line-height: 1;
+  color: var(--text-secondary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
+}
+
+.chord-card.selected .chord-card-name {
+  color: var(--chord-highlight);
+}
+
+/* ========================================
+ * Piano Preview
+ * ======================================== */
+
+.chord-card-piano {
+  width: 100%;
+  max-width: 90px;
+  height: auto;
+  margin-top: var(--space-2);
+}
+
+.chord-card-white-key {
+  fill: rgba(255, 255, 255, 0.85);
+  stroke: rgba(255, 255, 255, 0.3);
+  stroke-width: 0.5;
+}
+
+.chord-card-white-key.active {
+  fill: var(--key-chord-black);
+  stroke: var(--key-chord-black);
+}
+
+.chord-card-black-key {
+  fill: var(--bg-elevated);
+  stroke: var(--bg);
+  stroke-width: 0.3;
+}
+
+.chord-card-black-key.active {
+  fill: var(--key-chord-black);
+  stroke: var(--key-chord-black);
+}
+
+.chord-card-key-label {
+  font-family: var(--font-mono);
+  font-size: 8px;
+  font-weight: 600;
+  fill: var(--text-secondary);
+  text-anchor: middle;
+}
+
+/* ========================================
+ * Modifier Buttons Grid
+ * ======================================== */
+
+.chord-card-modifiers {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 2px;
+  padding: var(--space-2);
+  background: var(--bg-surface);
+  border-top: 1px solid var(--border-muted);
+}
+
+.chord-card-modifier-btn {
+  aspect-ratio: 1;
+  min-width: 0;
+  min-height: 32px;
+  padding: 0;
+  border: 1px solid transparent;
+  border-radius: var(--radius-md);
+  background: var(--bg-muted);
+  color: var(--text-tertiary);
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.chord-card-modifier-btn:hover {
+  background: var(--bg-subtle);
+  color: var(--text-primary);
+  border-color: var(--border);
+}
+
+.chord-card-modifier-btn.active {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: var(--text-inverse);
+}
+
+/* ========================================
+ * Responsive — Larger screens
+ * ======================================== */
+
+@media (min-width: 1024px) {
+  .chord-card-numeral {
+    font-size: var(--text-2xl);
+  }
+
+  .chord-card-name {
+    font-size: var(--text-base);
+  }
+
+  .chord-card-piano {
+    max-width: 100px;
+  }
+
+  .chord-card-modifier-btn {
+    min-height: 36px;
+    font-size: 11px;
+  }
+
+  .chord-card-key-label {
+    font-size: 9px;
+  }
+}
+
+/* ========================================
+ * Responsive — Touch devices
+ * Ensure 44px touch targets
+ * ======================================== */
+
+@media (pointer: coarse) {
+  .chord-card-header {
+    min-height: 80px;
+    padding: var(--space-3);
+  }
+
+  .chord-card-modifier-btn {
+    min-height: 36px;
+  }
+
+  .chord-card-modifiers {
+    gap: 3px;
+    padding: var(--space-2) var(--space-2) var(--space-3);
+  }
+}
+
+/* ========================================
+ * Responsive — Small tablets
+ * Compact mode for tighter spaces
+ * ======================================== */
+
+@media (max-width: 768px) {
+  .chord-card-header {
+    padding: var(--space-2);
+  }
+
+  .chord-card-numeral {
+    font-size: var(--text-lg);
+  }
+
+  .chord-card-name {
+    font-size: var(--text-xs);
+  }
+
+  .chord-card-piano {
+    max-width: 70px;
+  }
+
+  .chord-card-modifier-btn {
+    min-height: 28px;
+    font-size: 9px;
+  }
+
+  .chord-card-modifiers {
+    gap: 2px;
+    padding: var(--space-1);
+  }
+
+  .chord-card-key-label {
+    font-size: 7px;
+  }
+}

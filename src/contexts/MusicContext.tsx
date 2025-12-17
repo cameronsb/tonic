@@ -177,22 +177,15 @@ export function MusicProvider({ children }: MusicProviderProps) {
 
   const selectChord = useCallback(
     (rootNote: Note, intervals: number[], numeral: string) => {
-      const isAlreadySelected =
-        state.selectedChords.length > 0 &&
-        state.selectedChords[0].rootNote === rootNote &&
-        state.selectedChords[0].numeral === numeral &&
-        JSON.stringify(state.selectedChords[0].intervals) === JSON.stringify(intervals);
-
-      if (isAlreadySelected) {
-        dispatch({ type: 'DESELECT_CHORDS' });
-      } else {
-        dispatch({
-          type: 'SELECT_CHORD',
-          payload: { rootNote, intervals, numeral },
-        });
-      }
+      // Always update to the new chord (no toggle behavior)
+      // This makes the selection persistent - clicking the same chord
+      // multiple times keeps it selected rather than toggling off
+      dispatch({
+        type: 'SELECT_CHORD',
+        payload: { rootNote, intervals, numeral },
+      });
     },
-    [state.selectedChords]
+    []
   );
 
   const deselectChords = useCallback(() => {

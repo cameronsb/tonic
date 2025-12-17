@@ -1,12 +1,7 @@
-import { useEffect, useState } from 'react';
 import { useMusic } from '../hooks/useMusic';
 import { useSettings } from '../hooks/useSettings';
-import { getScaleChords, getBorrowedChords, getChordFrequencies } from '../utils/musicTheory';
-import { ChordTab } from './ChordTab';
-import { ChordInfoBlock } from './ChordInfoBlock';
-import { PianoVisualization } from './PianoVisualization';
-import { CHORD_MODIFIERS } from '../config/chords';
-import type { Note } from '../types/music';
+import { getScaleChords, getBorrowedChords } from '../utils/musicTheory';
+import { ChordCard } from './ChordCard';
 import './ChordStrip.css';
 
 interface ChordStripProps {
@@ -14,133 +9,62 @@ interface ChordStripProps {
 }
 
 export function ChordStrip({ layout = 'default' }: ChordStripProps) {
-  const { state, audio, actions } = useMusic();
+  const { state } = useMusic();
   const { settings, setShowMiniPreview, setShowBorrowed } = useSettings();
   const { key, mode } = state;
   const showBorrowed = settings.ui.chordStrip.showBorrowed;
-  const [activeChordIndex, setActiveChordIndex] = useState<number | null>(null);
-  const [activeModifiers, setActiveModifiers] = useState<Set<string>>(new Set());
-  const [currentIntervals, setCurrentIntervals] = useState<number[]>([]);
 
   const diatonicChords = getScaleChords(key, mode);
   const borrowedChords = getBorrowedChords(key, mode);
 
-  const allChords = [...diatonicChords, ...borrowedChords];
-  const activeChord = activeChordIndex !== null ? allChords[activeChordIndex] : null;
-
-  // Clear active chord when key or mode changes
-  useEffect(() => {
-    setActiveChordIndex(null);
-    setActiveModifiers(new Set());
-    setCurrentIntervals([]);
-  }, [key, mode]);
-
-  const handleChordActivate = (index: number, baseIntervals: number[]) => {
-    setActiveChordIndex(index);
-    setActiveModifiers(new Set());
-    setCurrentIntervals(baseIntervals);
-  };
-
-  const applyModifier = (modifierLabel: string, rootNote: Note, baseIntervals: number[]) => {
-    const newModifiers = new Set(activeModifiers);
-
-    if (activeModifiers.has(modifierLabel)) {
-      newModifiers.delete(modifierLabel);
-    } else {
-      newModifiers.add(modifierLabel);
-    }
-
-    let newIntervals = [...baseIntervals];
-
-    newModifiers.forEach((modLabel) => {
-      const mod = CHORD_MODIFIERS.find((m) => m.label === modLabel);
-      if (!mod) return;
-
-      if (mod.replaceWith) {
-        newIntervals = mod.replaceWith;
-      } else if (mod.intervalsToAdd) {
-        mod.intervalsToAdd.forEach((interval) => {
-          if (!newIntervals.includes(interval)) {
-            newIntervals.push(interval);
-          }
-        });
-      } else if (mod.intervalToAdd !== undefined) {
-        if (!newIntervals.includes(mod.intervalToAdd)) {
-          newIntervals.push(mod.intervalToAdd);
-        }
-      } else if (mod.intervalToRemove !== undefined) {
-        newIntervals = newIntervals.filter((i) => i !== mod.intervalToRemove);
-      }
-    });
-
-    newIntervals.sort((a, b) => a - b);
-
-    setActiveModifiers(newModifiers);
-    setCurrentIntervals(newIntervals);
-
-    // Play the modified chord
-    try {
-      const frequencies = getChordFrequencies(rootNote, newIntervals);
-      if (frequencies && frequencies.length > 0) {
-        audio.playChord(frequencies, 0.8);
-      }
-    } catch (error) {
-      console.error('Error playing chord:', error);
-    }
-
-    // Always update selected chord state (even if keyboard preview is off)
-    // This ensures the selection persists when toggling the preview on/off
-    if (activeChord) {
-      actions.selectChord(rootNote, newIntervals, activeChord.numeral);
-    }
-  };
-
-  // For sidebar layout, use vertical stack
+  // For sidebar layout, use vertical stack (legacy support)
   if (layout === 'sidebar') {
     return (
       <div className="chord-strip-sidebar">
         <div className="chord-strip-section">
           <h3 className="chord-strip-title">Diatonic Chords</h3>
-          <div className="chord-tabs-vertical">
-            {diatonicChords.map((chord, index) => (
-              <ChordTab
+          <div className="chord-cards-vertical">
+            {diatonicChords.map((chord) => (
+              <ChordCard
                 key={chord.numeral}
                 numeral={chord.numeral}
                 rootNote={chord.rootNote}
                 intervals={chord.intervals}
                 type={chord.type}
                 isDiatonic={true}
-                isActive={activeChordIndex === index}
-                onActivate={() => setActiveChordIndex(index)}
-                layout="sidebar"
+                keyRoot={key}
+                mode={mode}
+                showPreview={settings.ui.piano.showMiniPreview}
               />
             ))}
           </div>
         </div>
 
-        <div className="chord-strip-section">
-          <h3 className="chord-strip-title">Borrowed Chords</h3>
-          <div className="chord-tabs-vertical">
-            {borrowedChords.map((chord, index) => (
-              <ChordTab
-                key={chord.numeral}
-                numeral={chord.numeral}
-                rootNote={chord.rootNote}
-                intervals={chord.intervals}
-                type={chord.type}
-                isDiatonic={false}
-                isActive={activeChordIndex === index + diatonicChords.length}
-                onActivate={() => setActiveChordIndex(index + diatonicChords.length)}
-                layout="sidebar"
-              />
-            ))}
+        {showBorrowed && (
+          <div className="chord-strip-section">
+            <h3 className="chord-strip-title">Borrowed Chords</h3>
+            <div className="chord-cards-vertical">
+              {borrowedChords.map((chord) => (
+                <ChordCard
+                  key={chord.numeral}
+                  numeral={chord.numeral}
+                  rootNote={chord.rootNote}
+                  intervals={chord.intervals}
+                  type={chord.type}
+                  isDiatonic={false}
+                  keyRoot={key}
+                  mode={mode}
+                  showPreview={settings.ui.piano.showMiniPreview}
+                />
+              ))}
+            </div>
           </div>
-        </div>
+        )}
       </div>
     );
   }
 
-  // Default tablet/desktop layout: horizontal chord strip
+  // Default tablet/desktop layout: horizontal chord cards
   return (
     <div className="chord-strip-container">
       {/* Header with toggles */}
@@ -167,89 +91,39 @@ export function ChordStrip({ layout = 'default' }: ChordStripProps) {
         </div>
       </div>
 
-      {/* Horizontal chord tabs - all 7 diatonic chords visible */}
-      <div className="chord-tabs-horizontal">
-        {diatonicChords.map((chord, index) => (
-          <ChordTab
+      {/* Horizontal chord cards - all 7 diatonic chords */}
+      <div className="chord-cards-horizontal">
+        {diatonicChords.map((chord) => (
+          <ChordCard
             key={chord.numeral}
             numeral={chord.numeral}
             rootNote={chord.rootNote}
             intervals={chord.intervals}
             type={chord.type}
             isDiatonic={true}
-            isActive={activeChordIndex === index}
-            onActivate={() => {
-              handleChordActivate(index, chord.intervals);
-            }}
-            showMiniPreview={settings.ui.piano.showMiniPreview}
+            keyRoot={key}
+            mode={mode}
+            showPreview={settings.ui.piano.showMiniPreview}
           />
         ))}
       </div>
 
       {/* Borrowed chords - shown when toggled */}
       {showBorrowed && (
-        <div className="chord-tabs-horizontal borrowed-chords-row">
-          {borrowedChords.map((chord, index) => (
-            <ChordTab
+        <div className="chord-cards-horizontal borrowed-chords-row">
+          {borrowedChords.map((chord) => (
+            <ChordCard
               key={chord.numeral}
               numeral={chord.numeral}
               rootNote={chord.rootNote}
               intervals={chord.intervals}
               type={chord.type}
               isDiatonic={false}
-              isActive={activeChordIndex === index + diatonicChords.length}
-              onActivate={() => handleChordActivate(index + diatonicChords.length, chord.intervals)}
-              showMiniPreview={settings.ui.piano.showMiniPreview}
+              keyRoot={key}
+              mode={mode}
+              showPreview={settings.ui.piano.showMiniPreview}
             />
           ))}
-        </div>
-      )}
-
-      {activeChord ? (
-        <div className="chord-detail-panel">
-          <div className="chord-detail-left">
-            <h4 className="chord-detail-title">Variations</h4>
-            <div className="chord-modifier-grid">
-              {CHORD_MODIFIERS.map((modifier) => (
-                <button
-                  key={modifier.label}
-                  className={`chord-modifier-btn ${activeModifiers.has(modifier.label) ? 'active' : ''}`}
-                  onClick={() =>
-                    applyModifier(modifier.label, activeChord.rootNote, activeChord.intervals)
-                  }
-                  title={modifier.label}
-                >
-                  {modifier.label}
-                </button>
-              ))}
-            </div>
-          </div>
-          <div className="chord-detail-right">
-            <ChordInfoBlock
-              numeral={activeChord.numeral}
-              rootNote={activeChord.rootNote}
-              baseType={activeChord.type}
-              baseIntervals={activeChord.intervals}
-              intervals={currentIntervals}
-              activeModifiers={activeModifiers}
-            />
-            <div className="chord-detail-piano-preview">
-              <PianoVisualization
-                rootNote={activeChord.rootNote}
-                intervals={currentIntervals}
-                keyRoot={key}
-                mode={mode}
-                showLabels={true}
-                labelFontSize={5}
-              />
-            </div>
-          </div>
-        </div>
-      ) : (
-        <div className="chord-detail-panel chord-detail-empty">
-          <p className="chord-detail-hint">
-            Select a chord above to explore variations and see it on the keyboard
-          </p>
         </div>
       )}
     </div>

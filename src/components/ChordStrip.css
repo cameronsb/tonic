@@ -1,6 +1,6 @@
 /* ========================================
  * Chord Strip Container
- * Horizontal layout for diatonic chords
+ * Horizontal layout for chord cards
  * ======================================== */
 
 .chord-strip-container {
@@ -149,10 +149,10 @@
 }
 
 /* ========================================
- * Horizontal Chord Tabs Grid
+ * Horizontal Chord Cards Grid
  * ======================================== */
 
-.chord-tabs-horizontal {
+.chord-cards-horizontal {
   display: grid;
   grid-template-columns: repeat(7, 1fr);
   gap: var(--space-2);
@@ -160,142 +160,47 @@
 }
 
 @media (min-width: 1024px) {
-  .chord-tabs-horizontal {
+  .chord-cards-horizontal {
     gap: var(--space-3);
   }
 }
 
 .borrowed-chords-row {
   margin-top: var(--space-2);
-  grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
 }
 
 /* ========================================
- * Chord Detail Panel
+ * Responsive: Small tablets — horizontal scroll
  * ======================================== */
 
-.chord-detail-panel {
-  background: var(--bg-elevated);
-  border-radius: var(--radius-lg);
-  padding: var(--space-4);
-  margin-top: var(--space-3);
-  display: flex;
-  gap: var(--space-4);
-  align-items: flex-start;
-  border: 1px solid var(--border-muted);
-}
-
-.chord-detail-left {
-  flex: 0 0 auto;
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-2);
-}
-
-.chord-detail-right {
-  flex: 1;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  gap: var(--space-4);
-  min-width: 0;
-}
-
-.chord-detail-title {
-  margin: 0 0 var(--space-1) 0;
-  font-size: var(--text-xs);
-  font-weight: 600;
-  color: var(--text-tertiary);
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-}
-
-/* ========================================
- * Modifier Button Grid
- * ======================================== */
-
-.chord-modifier-grid {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: var(--space-1);
-}
-
-.chord-modifier-btn {
-  aspect-ratio: 1;
-  min-width: 44px;
-  padding: 0;
-  border: 1px solid var(--border);
-  border-radius: var(--radius-md);
-  background: var(--bg-muted);
-  color: var(--text-primary);
-  font-family: var(--font-mono);
-  font-size: var(--text-xs);
-  font-weight: 600;
-  cursor: pointer;
-  transition: all var(--transition-fast);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.chord-modifier-btn:hover {
-  background: var(--bg-subtle);
-  border-color: var(--text-muted);
-}
-
-.chord-modifier-btn.active {
-  background: var(--accent);
-  border-color: var(--accent);
-  color: var(--text-inverse);
-}
-
-/* ========================================
- * Piano Preview in Detail Panel
- * ======================================== */
-
-.chord-detail-piano-preview {
-  background: var(--bg);
-  border-radius: var(--radius-lg);
-  padding: var(--space-4);
-  border: 1px solid var(--border-muted);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex: 1;
-  min-width: 200px;
-}
-
-.chord-detail-piano-preview .piano-visualization {
-  width: 100%;
-  max-width: 320px;
-  max-height: 140px;
-  height: auto;
-}
-
-.chord-detail-empty {
-  justify-content: center;
-  align-items: center;
-  min-height: 100px;
-}
-
-.chord-detail-hint {
-  margin: 0;
-  color: var(--text-tertiary);
-  font-size: var(--text-sm);
-  text-align: center;
-}
-
-/* ========================================
- * Responsive: Tablet
- * ======================================== */
-
-@media (max-width: 834px) {
-  .chord-detail-panel {
-    flex-direction: column;
+@media (max-width: 900px) {
+  .chord-cards-horizontal {
+    display: flex;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    padding-bottom: var(--space-2);
   }
 
-  .chord-modifier-grid {
-    grid-template-columns: repeat(4, 1fr);
+  .chord-cards-horizontal > * {
+    flex: 0 0 auto;
+    width: 120px;
+    scroll-snap-align: start;
+  }
+
+  .borrowed-chords-row > * {
+    width: 120px;
+  }
+}
+
+@media (max-width: 600px) {
+  .chord-cards-horizontal > * {
+    width: 100px;
+  }
+
+  .borrowed-chords-row > * {
+    width: 100px;
   }
 }
 
@@ -325,23 +230,8 @@
   letter-spacing: 0.08em;
 }
 
-.chord-tabs-vertical {
+.chord-cards-vertical {
   display: flex;
   flex-direction: column;
   gap: var(--space-2);
-}
-
-/* ========================================
- * Responsive: Small tablets
- * ======================================== */
-
-@media (max-width: 834px) {
-  .chord-tabs-horizontal {
-    overflow-x: auto;
-    scroll-snap-type: x mandatory;
-  }
-
-  .chord-tabs-horizontal > * {
-    scroll-snap-align: start;
-  }
 }
