@@ -1,0 +1,65 @@
+{
+    "session_id": "ralph_20260714",
+    "started_at": "2026-07-14T15:13:01Z",
+    "template": "p0-roadmap",
+    "status": "running",
+    "last_heartbeat": "2026-07-14T15:13:01Z",
+    "current_task": null,
+    "commits": [],
+    "tasks": {
+        "P0-1": {
+            "title": "Gate the deploy on lint + tests",
+            "agent": "sonnet",
+            "status": "pending",
+            "attempts": 0,
+            "depends_on": [],
+            "last_error": null,
+            "completed_at": null
+        },
+        "P0-2": {
+            "title": "Memoize the context audio object and full context value",
+            "agent": "opus",
+            "status": "pending",
+            "attempts": 0,
+            "depends_on": [],
+            "last_error": null,
+            "completed_at": null
+        },
+        "P0-3": {
+            "title": "Fix MIDI listener leak and re-subscription churn",
+            "agent": "opus",
+            "status": "pending",
+            "attempts": 0,
+            "depends_on": ["P0-2"],
+            "last_error": null,
+            "completed_at": null
+        },
+        "P0-4": {
+            "title": "Fix touch glissando by adopting the existing useGlissando hook",
+            "agent": "opus",
+            "status": "pending",
+            "attempts": 0,
+            "depends_on": [],
+            "last_error": null,
+            "completed_at": null
+        },
+        "P0-5": {
+            "title": "Surface soundfont load failure with retry UI",
+            "agent": "sonnet",
+            "status": "pending",
+            "attempts": 0,
+            "depends_on": ["P0-2"],
+            "last_error": null,
+            "completed_at": null
+        },
+        "P0-6": {
+            "title": "Fix borrowed-chord modifier reset bug",
+            "agent": "sonnet",
+            "status": "pending",
+            "attempts": 0,
+            "depends_on": [],
+            "last_error": null,
+            "completed_at": null
+        }
+    }
+}
