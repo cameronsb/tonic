@@ -51,11 +51,15 @@ export function ChordCard({
   }, [lockedModifiers, tempModifier]);
 
   // Reset modifiers when key or mode changes
+  // Keyed on stable primitives (not the baseIntervals array reference) so
+  // borrowed chords — whose intervals are freshly-allocated on every
+  // ChordStrip render — don't have their locked/temp modifiers wiped out.
   useEffect(() => {
     setLockedModifiers(new Set());
     setTempModifier(null);
     setCurrentIntervals(baseIntervals);
-  }, [keyRoot, mode, baseIntervals]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [keyRoot, mode, numeral]);
 
   // Get display name based on current modifiers
   const chordName =
