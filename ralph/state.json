@@ -3,13 +3,14 @@
     "started_at": "2026-07-14T15:13:01Z",
     "template": "p0-roadmap",
     "status": "running",
-    "last_heartbeat": "2026-07-14T15:31:00Z",
-    "current_task": "P0-5",
+    "last_heartbeat": "2026-07-14T15:33:12Z",
+    "current_task": null,
     "commits": [
         "980d7bd ci: gate deploy workflow on typecheck, lint, and tests",
         "5b591a1 perf(context): memoize audio, actions, and value in MusicContext",
         "10379b0 fix(midi): return listener cleanup synchronously and subscribe once",
-        "b33b594 fix(piano): make touch glissando play every key the finger crosses"
+        "b33b594 fix(piano): make touch glissando play every key the finger crosses",
+        "271c0e8 fix(audio): surface soundfont load failure with retry UI"
     ],
     "tasks": {
         "P0-1": {
@@ -51,11 +52,11 @@
         "P0-5": {
             "title": "Surface soundfont load failure with retry UI",
             "agent": "sonnet",
-            "status": "in_progress",
+            "status": "done",
             "attempts": 0,
             "depends_on": ["P0-2"],
             "last_error": null,
-            "completed_at": null
+            "completed_at": "2026-07-14T15:33:12Z"
         },
         "P0-6": {
             "title": "Fix borrowed-chord modifier reset bug",
