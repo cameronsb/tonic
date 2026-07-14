@@ -58,6 +58,19 @@ export function LoadingOverlay() {
     }
   }, [audio.loading]);
 
+  if (audio.error) {
+    return (
+      <div className="loading-overlay">
+        <div className="loading-content">
+          <p className="loading-error-text">{audio.error}</p>
+          <button type="button" className="loading-retry-button" onClick={audio.retry}>
+            Retry
+          </button>
+        </div>
+      </div>
+    );
+  }
+
   if (!audio.loading) {
     return null;
   }

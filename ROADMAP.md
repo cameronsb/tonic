@@ -127,7 +127,7 @@ This document is the prioritized backlog of code-quality, UX, and accessibility 
 **Acceptance:** With a MIDI device (or a virtual one), select several chords, then press one key: exactly one note plays. Verify with a `console.count` in the handler that it fires once per event. Confirm via React DevTools profiler that interacting with the UI no longer re-runs the MIDI effect.
 
 <a id="p0-4"></a>
-### - [ ] P0-4 · Fix touch glissando by adopting the existing `useGlissando` hook (M)
+### - [x] P0-4 · Fix touch glissando by adopting the existing `useGlissando` hook (M)
 
 **Problem:** Slide-to-play in `src/components/Piano.tsx:164-193` relies on each key's `onMouseEnter` (`src/components/PianoKey.tsx:66-72`), which never fires for touch — `touchmove` stays targeted at the element where the touch started. Dragging a finger across keys plays only the first key. Meanwhile a complete, correct implementation already exists in `src/hooks/useGlissando.ts` (299 lines, uses `document.elementFromPoint` in its `handleTouchMove`) — and is imported nowhere.
 
@@ -142,7 +142,7 @@ This document is the prioritized backlog of code-quality, UX, and accessibility 
 **Acceptance:** On a touch device (or DevTools touch emulation), press and drag across five keys: each key plays exactly once as the finger crosses it, and visual pressed states follow the finger. Mouse drag behavior is unchanged.
 
 <a id="p0-5"></a>
-### - [ ] P0-5 · Surface soundfont load failure with retry UI (M)
+### - [x] P0-5 · Surface soundfont load failure with retry UI (M)
 
 **Problem:** On soundfont load failure, the catch block in `src/hooks/useAudioEngine.ts:126-130` only `console.error`s and sets `loading = false`. `LoadingOverlay` returns `null` when not loading (`src/components/LoadingOverlay.tsx:61-63`), so the app looks fully ready — but no instrument exists, and `playNote`/`playChord` early-return forever. The soundfont is fetched from a remote CDN, so offline/blocked networks make this a realistic path.
 

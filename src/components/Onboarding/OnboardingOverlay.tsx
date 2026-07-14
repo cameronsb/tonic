@@ -34,13 +34,13 @@ export function OnboardingOverlay() {
   const hasStartedRef = useRef(false);
   const wasCompletedRef = useRef(settings.onboarding.completed);
 
-  // Start onboarding when audio finishes loading
+  // Start onboarding when audio finishes loading successfully
   useEffect(() => {
-    if (!audio.loading && !hasStartedRef.current) {
+    if (!audio.loading && !audio.error && !hasStartedRef.current) {
       hasStartedRef.current = true;
       startOnboarding();
     }
-  }, [audio.loading, startOnboarding]);
+  }, [audio.loading, audio.error, startOnboarding]);
 
   // Watch for "Replay Tutorial" - when completed goes from true to false
   useEffect(() => {

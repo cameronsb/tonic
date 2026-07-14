@@ -178,3 +178,28 @@
     transform: translateY(0);
   }
 }
+
+.loading-error-text {
+  color: var(--text-primary, rgba(255, 255, 255, 0.9));
+  font-size: 15px;
+  font-weight: 500;
+  line-height: 1.5;
+  text-align: center;
+  margin: 0;
+}
+
+.loading-retry-button {
+  padding: 10px 24px;
+  background: var(--accent-bg, rgba(240, 160, 80, 0.15));
+  border: 1px solid var(--accent-border, rgba(240, 160, 80, 0.4));
+  border-radius: var(--radius-lg, 8px);
+  color: var(--accent-bright, #ffcc66);
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+
+.loading-retry-button:hover {
+  background: var(--accent-bg-hover, rgba(240, 160, 80, 0.22));
+}

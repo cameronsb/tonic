@@ -100,6 +100,8 @@ interface MusicContextType {
     playNote: (frequency: number, duration?: number, volume?: number) => Promise<void>;
     playChord: (frequencies: number[], duration?: number, volume?: number) => Promise<void>;
     loading: boolean;
+    error: string | null;
+    retry: () => void;
     audioContext: AudioContext | null;
     instrument: Player | null;
   };
@@ -144,6 +146,8 @@ export function MusicProvider({ children }: MusicProviderProps) {
     playChord: rawPlayChord,
     setMasterVolume: setAudioMasterVolume,
     loading,
+    error,
+    retry,
     audioContext,
     instrument,
   } = useAudioEngine();
@@ -219,10 +223,12 @@ export function MusicProvider({ children }: MusicProviderProps) {
       playNote,
       playChord,
       loading,
+      error,
+      retry,
       audioContext,
       instrument,
     }),
-    [playNote, playChord, loading, audioContext, instrument]
+    [playNote, playChord, loading, error, retry, audioContext, instrument]
   );
 
   const actions = useMemo(

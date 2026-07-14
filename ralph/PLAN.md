@@ -23,14 +23,14 @@ Ordered task queue for the P0 tier of `ROADMAP.md`. One task per iteration, in t
   - Agent: opus · Effort: M
   - Accept: after several chord selections, one physical key press fires the handler exactly once; UI interaction no longer re-runs the MIDI effect. (ROADMAP.md § P0-3)
 
-- [ ] **P0-4 · Fix touch glissando by adopting the existing `useGlissando` hook**
+- [x] **P0-4 · Fix touch glissando by adopting the existing `useGlissando` hook**
   - Scope: wire the orphaned `src/hooks/useGlissando.ts` (elementFromPoint-based) into `Piano.tsx`, replacing the inline mouse-only glissando logic; dedupe repeat notes.
   - Files: `src/components/Piano.tsx`, `src/hooks/useGlissando.ts`
   - Depends on: —
   - Agent: opus · Effort: M
   - Accept: touch-dragging across five keys plays each exactly once with pressed visuals following the finger; mouse drag unchanged. (ROADMAP.md § P0-4)
 
-- [ ] **P0-5 · Surface soundfont load failure with retry UI**
+- [x] **P0-5 · Surface soundfont load failure with retry UI**
   - Scope: add `error` state + `retry()` to `useAudioEngine`, thread through the context `audio` object (add to the P0-2 memo deps), render an error + Retry state in `LoadingOverlay` instead of `null`; gate onboarding audio steps on `!loading && !error`.
   - Files: `src/hooks/useAudioEngine.ts`, `src/contexts/MusicContext.tsx`, `src/components/LoadingOverlay.tsx`
   - Depends on: P0-2 (error/retry ride the memoized `audio` object)

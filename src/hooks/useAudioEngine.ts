@@ -77,6 +77,7 @@ function setupIOSAudioUnlock() {
 
 export function useAudioEngine() {
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
   const audioRef = useRef<AudioEngine>({
     context: null,
     instrument: null,
@@ -85,53 +86,61 @@ export function useAudioEngine() {
     loading: false,
   });
 
+  const loadSoundfont = useCallback(async () => {
+    if (audioRef.current.initialized || audioRef.current.loading) return;
+
+    audioRef.current.loading = true;
+    setLoading(true);
+    setError(null);
+
+    try {
+      const AudioContextClass =
+        window.AudioContext ||
+        (
+          window as unknown as {
+            webkitAudioContext?: typeof AudioContext;
+          }
+        ).webkitAudioContext;
+      const context = new AudioContextClass();
+
+      const masterGain = context.createGain();
+      masterGain.gain.value = 1.5;
+      masterGain.connect(context.destination);
+
+      const instrument = await Soundfont.instrument(context, 'acoustic_grand_piano', {
+        soundfont: 'MusyngKite',
+        destination: masterGain,
+      });
+
+      audioRef.current = {
+        context,
+        instrument,
+        masterGain,
+        initialized: true,
+        loading: false,
+      };
+
+      setLoading(false);
+    } catch (error) {
+      console.error('Failed to load piano soundfont:', error);
+      audioRef.current.loading = false;
+      setLoading(false);
+      setError('Couldn\'t load piano sounds — check your connection.');
+    }
+  }, []);
+
   useEffect(() => {
     // Set up iOS mute switch bypass
     setupIOSAudioUnlock();
 
-    const initAudio = async () => {
-      if (audioRef.current.initialized || audioRef.current.loading) return;
+    loadSoundfont();
+  }, [loadSoundfont]);
 
-      audioRef.current.loading = true;
-      setLoading(true);
-
-      try {
-        const AudioContextClass =
-          window.AudioContext ||
-          (
-            window as unknown as {
-              webkitAudioContext?: typeof AudioContext;
-            }
-          ).webkitAudioContext;
-        const context = new AudioContextClass();
-
-        const masterGain = context.createGain();
-        masterGain.gain.value = 1.5;
-        masterGain.connect(context.destination);
-
-        const instrument = await Soundfont.instrument(context, 'acoustic_grand_piano', {
-          soundfont: 'MusyngKite',
-          destination: masterGain,
-        });
-
-        audioRef.current = {
-          context,
-          instrument,
-          masterGain,
-          initialized: true,
-          loading: false,
-        };
-
-        setLoading(false);
-      } catch (error) {
-        console.error('Failed to load piano soundfont:', error);
-        audioRef.current.loading = false;
-        setLoading(false);
-      }
-    };
-
-    initAudio();
-  }, []);
+  const retry = useCallback(() => {
+    audioRef.current.initialized = false;
+    audioRef.current.loading = false;
+    loadSoundfont();
+  }, [loadSoundfont]);
 
   const playNote = useCallback(async (frequency: number, duration = 0.3, volume = 1.5) => {
     const { instrument, initialized, context } = audioRef.current;
@@ -190,6 +199,8 @@ export function useAudioEngine() {
     playChord,
     setMasterVolume,
     loading,
+    error,
+    retry,
     audioContext: audioRef.current.context,
     instrument: audioRef.current.instrument,
   };
