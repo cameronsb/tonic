@@ -37,7 +37,7 @@ Ordered task queue for the P0 tier of `ROADMAP.md`. One task per iteration, in t
   - Agent: sonnet · Effort: M
   - Accept: blocking the soundfont CDN yields an error message + working Retry instead of a silent app. (ROADMAP.md § P0-5)
 
-- [ ] **P0-6 · Fix borrowed-chord modifier reset bug**
+- [x] **P0-6 · Fix borrowed-chord modifier reset bug**
   - Scope: key `ChordCard`'s modifier-reset effect on stable primitives (`keyRoot`, `mode`, `numeral`) instead of the `baseIntervals` array reference.
   - Files: `src/components/ChordCard.tsx`
   - Depends on: —

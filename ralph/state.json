@@ -2,10 +2,11 @@
     "session_id": "ralph_20260714",
     "started_at": "2026-07-14T15:13:01Z",
     "template": "p0-roadmap",
-    "status": "running",
-    "last_heartbeat": "2026-07-14T15:33:12Z",
+    "status": "complete",
+    "last_heartbeat": "2026-07-14T15:35:11Z",
     "current_task": null,
     "commits": [
+        "e88f1dc fix(chords): key modifier reset on stable primitives, not intervals ref",
         "980d7bd ci: gate deploy workflow on typecheck, lint, and tests",
         "5b591a1 perf(context): memoize audio, actions, and value in MusicContext",
         "10379b0 fix(midi): return listener cleanup synchronously and subscribe once",
@@ -61,11 +62,11 @@
         "P0-6": {
             "title": "Fix borrowed-chord modifier reset bug",
             "agent": "sonnet",
-            "status": "pending",
+            "status": "done",
             "attempts": 0,
             "depends_on": [],
             "last_error": null,
-            "completed_at": null
+            "completed_at": "2026-07-14T15:35:11Z"
         }
     }
 }

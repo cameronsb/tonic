@@ -158,7 +158,7 @@ This document is the prioritized backlog of code-quality, UX, and accessibility 
 **Acceptance:** In DevTools, block the soundfont CDN request and reload: an error message with a Retry button appears instead of a silent app. Unblock, hit Retry: the piano loads and plays.
 
 <a id="p0-6"></a>
-### - [ ] P0-6 · Fix borrowed-chord modifier reset bug (S)
+### - [x] P0-6 · Fix borrowed-chord modifier reset bug (S)
 
 **Problem:** `ChordCard`'s reset effect (`src/components/ChordCard.tsx:54-58`) is keyed on `baseIntervals` — an array **reference**. Diatonic chords get a stable reference into the `CHORD_TYPES` constant (`src/utils/musicTheory.ts:636-644`), so the effect is inert for them; but `getBorrowedChords` (`src/utils/musicTheory.ts:650-711`) builds fresh `[0,3,7]`-style literals on every call, so borrowed cards get a new identity each `ChordStrip` render and their `lockedModifiers`/`tempModifier` are wiped — e.g. immediately after tapping one, because playing dispatches state that re-renders the strip. Found independently by two reviewers; high confidence.
 
