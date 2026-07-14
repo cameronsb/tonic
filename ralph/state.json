@@ -4,7 +4,7 @@
     "template": "p0-roadmap",
     "status": "running",
     "last_heartbeat": "2026-07-14T15:21:00Z",
-    "current_task": null,
+    "current_task": "P0-4",
     "commits": [
         "980d7bd ci: gate deploy workflow on typecheck, lint, and tests",
         "5b591a1 perf(context): memoize audio, actions, and value in MusicContext",
@@ -41,7 +41,7 @@
         "P0-4": {
             "title": "Fix touch glissando by adopting the existing useGlissando hook",
             "agent": "opus",
-            "status": "pending",
+            "status": "in_progress",
             "attempts": 0,
             "depends_on": [],
             "last_error": null,

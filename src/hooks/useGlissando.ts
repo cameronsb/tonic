@@ -58,6 +58,16 @@ export interface UseGlissandoOptions<T = string> {
   preventDefault?: boolean;
 
   /**
+   * Whether to trigger the element under the pointer on the initial
+   * press / touch-start (default: true). Set to `false` when a separate
+   * handler already plays the initial element (e.g. each key's own
+   * pointer handler): the hook then only fires as the pointer crosses
+   * into subsequent elements, while still priming the de-dupe against the
+   * start element so a stationary pointer doesn't retrigger it.
+   */
+  triggerOnStart?: boolean;
+
+  /**
    * Throttle time in milliseconds to avoid rapid re-triggers (default: 0)
    */
   throttleMs?: number;
@@ -104,7 +114,14 @@ export interface UseGlissandoReturn {
  * Handles pointer tracking, element detection, and duplicate prevention.
  */
 export function useGlissando<T = string>(options: UseGlissandoOptions<T>): UseGlissandoReturn {
-  const { onTrigger, selector, getIdentifier, preventDefault = true, throttleMs = 0 } = options;
+  const {
+    onTrigger,
+    selector,
+    getIdentifier,
+    preventDefault = true,
+    throttleMs = 0,
+    triggerOnStart = true,
+  } = options;
 
   // Track pointer state
   const [isMouseDown, setIsMouseDown] = useState(false);
@@ -153,20 +170,42 @@ export function useGlissando<T = string>(options: UseGlissandoOptions<T>): UseGl
   );
 
   /**
+   * Resolve the identifier of the interactive element at a pointer position
+   */
+  const resolveIdentifierAt = useCallback(
+    (clientX: number, clientY: number): T | null => {
+      const element = document.elementFromPoint(clientX, clientY);
+      if (!element) return null;
+
+      const targetElement = element.closest(selector);
+      if (!targetElement) return null;
+
+      return getIdentifier(targetElement);
+    },
+    [selector, getIdentifier]
+  );
+
+  /**
    * Find and trigger element at pointer position
    */
   const findAndTriggerAt = useCallback(
     (clientX: number, clientY: number) => {
-      const element = document.elementFromPoint(clientX, clientY);
-      if (!element) return;
-
-      const targetElement = element.closest(selector);
-      if (!targetElement) return;
-
-      const identifier = getIdentifier(targetElement);
-      triggerElement(identifier);
+      triggerElement(resolveIdentifierAt(clientX, clientY));
     },
-    [selector, getIdentifier, triggerElement]
+    [resolveIdentifierAt, triggerElement]
+  );
+
+  /**
+   * Record the element at a pointer position as the last triggered one
+   * WITHOUT firing onTrigger. Used to prime de-dupe when the initial
+   * element is played by another handler (`triggerOnStart: false`).
+   */
+  const primeAt = useCallback(
+    (clientX: number, clientY: number) => {
+      lastTriggeredRef.current = resolveIdentifierAt(clientX, clientY);
+      lastTriggerTimeRef.current = Date.now();
+    },
+    [resolveIdentifierAt]
   );
 
   // ===== Mouse Handlers =====
@@ -178,10 +217,14 @@ export function useGlissando<T = string>(options: UseGlissandoOptions<T>): UseGl
       setIsMouseDown(true);
       lastTriggeredRef.current = null; // Reset for new drag
 
-      // Trigger element under cursor
-      findAndTriggerAt(e.clientX, e.clientY);
+      // Trigger (or just record) the element under the cursor
+      if (triggerOnStart) {
+        findAndTriggerAt(e.clientX, e.clientY);
+      } else {
+        primeAt(e.clientX, e.clientY);
+      }
     },
-    [preventDefault, findAndTriggerAt]
+    [preventDefault, triggerOnStart, findAndTriggerAt, primeAt]
   );
 
   const handleMouseMove = useCallback(
@@ -223,11 +266,15 @@ export function useGlissando<T = string>(options: UseGlissandoOptions<T>): UseGl
         setTouchId(touch.identifier);
         lastTriggeredRef.current = null; // Reset for new touch
 
-        // Trigger element under touch
-        findAndTriggerAt(touch.clientX, touch.clientY);
+        // Trigger (or just record) the element under the touch
+        if (triggerOnStart) {
+          findAndTriggerAt(touch.clientX, touch.clientY);
+        } else {
+          primeAt(touch.clientX, touch.clientY);
+        }
       }
     },
-    [preventDefault, touchId, findAndTriggerAt]
+    [preventDefault, touchId, triggerOnStart, findAndTriggerAt, primeAt]
   );
 
   const handleTouchMove = useCallback(

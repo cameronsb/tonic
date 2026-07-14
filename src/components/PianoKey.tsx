@@ -15,6 +15,7 @@ interface PianoKeyProps {
   mode: 'major' | 'minor';
   showScaleLabels?: boolean; // Show labels even without background highlighting
   isGlissandoActive?: boolean; // Whether glissando mode is active (mouse down or touch)
+  isGlissandoPressed?: boolean; // Whether this key is the one under the finger during a touch glissando
   isMidiActive?: boolean; // Whether this key is currently pressed via MIDI
 }
 
@@ -29,6 +30,7 @@ export function PianoKey({
   mode,
   showScaleLabels = false,
   isGlissandoActive = false,
+  isGlissandoPressed = false,
   isMidiActive = false,
 }: PianoKeyProps) {
   // Separate mouse and touch tracking for correct multi-touch behavior
@@ -39,8 +41,11 @@ export function PianoKey({
   const activeTouchesRef = useRef<Set<number>>(new Set());
   const [hasTouches, setHasTouches] = useState(false);
 
-  // Combined pressed state for visual feedback
-  const isPressed = isMousePressed || hasTouches;
+  // Combined pressed state for visual feedback.
+  // isGlissandoPressed lets a touch glissando light up keys the finger slides
+  // onto — those keys never receive their own touch-start, so they can't set
+  // hasTouches themselves.
+  const isPressed = isMousePressed || hasTouches || isGlissandoPressed;
 
   // Play the note
   const playNote = useCallback(() => {

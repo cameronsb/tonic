@@ -2,6 +2,7 @@ import React, { useMemo, useRef, useState, useEffect, useCallback } from 'react'
 import { useMusic } from '../hooks/useMusic';
 import { usePianoLayout } from '../hooks/usePianoLayout';
 import { useMidiInput } from '../hooks/useMidiInput';
+import { useGlissando } from '../hooks/useGlissando';
 import { PianoKey } from './PianoKey';
 import { generatePianoKeys, getWhiteKeyCount } from '../utils/pianoUtils';
 import { getScaleNotes, NOTES } from '../utils/musicTheory';
@@ -29,6 +30,11 @@ export function Piano({
   // Track glissando state (mouse down or touch active)
   const [isGlissandoActive, setIsGlissandoActive] = useState(false);
 
+  // Track the note currently under the finger during a touch glissando, so its
+  // pressed visual follows the finger across keys (touchmove never retargets to
+  // the keys the finger slides onto, so they can't light themselves up).
+  const [glissandoNote, setGlissandoNote] = useState<string | null>(null);
+
   // Track active MIDI notes
   const [activeMidiNotes, setActiveMidiNotes] = useState<Set<number>>(new Set());
 
@@ -49,6 +55,15 @@ export function Piano({
   }, [effectiveStartOctave, effectiveOctaveCount]);
 
   const whiteKeyCount = useMemo(() => getWhiteKeyCount(keys), [keys]);
+
+  // Map each key's identifier (its aria-label, e.g. "C#4") to its frequency so
+  // the glissando hook — which resolves keys by aria-label under the pointer —
+  // can play them.
+  const noteFrequencies = useMemo(() => {
+    const map = new Map<string, number>();
+    keys.forEach((keyData) => map.set(keyData.note, keyData.frequency));
+    return map;
+  }, [keys]);
 
   // Get scale notes for highlighting
   const scaleNotes = useMemo(() => {
@@ -74,6 +89,32 @@ export function Piano({
   const handleKeyPress = async (frequency: number) => {
     await audio.playNote(frequency);
   };
+
+  // Touch glissando: play each key the finger slides onto exactly once and mark
+  // it as the pressed key. The initial note is played by the key's own
+  // touch-start handler, so the hook is configured with `triggerOnStart: false`
+  // to avoid double-triggering it.
+  const handleGlissandoTrigger = useCallback(
+    (note: string) => {
+      const frequency = noteFrequencies.get(note);
+      if (frequency === undefined) return;
+      setGlissandoNote(note);
+      audio.playNote(frequency);
+    },
+    [noteFrequencies, audio]
+  );
+
+  const getKeyIdentifier = useCallback(
+    (element: Element) => element.getAttribute('aria-label'),
+    []
+  );
+
+  const glissando = useGlissando<string>({
+    onTrigger: handleGlissandoTrigger,
+    selector: '.piano-key',
+    getIdentifier: getKeyIdentifier,
+    triggerOnStart: false,
+  });
 
   // MIDI to frequency conversion
   const midiToFrequency = useCallback((midiNote: number): number => {
@@ -119,14 +160,17 @@ export function Piano({
 
     const handleGlobalTouchEnd = () => {
       setIsGlissandoActive(false);
+      setGlissandoNote(null);
     };
 
     window.addEventListener('mouseup', handleGlobalMouseUp);
     window.addEventListener('touchend', handleGlobalTouchEnd);
+    window.addEventListener('touchcancel', handleGlobalTouchEnd);
 
     return () => {
       window.removeEventListener('mouseup', handleGlobalMouseUp);
       window.removeEventListener('touchend', handleGlobalTouchEnd);
+      window.removeEventListener('touchcancel', handleGlobalTouchEnd);
     };
   }, []);
 
@@ -173,7 +217,13 @@ export function Piano({
           } as React.CSSProperties
         }
         onMouseDown={() => setIsGlissandoActive(true)}
-        onTouchStart={() => setIsGlissandoActive(true)}
+        onTouchStart={(e) => {
+          setIsGlissandoActive(true);
+          glissando.handlers.onTouchStart(e);
+        }}
+        onTouchMove={glissando.handlers.onTouchMove}
+        onTouchEnd={glissando.handlers.onTouchEnd}
+        onTouchCancel={glissando.handlers.onTouchCancel}
       >
         {keys.map((keyData) => (
           <PianoKey
@@ -188,6 +238,7 @@ export function Piano({
             mode={state.mode}
             showScaleLabels={scaleNotes.has(keyData.baseNote)}
             isGlissandoActive={isGlissandoActive}
+            isGlissandoPressed={glissandoNote === keyData.note}
             isMidiActive={activeMidiNotes.has(keyData.midiNumber)}
           />
         ))}
