@@ -4,7 +4,7 @@
     "template": "p0-roadmap",
     "status": "running",
     "last_heartbeat": "2026-07-14T15:16:27Z",
-    "current_task": null,
+    "current_task": "P0-2",
     "commits": ["980d7bd ci: gate deploy workflow on typecheck, lint, and tests"],
     "tasks": {
         "P0-1": {
@@ -19,7 +19,7 @@
         "P0-2": {
             "title": "Memoize the context audio object and full context value",
             "agent": "opus",
-            "status": "pending",
+            "status": "in_progress",
             "attempts": 0,
             "depends_on": [],
             "last_error": null,

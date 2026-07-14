@@ -1,5 +1,5 @@
 import type { ReactNode } from 'react';
-import { createContext, useReducer, useCallback, useEffect } from 'react';
+import { createContext, useReducer, useCallback, useEffect, useMemo } from 'react';
 import type { Note, Mode, SelectedChord } from '../types/music';
 import type { Player } from 'soundfont-player';
 import { useAudioEngine } from '../hooks/useAudioEngine';
@@ -214,17 +214,19 @@ export function MusicProvider({ children }: MusicProviderProps) {
     dispatch({ type: 'SET_PIANO_RANGE', payload: { startMidi, endMidi } });
   }, []);
 
-  const value: MusicContextType = {
-    state,
-    settings,
-    audio: {
+  const audio = useMemo(
+    () => ({
       playNote,
       playChord,
       loading,
       audioContext,
       instrument,
-    },
-    actions: {
+    }),
+    [playNote, playChord, loading, audioContext, instrument]
+  );
+
+  const actions = useMemo(
+    () => ({
       selectKey,
       setMode,
       selectChord,
@@ -234,8 +236,29 @@ export function MusicProvider({ children }: MusicProviderProps) {
       toggleInScaleColors,
       setPianoRange,
       setMasterVolume,
-    },
-  };
+    }),
+    [
+      selectKey,
+      setMode,
+      selectChord,
+      deselectChords,
+      toggleScaleView,
+      toggleChordHighlight,
+      toggleInScaleColors,
+      setPianoRange,
+      setMasterVolume,
+    ]
+  );
+
+  const value: MusicContextType = useMemo(
+    () => ({
+      state,
+      settings,
+      audio,
+      actions,
+    }),
+    [state, settings, audio, actions]
+  );
 
   return <MusicContext.Provider value={value}>{children}</MusicContext.Provider>;
 }
