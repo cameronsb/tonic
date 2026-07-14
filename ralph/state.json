@@ -8,7 +8,7 @@
     "commits": [
         "980d7bd ci: gate deploy workflow on typecheck, lint, and tests",
         "5b591a1 perf(context): memoize audio, actions, and value in MusicContext",
-        "d7ebf69 fix(midi): return listener cleanup synchronously and subscribe once"
+        "10379b0 fix(midi): return listener cleanup synchronously and subscribe once"
     ],
     "tasks": {
         "P0-1": {
