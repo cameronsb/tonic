@@ -9,14 +9,14 @@ Ordered task queue for the P0 tier of `ROADMAP.md`. One task per iteration, in t
   - Agent: sonnet · Effort: S
   - Accept: workflow fails before deploy on a failing test; green push deploys. (Full detail: ROADMAP.md § P0-1)
 
-- [ ] **P0-2 · Memoize the context `audio` object and full context value**
+- [x] **P0-2 · Memoize the context `audio` object and full context value**
   - Scope: wrap `audio`, `actions`, and the context `value` in `useMemo` so their identities only change when their contents do.
   - Files: `src/contexts/MusicContext.tsx`
   - Depends on: —
   - Agent: opus · Effort: S
   - Accept: a `useEffect(..., [audio])` probe in a consumer fires only on loading/instrument changes, not per chord selection. (ROADMAP.md § P0-2)
 
-- [ ] **P0-3 · Fix MIDI listener leak and re-subscription churn**
+- [x] **P0-3 · Fix MIDI listener leak and re-subscription churn**
   - Scope: return cleanup synchronously from the effect (not inside `.then`), hold `onNoteOn`/`onNoteOff` in refs, subscribe once with `[]` deps.
   - Files: `src/hooks/useMidiInput.ts`, `src/components/Piano.tsx`
   - Depends on: P0-2 (stable `audio` stops the callback identity churn)

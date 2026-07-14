@@ -3,9 +3,13 @@
     "started_at": "2026-07-14T15:13:01Z",
     "template": "p0-roadmap",
     "status": "running",
-    "last_heartbeat": "2026-07-14T15:16:27Z",
-    "current_task": "P0-2",
-    "commits": ["980d7bd ci: gate deploy workflow on typecheck, lint, and tests"],
+    "last_heartbeat": "2026-07-14T15:21:00Z",
+    "current_task": null,
+    "commits": [
+        "980d7bd ci: gate deploy workflow on typecheck, lint, and tests",
+        "5b591a1 perf(context): memoize audio, actions, and value in MusicContext",
+        "d7ebf69 fix(midi): return listener cleanup synchronously and subscribe once"
+    ],
     "tasks": {
         "P0-1": {
             "title": "Gate the deploy on lint + tests",
@@ -19,20 +23,20 @@
         "P0-2": {
             "title": "Memoize the context audio object and full context value",
             "agent": "opus",
-            "status": "in_progress",
+            "status": "done",
             "attempts": 0,
             "depends_on": [],
             "last_error": null,
-            "completed_at": null
+            "completed_at": "2026-07-14T15:19:00Z"
         },
         "P0-3": {
             "title": "Fix MIDI listener leak and re-subscription churn",
             "agent": "opus",
-            "status": "pending",
+            "status": "done",
             "attempts": 0,
             "depends_on": ["P0-2"],
             "last_error": null,
-            "completed_at": null
+            "completed_at": "2026-07-14T15:21:00Z"
         },
         "P0-4": {
             "title": "Fix touch glissando by adopting the existing useGlissando hook",

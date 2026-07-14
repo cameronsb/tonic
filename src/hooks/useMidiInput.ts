@@ -29,6 +29,15 @@ export function useMidiInput({ onNoteOn, onNoteOff }: MidiInputOptions) {
   const [devices, setDevices] = useState<string[]>([]);
   const activeNotesRef = useRef<Set<number>>(new Set());
 
+  // Hold the note callbacks in refs so the subscription effect can run once
+  // (empty deps) without re-subscribing every time these identities change.
+  const onNoteOnRef = useRef(onNoteOn);
+  const onNoteOffRef = useRef(onNoteOff);
+  useEffect(() => {
+    onNoteOnRef.current = onNoteOn;
+    onNoteOffRef.current = onNoteOff;
+  });
+
   useEffect(() => {
     if (!navigator.requestMIDIAccess) {
       setIsSupported(false);
@@ -37,9 +46,16 @@ export function useMidiInput({ onNoteOn, onNoteOff }: MidiInputOptions) {
 
     setIsSupported(true);
 
+    // Track subscriptions synchronously so cleanup is returned from the effect
+    // itself (not from inside the Promise) and actually runs on unmount.
+    let cancelled = false;
+    const cleanups: Array<() => void> = [];
+
     navigator
       .requestMIDIAccess()
       .then((access) => {
+        if (cancelled) return;
+
         setMidiAccess(access as unknown as MIDIAccess);
 
         const deviceNames: string[] = [];
@@ -55,17 +71,20 @@ export function useMidiInput({ onNoteOn, onNoteOff }: MidiInputOptions) {
           // Note On (0x90)
           if (messageType === 0x90 && velocity > 0) {
             activeNotesRef.current.add(note);
-            onNoteOn?.(note, velocity);
+            onNoteOnRef.current?.(note, velocity);
           }
           // Note Off (0x80) or Note On with velocity 0
           else if (messageType === 0x80 || (messageType === 0x90 && velocity === 0)) {
             activeNotesRef.current.delete(note);
-            onNoteOff?.(note);
+            onNoteOffRef.current?.(note);
           }
         };
 
         access.inputs.forEach((input) => {
           input.addEventListener('midimessage', handleMIDIMessage as EventListener);
+          cleanups.push(() =>
+            input.removeEventListener('midimessage', handleMIDIMessage as EventListener)
+          );
         });
 
         const handleStateChange = (event: { port: MIDIPort }) => {
@@ -77,29 +96,33 @@ export function useMidiInput({ onNoteOn, onNoteOff }: MidiInputOptions) {
 
           if (event.port.state === 'connected' && event.port.type === 'input') {
             event.port.addEventListener('midimessage', handleMIDIMessage);
+            cleanups.push(() =>
+              event.port.removeEventListener('midimessage', handleMIDIMessage)
+            );
           }
         };
 
         access.addEventListener('statechange', handleStateChange as unknown as EventListener);
-
-        return () => {
-          access.inputs.forEach((input) => {
-            input.removeEventListener('midimessage', handleMIDIMessage as EventListener);
-          });
-          access.removeEventListener('statechange', handleStateChange as unknown as EventListener);
-        };
+        cleanups.push(() =>
+          access.removeEventListener('statechange', handleStateChange as unknown as EventListener)
+        );
       })
       .catch(() => {
         setIsSupported(false);
       });
-  }, [onNoteOn, onNoteOff]);
+
+    return () => {
+      cancelled = true;
+      cleanups.forEach((fn) => fn());
+    };
+  }, []);
 
   const stopAllNotes = useCallback(() => {
     activeNotesRef.current.forEach((note) => {
-      onNoteOff?.(note);
+      onNoteOffRef.current?.(note);
     });
     activeNotesRef.current.clear();
-  }, [onNoteOff]);
+  }, []);
 
   return {
     isSupported,

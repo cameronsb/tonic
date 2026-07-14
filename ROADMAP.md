@@ -69,7 +69,7 @@ This document is the prioritized backlog of code-quality, UX, and accessibility 
 **Acceptance:** Push a branch with a deliberately failing test; the workflow must fail before the deploy job. Revert, push green, deploy succeeds.
 
 <a id="p0-2"></a>
-### - [ ] P0-2 · Memoize the context `audio` object and full context value (S)
+### - [x] P0-2 · Memoize the context `audio` object and full context value (S)
 
 **Problem:** In `src/contexts/MusicContext.tsx:217-240`, the context `value` — and its nested `audio` object (`:220-226`) — are new object literals on every provider render. `playNote`/`playChord` are individually `useCallback`-memoized (`:155-168`), but the wrapper isn't, so any downstream `useCallback(..., [audio])` (e.g. `src/components/ChordCard.tsx:87`, `src/components/Piano.tsx:94`) recreates every render.
 
@@ -90,7 +90,7 @@ This document is the prioritized backlog of code-quality, UX, and accessibility 
 **Acceptance:** Add a temporary `useEffect(() => console.count('audio changed'), [audio])` in a consumer — it should fire only when loading state or the instrument actually changes, not on every chord selection. Remove the probe before merging.
 
 <a id="p0-3"></a>
-### - [ ] P0-3 · Fix MIDI listener leak and re-subscription churn (M)
+### - [x] P0-3 · Fix MIDI listener leak and re-subscription churn (M)
 
 **Problem:** Two compounding bugs in `src/hooks/useMidiInput.ts:32-95`:
 1. The effect's cleanup function is returned from inside the Promise's `.then` callback (`:85-90`), not from the effect itself. React receives a Promise, so **the cleanup never runs** — `midimessage` and `statechange` listeners are never removed.
