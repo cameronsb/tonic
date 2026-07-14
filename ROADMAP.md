@@ -51,7 +51,7 @@ This document is the prioritized backlog of code-quality, UX, and accessibility 
 ## P0 — Ship-blocking bugs & safety net
 
 <a id="p0-1"></a>
-### - [ ] P0-1 · Gate the deploy on lint + tests (S)
+### - [x] P0-1 · Gate the deploy on lint + tests (S)
 
 **Problem:** The deploy workflow (`.github/workflows/deploy.yml:33-34`) runs only `npm run build`. It never runs `npm run lint` or `npm run test`, so failing tests and lint errors deploy to production. The pre-commit hook is the only gate, and it's bypassed by `git commit --no-verify` or any tool that skips hooks.
 

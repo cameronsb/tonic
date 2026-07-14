@@ -2,7 +2,7 @@
 
 Ordered task queue for the P0 tier of `ROADMAP.md`. One task per iteration, in this order; full implementation detail and acceptance criteria live in each task's ROADMAP.md section (IDs match). `agent:` names the model assigned to the task.
 
-- [ ] **P0-1 · Gate the deploy on lint + tests**
+- [x] **P0-1 · Gate the deploy on lint + tests**
   - Scope: add `npm run validate` as a step before Build in the deploy workflow so red code can't ship.
   - Files: `.github/workflows/deploy.yml`
   - Depends on: —
