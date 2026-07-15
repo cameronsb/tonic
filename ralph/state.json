@@ -3,12 +3,13 @@
     "started_at": "2026-07-15T17:43:46Z",
     "template": "p1-roadmap",
     "status": "running",
-    "last_heartbeat": "2026-07-15T17:57:09Z",
-    "current_task": "P1-4",
+    "last_heartbeat": "2026-07-15T18:01:00Z",
+    "current_task": null,
     "commits": [
         "df96bba feat(piano): make keys keyboard operable with roving tabindex",
         "32f7b16 feat(chords): make modifier buttons keyboard operable",
-        "8930a4d fix(a11y): make settings drawer inert when closed with proper dialog semantics"
+        "8930a4d fix(a11y): make settings drawer inert when closed with proper dialog semantics",
+        "16820a0 fix(a11y): re-enable pinch zoom by dropping viewport zoom restrictions"
     ],
     "tasks": {
         "P1-1": {
@@ -41,11 +42,11 @@
         "P1-4": {
             "title": "Re-enable pinch zoom",
             "agent": "sonnet",
-            "status": "in_progress",
-            "attempts": 0,
+            "status": "done",
+            "attempts": 1,
             "depends_on": [],
             "last_error": null,
-            "completed_at": null
+            "completed_at": "2026-07-15T18:01:00Z"
         },
         "P1-5": {
             "title": "Fix onboarding aria-modal and focus management",

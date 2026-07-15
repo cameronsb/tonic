@@ -238,7 +238,7 @@ This document is the prioritized backlog of code-quality, UX, and accessibility 
 **Acceptance:** With the drawer closed, Tab never lands on drawer controls. Opening moves focus into the drawer; Tab cycles within it; Escape closes and returns focus to the settings button.
 
 <a id="p1-4"></a>
-### - [ ] P1-4 · Re-enable pinch zoom (S)
+### - [x] P1-4 · Re-enable pinch zoom (S)
 
 **Problem:** `index.html:6` sets `maximum-scale=1.0, user-scalable=no`, disabling browser zoom entirely.
 

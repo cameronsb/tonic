@@ -23,7 +23,7 @@ Ordered task queue for the P1 tier of `ROADMAP.md` (core-interaction accessibili
   - Agent: sonnet · Effort: M
   - Accept: drawer closed — Tab never lands on drawer controls; opening moves focus into the drawer; Tab cycles within it; Escape closes and returns focus to the settings button. (ROADMAP.md § P1-3)
 
-- [ ] **P1-4 · Re-enable pinch zoom**
+- [x] **P1-4 · Re-enable pinch zoom**
   - Scope: change the viewport meta to `width=device-width, initial-scale=1.0`, dropping `maximum-scale` and `user-scalable=no`.
   - Files: `index.html`
   - Depends on: —
