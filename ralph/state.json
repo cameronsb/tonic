@@ -4,7 +4,7 @@
     "template": "p1-roadmap",
     "status": "running",
     "last_heartbeat": "2026-07-15T17:52:10Z",
-    "current_task": null,
+    "current_task": "P1-3",
     "commits": [
         "df96bba feat(piano): make keys keyboard operable with roving tabindex",
         "32f7b16 feat(chords): make modifier buttons keyboard operable"
@@ -31,7 +31,7 @@
         "P1-3": {
             "title": "Settings drawer: inert when closed, dialog semantics + focus trap when open",
             "agent": "sonnet",
-            "status": "pending",
+            "status": "in_progress",
             "attempts": 0,
             "depends_on": [],
             "last_error": null,

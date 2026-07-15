@@ -1,14 +1,21 @@
-import { useState, useCallback, useEffect } from 'react';
+import { useState, useCallback, useEffect, useRef } from 'react';
 import { useMusic } from '../hooks/useMusic';
 import { useSettings } from '../hooks/useSettings';
 import { NOTES } from '../utils/musicTheory';
 import { VolumeSlider } from './VolumeSlider';
 import './ConfigBar.css';
 
+// Selector for elements that can receive focus, used by the drawer's Tab trap.
+const FOCUSABLE_SELECTOR =
+  'a[href], button:not([disabled]), textarea:not([disabled]), input:not([disabled]), select:not([disabled]), [tabindex]:not([tabindex="-1"])';
+
 export function ConfigBar() {
   const { state, actions } = useMusic();
   const { settings, resetOnboarding, skipOnboarding } = useSettings();
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+  const settingsButtonRef = useRef<HTMLButtonElement>(null);
+  const closeButtonRef = useRef<HTMLButtonElement>(null);
+  const drawerRef = useRef<HTMLElement>(null);
 
   const toggleDrawer = useCallback(() => {
     setIsDrawerOpen((prev) => {
@@ -24,15 +31,49 @@ export function ConfigBar() {
     setIsDrawerOpen(false);
   }, []);
 
-  // Close drawer on escape key
+  // Move focus into the drawer on open; restore it to the trigger on close.
+  // Skipped on initial mount so the settings button isn't focused on page load.
+  const wasDrawerOpen = useRef(false);
   useEffect(() => {
-    const handleEscape = (e: KeyboardEvent) => {
-      if (e.key === 'Escape' && isDrawerOpen) {
+    if (isDrawerOpen) {
+      closeButtonRef.current?.focus();
+    } else if (wasDrawerOpen.current) {
+      settingsButtonRef.current?.focus();
+    }
+    wasDrawerOpen.current = isDrawerOpen;
+  }, [isDrawerOpen]);
+
+  // Close drawer on escape key, and trap Tab within the drawer while open.
+  useEffect(() => {
+    if (!isDrawerOpen) return;
+
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
         closeDrawer();
+        return;
+      }
+
+      if (e.key !== 'Tab' || !drawerRef.current) return;
+
+      const focusable = Array.from(
+        drawerRef.current.querySelectorAll<HTMLElement>(FOCUSABLE_SELECTOR),
+      );
+      if (focusable.length === 0) return;
+
+      const first = focusable[0];
+      const last = focusable[focusable.length - 1];
+
+      if (e.shiftKey && document.activeElement === first) {
+        e.preventDefault();
+        last.focus();
+      } else if (!e.shiftKey && document.activeElement === last) {
+        e.preventDefault();
+        first.focus();
       }
     };
-    window.addEventListener('keydown', handleEscape);
-    return () => window.removeEventListener('keydown', handleEscape);
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
   }, [isDrawerOpen, closeDrawer]);
 
   return (
@@ -73,6 +114,7 @@ export function ConfigBar() {
         </div>
 
         <button
+          ref={settingsButtonRef}
           className="settings-button"
           onClick={toggleDrawer}
           aria-label="Open settings"
@@ -98,10 +140,22 @@ export function ConfigBar() {
       {isDrawerOpen && <div className="drawer-backdrop" onClick={closeDrawer} aria-hidden="true" />}
 
       {/* Settings drawer */}
-      <aside className={`settings-drawer ${isDrawerOpen ? 'open' : ''}`}>
+      <aside
+        ref={drawerRef}
+        className={`settings-drawer ${isDrawerOpen ? 'open' : ''}`}
+        inert={!isDrawerOpen}
+        role="dialog"
+        aria-modal="true"
+        aria-label="Settings"
+      >
         <div className="drawer-header">
           <h2 className="drawer-title">Settings</h2>
-          <button className="drawer-close" onClick={closeDrawer} aria-label="Close settings">
+          <button
+            ref={closeButtonRef}
+            className="drawer-close"
+            onClick={closeDrawer}
+            aria-label="Close settings"
+          >
             <svg
               width="24"
               height="24"
