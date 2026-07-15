@@ -1,4 +1,12 @@
-import { useState, useEffect, useRef, useCallback, useMemo } from 'react';
+import {
+  useState,
+  useEffect,
+  useRef,
+  useCallback,
+  useMemo,
+  type KeyboardEvent,
+  type MouseEvent,
+} from 'react';
 import { useMusic } from '../hooks/useMusic';
 import {
   getFullChordName,
@@ -254,6 +262,36 @@ export function ChordCard({
     currentModifierRef.current = null;
   }, []);
 
+  // ===== Keyboard Handlers =====
+  // Pointer devices drive tap/long-press via the pointer handlers above; the
+  // synthetic `click` they emit is ignored (see the button's onClick guard) so
+  // they never double-fire. Keyboard users get their own paths here:
+  //   - Enter / Space           → tap (handled by the onClick guard below,
+  //                               which only runs for keyboard-generated clicks)
+  //   - Shift+Enter / Shift+Space → toggle lock, mirroring the pointer long-press
+  const handleModifierKeyDown = useCallback(
+    (e: KeyboardEvent, modifierLabel: string) => {
+      if (e.key !== 'Enter' && e.key !== ' ') return;
+      if (!e.shiftKey) return; // plain Enter/Space falls through to the click → handleTap
+      if (e.repeat) return;
+      // preventDefault suppresses the synthetic click, so tap doesn't also fire.
+      e.preventDefault();
+      handleLongPress(modifierLabel);
+    },
+    [handleLongPress]
+  );
+
+  // Tap path for keyboard/AT activation only. A keyboard-generated click reports
+  // detail === 0, whereas a pointer/mouse click reports detail >= 1 — those are
+  // already handled by handlePointerUp, so we skip them to avoid double-plays.
+  const handleModifierClick = useCallback(
+    (e: MouseEvent, modifierLabel: string) => {
+      if (e.detail !== 0) return;
+      handleTap(modifierLabel);
+    },
+    [handleTap]
+  );
+
   // Cleanup timer on unmount
   useEffect(() => {
     return () => {
@@ -382,6 +420,10 @@ export function ChordCard({
               onPointerUp={handlePointerUp}
               onPointerLeave={handlePointerLeave}
               onPointerCancel={handlePointerLeave}
+              onClick={(e) => handleModifierClick(e, modifier.label)}
+              onKeyDown={(e) => handleModifierKeyDown(e, modifier.label)}
+              aria-pressed={isLocked}
+              aria-keyshortcuts="Shift+Enter"
               title={isLocked ? `${modifier.label} (locked)` : modifier.label}
               type="button"
             >

@@ -3,23 +3,25 @@
     "started_at": "2026-07-15T17:43:46Z",
     "template": "p1-roadmap",
     "status": "running",
-    "last_heartbeat": "2026-07-15T17:43:46Z",
-    "current_task": "P1-1",
-    "commits": [],
+    "last_heartbeat": "2026-07-15T17:48:34Z",
+    "current_task": "P1-2",
+    "commits": [
+        "df96bba feat(piano): make keys keyboard operable with roving tabindex"
+    ],
     "tasks": {
         "P1-1": {
             "title": "Make piano keys keyboard operable",
             "agent": "opus",
-            "status": "in_progress",
-            "attempts": 0,
+            "status": "done",
+            "attempts": 1,
             "depends_on": [],
             "last_error": null,
-            "completed_at": null
+            "completed_at": "2026-07-15T17:48:34Z"
         },
         "P1-2": {
             "title": "Make chord modifier buttons keyboard operable",
             "agent": "opus",
-            "status": "pending",
+            "status": "in_progress",
             "attempts": 0,
             "depends_on": [],
             "last_error": null,

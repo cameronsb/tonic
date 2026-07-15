@@ -181,7 +181,7 @@ This document is the prioritized backlog of code-quality, UX, and accessibility 
 ## P1 — Core-interaction accessibility
 
 <a id="p1-1"></a>
-### - [ ] P1-1 · Make piano keys keyboard operable (M)
+### - [x] P1-1 · Make piano keys keyboard operable (M)
 
 **Problem:** Each key renders `role="button" tabIndex={0}` (`src/components/PianoKey.tsx:150-166`) but has only mouse/touch handlers — no `onKeyDown`. Enter/Space do nothing. The `role="button"` actively lies to screen-reader users.
 

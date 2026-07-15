@@ -2,7 +2,7 @@
 
 Ordered task queue for the P1 tier of `ROADMAP.md` (core-interaction accessibility). One task per iteration, in this order; full implementation detail and acceptance criteria live in each task's ROADMAP.md section (IDs match). `agent:` names the model assigned to the task.
 
-- [ ] **P1-1 · Make piano keys keyboard operable**
+- [x] **P1-1 · Make piano keys keyboard operable**
   - Scope: add `onKeyDown`/`onKeyUp` (Enter/Space, guard `e.repeat`) to `PianoKey`; implement roving tabindex in `Piano` (single tab stop, ArrowLeft/ArrowRight move focus); ensure each key has a meaningful `aria-label`.
   - Files: `src/components/PianoKey.tsx`, `src/components/Piano.tsx`
   - Depends on: —
