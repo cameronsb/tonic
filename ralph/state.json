@@ -63,6 +63,15 @@
             "depends_on": [],
             "last_error": null,
             "completed_at": null
+        },
+        "P1-7": {
+            "title": "Clear stuck pressed visual state during keyboard navigation",
+            "agent": "sonnet",
+            "status": "pending",
+            "attempts": 0,
+            "depends_on": [],
+            "last_error": null,
+            "completed_at": null
         }
     }
 }
