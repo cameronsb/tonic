@@ -349,7 +349,7 @@ This document is the prioritized backlog of code-quality, UX, and accessibility 
 **Acceptance:** React DevTools profiler during a MIDI note: only the keys whose `isMidiActive` changed re-render, not the full keyboard.
 
 <a id="p2-5"></a>
-### - [ ] P2-5 · Hoist `PianoPreview` out of `ChordCard`'s render body (S)
+### - [x] P2-5 · Hoist `PianoPreview` out of `ChordCard`'s render body (S)
 
 **Problem:** `const PianoPreview = () => {...}` is defined inside `ChordCard`'s render (`src/components/ChordCard.tsx:263-351`) and rendered as `<PianoPreview />` (`:365`). Its component identity changes every render, so React **unmounts and remounts** the entire SVG subtree (12 keys + labels) on each `ChordCard` render.
 

@@ -1,4 +1,5 @@
 import {
+  memo,
   useState,
   useEffect,
   useRef,
@@ -21,6 +22,110 @@ import type { Note, Mode, ChordType } from '../types/music';
 import './ChordCard.css';
 
 const LONG_PRESS_MS = 400;
+
+interface PianoPreviewProps {
+  rootNote: Note;
+  currentIntervals: number[];
+  keyRoot: Note;
+  mode: Mode;
+}
+
+// Piano preview component with scale degree numbers. Hoisted to module scope
+// (and memoized) so its identity is stable across ChordCard renders — an
+// inline component definition would get a new identity every render, forcing
+// React to unmount/remount the whole SVG subtree.
+const PianoPreview = memo(function PianoPreview({
+  rootNote,
+  currentIntervals,
+  keyRoot,
+  mode,
+}: PianoPreviewProps) {
+  const whiteKeyPositions = [0, 2, 4, 5, 7, 9, 11]; // C, D, E, F, G, A, B
+  const blackKeyPositions = [
+    { key: 1, x: 11 }, // C#
+    { key: 3, x: 25 }, // D#
+    { key: 6, x: 53 }, // F#
+    { key: 8, x: 67 }, // G#
+    { key: 10, x: 81 }, // A#
+  ];
+
+  const rootIndex = NOTES.indexOf(rootNote);
+
+  // Map intervals to chromatic positions
+  const activeKeys = new Map<number, number>();
+  currentIntervals.forEach((interval) => {
+    const chromaticPosition = (rootIndex + interval) % 12;
+    activeKeys.set(chromaticPosition, interval);
+  });
+
+  const isNoteActive = (chromaticKey: number) => activeKeys.has(chromaticKey);
+
+  const getNoteLabel = (chromaticKey: number): string | null => {
+    if (!activeKeys.has(chromaticKey)) return null;
+    return getScaleDegreeLabel(chromaticKey, keyRoot, mode);
+  };
+
+  return (
+    <svg viewBox="-1 -1 100 42" className="chord-card-piano">
+      {/* White Keys */}
+      {whiteKeyPositions.map((keyNum, idx) => {
+        const active = isNoteActive(keyNum);
+        const label = getNoteLabel(keyNum);
+        const x = idx * 14;
+
+        return (
+          <g key={keyNum}>
+            <rect
+              x={x}
+              y="0"
+              width="13"
+              height="24"
+              rx="1"
+              className={`chord-card-white-key ${active ? 'active' : ''}`}
+            />
+            {label && (
+              <text
+                x={x + 6.5}
+                y="36"
+                className="chord-card-key-label"
+              >
+                {label}
+              </text>
+            )}
+          </g>
+        );
+      })}
+
+      {/* Black Keys */}
+      {blackKeyPositions.map(({ key, x }) => {
+        const active = isNoteActive(key);
+        const label = getNoteLabel(key);
+
+        return (
+          <g key={key}>
+            <rect
+              x={x}
+              y="0"
+              width="8"
+              height="15"
+              rx="1"
+              className={`chord-card-black-key ${active ? 'active' : ''}`}
+            />
+            {label && (
+              <text
+                x={x + 4}
+                y="36"
+                className="chord-card-key-label"
+              >
+                {label}
+              </text>
+            )}
+          </g>
+        );
+      })}
+    </svg>
+  );
+});
 
 interface ChordCardProps {
   numeral: string;
@@ -302,97 +407,6 @@ export function ChordCard({
     };
   }, []);
 
-  // Piano preview component with scale degree numbers
-  const PianoPreview = () => {
-    if (!showPreview) return null;
-
-    const whiteKeyPositions = [0, 2, 4, 5, 7, 9, 11]; // C, D, E, F, G, A, B
-    const blackKeyPositions = [
-      { key: 1, x: 11 }, // C#
-      { key: 3, x: 25 }, // D#
-      { key: 6, x: 53 }, // F#
-      { key: 8, x: 67 }, // G#
-      { key: 10, x: 81 }, // A#
-    ];
-
-    const rootIndex = NOTES.indexOf(rootNote);
-
-    // Map intervals to chromatic positions
-    const activeKeys = new Map<number, number>();
-    currentIntervals.forEach((interval) => {
-      const chromaticPosition = (rootIndex + interval) % 12;
-      activeKeys.set(chromaticPosition, interval);
-    });
-
-    const isNoteActive = (chromaticKey: number) => activeKeys.has(chromaticKey);
-
-    const getNoteLabel = (chromaticKey: number): string | null => {
-      if (!activeKeys.has(chromaticKey)) return null;
-      return getScaleDegreeLabel(chromaticKey, keyRoot, mode);
-    };
-
-    return (
-      <svg viewBox="-1 -1 100 42" className="chord-card-piano">
-        {/* White Keys */}
-        {whiteKeyPositions.map((keyNum, idx) => {
-          const active = isNoteActive(keyNum);
-          const label = getNoteLabel(keyNum);
-          const x = idx * 14;
-
-          return (
-            <g key={keyNum}>
-              <rect
-                x={x}
-                y="0"
-                width="13"
-                height="24"
-                rx="1"
-                className={`chord-card-white-key ${active ? 'active' : ''}`}
-              />
-              {label && (
-                <text
-                  x={x + 6.5}
-                  y="36"
-                  className="chord-card-key-label"
-                >
-                  {label}
-                </text>
-              )}
-            </g>
-          );
-        })}
-
-        {/* Black Keys */}
-        {blackKeyPositions.map(({ key, x }) => {
-          const active = isNoteActive(key);
-          const label = getNoteLabel(key);
-
-          return (
-            <g key={key}>
-              <rect
-                x={x}
-                y="0"
-                width="8"
-                height="15"
-                rx="1"
-                className={`chord-card-black-key ${active ? 'active' : ''}`}
-              />
-              {label && (
-                <text
-                  x={x + 4}
-                  y="36"
-                  className="chord-card-key-label"
-                >
-                  {label}
-                </text>
-              )}
-            </g>
-          );
-        })}
-      </svg>
-    );
-  };
-
   return (
     <div
       className={`chord-card ${isDiatonic ? 'diatonic' : 'borrowed'} ${isSelected ? 'selected' : ''}`}
@@ -405,7 +419,14 @@ export function ChordCard({
       >
         <div className="chord-card-numeral">{numeral}</div>
         <div className="chord-card-name">{chordName}</div>
-        <PianoPreview />
+        {showPreview && (
+          <PianoPreview
+            rootNote={rootNote}
+            currentIntervals={currentIntervals}
+            keyRoot={keyRoot}
+            mode={mode}
+          />
+        )}
       </button>
 
       {/* Modifier buttons grid */}

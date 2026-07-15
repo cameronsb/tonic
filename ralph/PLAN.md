@@ -27,7 +27,7 @@ Every task that touches `src/` must pass the browser smoke check (see the accept
   - Agent: sonnet · Effort: S
   - Accept: React DevTools profiler during a MIDI/played note — only the keys whose `isMidiActive` changed re-render, not the full keyboard. Then run the browser smoke check (see below). (ROADMAP.md § P2-4)
 
-- [ ] **P2-5 · Hoist `PianoPreview` out of `ChordCard`'s render body**
+- [x] **P2-5 · Hoist `PianoPreview` out of `ChordCard`'s render body**
   - Scope: extract the inline `const PianoPreview = () => {...}` (`ChordCard.tsx:263-351`) to a top-level component (same file is fine) taking `rootNote`, `currentIntervals`, `keyRoot`, `mode` as props; wrap in `React.memo`. (Smallest-diff alternative: call it as `{renderPianoPreview()}` — a plain function — to avoid the remount without creating a component.)
   - Files: `src/components/ChordCard.tsx`
   - Depends on: P2-3 (avoid churn against the context migration; keep the memo items sequenced after the split)
