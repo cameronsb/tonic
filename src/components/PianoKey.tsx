@@ -54,11 +54,18 @@ export function PianoKey({
   const activeTouchesRef = useRef<Set<number>>(new Set());
   const [hasTouches, setHasTouches] = useState(false);
 
+  // Separate keyboard tracking. Kept apart from isMousePressed because
+  // keyboard focus can move (arrow-key roving tabindex) before keyup fires:
+  // keydown presses key A, focus moves to key B, keyup lands on B, and A's
+  // state would otherwise never clear. onBlur below clears it unconditionally
+  // on focus loss so a rapid Enter+arrow sequence never leaves a key stuck.
+  const [isKeyboardPressed, setIsKeyboardPressed] = useState(false);
+
   // Combined pressed state for visual feedback.
   // isGlissandoPressed lets a touch glissando light up keys the finger slides
   // onto — those keys never receive their own touch-start, so they can't set
   // hasTouches themselves.
-  const isPressed = isMousePressed || hasTouches || isGlissandoPressed;
+  const isPressed = isMousePressed || hasTouches || isGlissandoPressed || isKeyboardPressed;
 
   // Play the note
   const playNote = useCallback(() => {
@@ -158,7 +165,7 @@ export function PianoKey({
       if (e.key === 'Enter' || e.key === ' ') {
         if (e.repeat) return;
         e.preventDefault();
-        setIsMousePressed(true);
+        setIsKeyboardPressed(true);
         playNote();
       }
     },
@@ -168,8 +175,16 @@ export function PianoKey({
   const handleKeyUp = useCallback((e: KeyboardEvent) => {
     if (e.key === 'Enter' || e.key === ' ') {
       e.preventDefault();
-      setIsMousePressed(false);
+      setIsKeyboardPressed(false);
     }
+  }, []);
+
+  // Rapidly pressing Enter then arrowing to the next key moves focus before
+  // keyup fires, so keyup lands on the newly-focused key instead of this one.
+  // Clearing on blur guarantees this key's pressed state is released the
+  // moment it loses focus, regardless of which key (if any) gets the keyup.
+  const handleBlur = useCallback(() => {
+    setIsKeyboardPressed(false);
   }, []);
 
   // Get scale degree numeral if in scale OR if showing labels
@@ -207,6 +222,7 @@ export function PianoKey({
       onKeyDown={handleKeyDown}
       onKeyUp={handleKeyUp}
       onFocus={onFocus}
+      onBlur={handleBlur}
       role="button"
       tabIndex={tabIndex}
       aria-label={`${keyData.note}`}
