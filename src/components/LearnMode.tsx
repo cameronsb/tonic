@@ -9,7 +9,7 @@ import './LearnMode.css';
 
 export function LearnMode() {
   const { settings, setLearnTabletPianoHeight } = useSettings();
-  const { state, actions } = useMusic();
+  const { actions } = useMusic();
 
   // Resizable piano height
   const handlePianoResize = useCallback(
@@ -64,7 +64,7 @@ export function LearnMode() {
           <label className="piano-control-toggle" title="Show scale notes on piano">
             <input
               type="checkbox"
-              checked={state.showInScaleColors}
+              checked={settings.ui.piano.showInScaleColors}
               onChange={actions.toggleInScaleColors}
               className="control-checkbox"
             />
@@ -73,7 +73,7 @@ export function LearnMode() {
           <label className="piano-control-toggle" title="Highlight selected chord on piano">
             <input
               type="checkbox"
-              checked={state.keyboardPreviewEnabled}
+              checked={settings.ui.piano.keyboardPreviewEnabled}
               onChange={actions.toggleChordHighlight}
               className="control-checkbox"
             />

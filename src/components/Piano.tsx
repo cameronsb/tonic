@@ -24,7 +24,7 @@ export function Piano({
   flexible = true,
   adjustHeight = false,
 }: PianoProps) {
-  const { state, audio } = useMusic();
+  const { state, settings, audio } = useMusic();
   const pianoContainerRef = useRef<HTMLDivElement>(null);
 
   // Roving tabindex: only one key is a tab stop at a time. `focusedIndex` is the
@@ -80,7 +80,7 @@ export function Piano({
   // Get chord notes for highlighting (only when keyboard preview is enabled)
   const chordNotes = useMemo(() => {
     const notes = new Set<Note>();
-    if (state.keyboardPreviewEnabled) {
+    if (settings.ui.piano.keyboardPreviewEnabled) {
       state.selectedChords.forEach((chord) => {
         const rootIndex = NOTES.indexOf(chord.rootNote);
         chord.intervals.forEach((interval) => {
@@ -90,7 +90,7 @@ export function Piano({
       });
     }
     return notes;
-  }, [state.selectedChords, state.keyboardPreviewEnabled]);
+  }, [state.selectedChords, settings.ui.piano.keyboardPreviewEnabled]);
 
   const handleKeyPress = async (frequency: number) => {
     await audio.playNote(frequency);
@@ -265,7 +265,7 @@ export function Piano({
             onPress={handleKeyPress}
             isInScale={scaleNotes.has(keyData.baseNote)}
             isInChord={chordNotes.has(keyData.baseNote)}
-            showScaleHighlighting={state.showInScaleColors}
+            showScaleHighlighting={settings.ui.piano.showInScaleColors}
             showScaleDegree={showScaleDegrees}
             selectedKey={state.key}
             mode={state.mode}

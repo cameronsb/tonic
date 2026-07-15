@@ -10,9 +10,6 @@ interface MusicState {
   key: Note;
   mode: Mode;
   selectedChords: SelectedChord[];
-  scaleViewEnabled: boolean;
-  keyboardPreviewEnabled: boolean;
-  showInScaleColors: boolean;
   pianoRange: {
     startMidi: number;
     endMidi: number;
@@ -24,18 +21,12 @@ type MusicAction =
   | { type: 'SET_MODE'; payload: Mode }
   | { type: 'SELECT_CHORD'; payload: SelectedChord }
   | { type: 'DESELECT_CHORDS' }
-  | { type: 'TOGGLE_SCALE_VIEW' }
-  | { type: 'TOGGLE_KEYBOARD_PREVIEW' }
-  | { type: 'TOGGLE_IN_SCALE_COLORS' }
   | { type: 'SET_PIANO_RANGE'; payload: { startMidi: number; endMidi: number } };
 
 const initialState: MusicState = {
   key: 'C',
   mode: 'major',
   selectedChords: [],
-  scaleViewEnabled: false,
-  keyboardPreviewEnabled: true,
-  showInScaleColors: true,
   pianoRange: {
     startMidi: 60,
     endMidi: 83,
@@ -66,21 +57,6 @@ function musicReducer(state: MusicState, action: MusicAction): MusicState {
 
     case 'DESELECT_CHORDS':
       return { ...state, selectedChords: [] };
-
-    case 'TOGGLE_SCALE_VIEW':
-      return { ...state, scaleViewEnabled: !state.scaleViewEnabled };
-
-    case 'TOGGLE_KEYBOARD_PREVIEW':
-      return {
-        ...state,
-        keyboardPreviewEnabled: !state.keyboardPreviewEnabled,
-      };
-
-    case 'TOGGLE_IN_SCALE_COLORS':
-      return {
-        ...state,
-        showInScaleColors: !state.showInScaleColors,
-      };
 
     case 'SET_PIANO_RANGE':
       return {
@@ -134,12 +110,7 @@ export function MusicProvider({ children }: MusicProviderProps) {
     setScaleViewEnabled,
   } = useSettings();
 
-  const [state, dispatch] = useReducer(musicReducer, {
-    ...initialState,
-    showInScaleColors: settings.ui.piano.showInScaleColors,
-    keyboardPreviewEnabled: settings.ui.piano.keyboardPreviewEnabled,
-    scaleViewEnabled: settings.ui.scale.viewEnabled,
-  });
+  const [state, dispatch] = useReducer(musicReducer, initialState);
 
   const {
     playNote: rawPlayNote,
@@ -196,23 +167,19 @@ export function MusicProvider({ children }: MusicProviderProps) {
     dispatch({ type: 'DESELECT_CHORDS' });
   }, []);
 
+  // Toggle actions are thin wrappers over the persisted settings setters —
+  // `settings.ui.*` is the single source of truth for these flags.
   const toggleScaleView = useCallback(() => {
-    const newValue = !state.scaleViewEnabled;
-    dispatch({ type: 'TOGGLE_SCALE_VIEW' });
-    setScaleViewEnabled(newValue);
-  }, [state.scaleViewEnabled, setScaleViewEnabled]);
+    setScaleViewEnabled(!settings.ui.scale.viewEnabled);
+  }, [settings.ui.scale.viewEnabled, setScaleViewEnabled]);
 
   const toggleChordHighlight = useCallback(() => {
-    const newValue = !state.keyboardPreviewEnabled;
-    dispatch({ type: 'TOGGLE_KEYBOARD_PREVIEW' });
-    setKeyboardPreviewEnabled(newValue);
-  }, [state.keyboardPreviewEnabled, setKeyboardPreviewEnabled]);
+    setKeyboardPreviewEnabled(!settings.ui.piano.keyboardPreviewEnabled);
+  }, [settings.ui.piano.keyboardPreviewEnabled, setKeyboardPreviewEnabled]);
 
   const toggleInScaleColors = useCallback(() => {
-    const newValue = !state.showInScaleColors;
-    dispatch({ type: 'TOGGLE_IN_SCALE_COLORS' });
-    setShowInScaleColors(newValue);
-  }, [state.showInScaleColors, setShowInScaleColors]);
+    setShowInScaleColors(!settings.ui.piano.showInScaleColors);
+  }, [settings.ui.piano.showInScaleColors, setShowInScaleColors]);
 
   const setPianoRange = useCallback((startMidi: number, endMidi: number) => {
     dispatch({ type: 'SET_PIANO_RANGE', payload: { startMidi, endMidi } });
