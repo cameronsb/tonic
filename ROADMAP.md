@@ -208,7 +208,7 @@ This document is the prioritized backlog of code-quality, UX, and accessibility 
 **Acceptance:** Tab reaches the piano once; arrow keys move between keys; Enter/Space plays the focused key with the pressed visual state; a screen reader announces each key's note name.
 
 <a id="p1-2"></a>
-### - [ ] P1-2 · Make chord modifier buttons keyboard operable (M)
+### - [x] P1-2 · Make chord modifier buttons keyboard operable (M)
 
 **Problem:** Modifier buttons wire only `onPointerDown/Up/Leave/Cancel` (`src/components/ChordCard.tsx:374-388`). Keyboard activation fires a `click` event, which is never handled — Enter/Space do nothing, and long-press "lock" has no keyboard equivalent at all.
 

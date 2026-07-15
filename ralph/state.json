@@ -3,10 +3,11 @@
     "started_at": "2026-07-15T17:43:46Z",
     "template": "p1-roadmap",
     "status": "running",
-    "last_heartbeat": "2026-07-15T17:48:34Z",
-    "current_task": "P1-2",
+    "last_heartbeat": "2026-07-15T17:52:10Z",
+    "current_task": null,
     "commits": [
-        "df96bba feat(piano): make keys keyboard operable with roving tabindex"
+        "df96bba feat(piano): make keys keyboard operable with roving tabindex",
+        "32f7b16 feat(chords): make modifier buttons keyboard operable"
     ],
     "tasks": {
         "P1-1": {
@@ -21,11 +22,11 @@
         "P1-2": {
             "title": "Make chord modifier buttons keyboard operable",
             "agent": "opus",
-            "status": "in_progress",
-            "attempts": 0,
+            "status": "done",
+            "attempts": 1,
             "depends_on": [],
             "last_error": null,
-            "completed_at": null
+            "completed_at": "2026-07-15T17:52:10Z"
         },
         "P1-3": {
             "title": "Settings drawer: inert when closed, dialog semantics + focus trap when open",

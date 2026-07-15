@@ -9,7 +9,7 @@ Ordered task queue for the P1 tier of `ROADMAP.md` (core-interaction accessibili
   - Agent: opus · Effort: M
   - Accept: Tab reaches the piano once; arrow keys move between keys; Enter/Space plays the focused key with the pressed visual; a screen reader announces each key's note name. (ROADMAP.md § P1-1)
 
-- [ ] **P1-2 · Make chord modifier buttons keyboard operable**
+- [x] **P1-2 · Make chord modifier buttons keyboard operable**
   - Scope: add `onClick` tap path to modifier buttons (prevent double-fire with the existing pointer handlers), add a keyboard "lock" path (Shift+Enter / Shift+Space mirroring long-press), reflect lock state via `aria-pressed`.
   - Files: `src/components/ChordCard.tsx`
   - Depends on: —
