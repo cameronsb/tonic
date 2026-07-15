@@ -181,7 +181,7 @@ export function Piano({
           style={{
             position: 'absolute',
             top: '8px',
-            right: '8px',
+            left: '8px',
             padding: '4px 8px',
             background: '#22c55e',
             color: 'white',
