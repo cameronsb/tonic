@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 
 /**
  * Custom hook for localStorage persistence with type safety
@@ -7,7 +7,7 @@ import { useState, useEffect, useCallback } from 'react';
  * - Type-safe read/write
  * - Automatic JSON serialization
  * - Error handling
- * - Synchronization across tabs (storage events)
+ * - Cross-tab synchronization via the native `storage` event
  */
 export function useLocalStorage<T>(
   key: string,
@@ -24,26 +24,25 @@ export function useLocalStorage<T>(
     }
   });
 
+  // Keep the latest value in a ref so `setValue` can stay referentially stable
+  // (deps: [key]) while still resolving functional updates against fresh state.
+  const storedValueRef = useRef(storedValue);
+  storedValueRef.current = storedValue;
+
   // Update localStorage when state changes
   const setValue = useCallback(
     (value: T | ((prev: T) => T)) => {
       try {
         // Allow value to be a function (like useState)
-        const valueToStore = value instanceof Function ? value(storedValue) : value;
+        const valueToStore =
+          value instanceof Function ? value(storedValueRef.current) : value;
         setStoredValue(valueToStore);
         window.localStorage.setItem(key, JSON.stringify(valueToStore));
-
-        // Dispatch custom event for cross-tab sync
-        window.dispatchEvent(
-          new CustomEvent('localStorage-change', {
-            detail: { key, value: valueToStore },
-          })
-        );
       } catch (error) {
         console.error(`Error setting localStorage key "${key}":`, error);
       }
     },
-    [key, storedValue]
+    [key]
   );
 
   // Remove item from localStorage
@@ -56,30 +55,33 @@ export function useLocalStorage<T>(
     }
   }, [key, defaultValue]);
 
-  // Listen for storage events from other tabs
+  // Keep defaultValue reachable from the storage handler without re-subscribing.
+  const defaultValueRef = useRef(defaultValue);
+  defaultValueRef.current = defaultValue;
+
+  // Listen for native storage events from other tabs
   useEffect(() => {
     const handleStorageChange = (e: StorageEvent) => {
-      if (e.key === key && e.newValue !== null) {
-        try {
-          setStoredValue(JSON.parse(e.newValue));
-        } catch (error) {
-          console.error(`Error parsing storage event for key "${key}":`, error);
-        }
-      }
-    };
+      if (e.key !== key) return;
 
-    const handleCustomStorageChange = (e: CustomEvent) => {
-      if (e.detail.key === key) {
-        setStoredValue(e.detail.value);
+      // A `null` newValue means the key was removed in another tab
+      // (e.g. a "reset settings" that clears storage) — fall back to defaults.
+      if (e.newValue === null) {
+        setStoredValue(defaultValueRef.current);
+        return;
+      }
+
+      try {
+        setStoredValue(JSON.parse(e.newValue));
+      } catch (error) {
+        console.error(`Error parsing storage event for key "${key}":`, error);
       }
     };
 
     window.addEventListener('storage', handleStorageChange);
-    window.addEventListener('localStorage-change', handleCustomStorageChange as EventListener);
 
     return () => {
       window.removeEventListener('storage', handleStorageChange);
-      window.removeEventListener('localStorage-change', handleCustomStorageChange as EventListener);
     };
   }, [key]);
 

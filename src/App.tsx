@@ -1,3 +1,4 @@
+import { SettingsProvider } from './contexts/SettingsContext';
 import { MusicProvider } from './contexts/MusicContext';
 import { ConfigBar } from './components/ConfigBar';
 import { LoadingOverlay } from './components/LoadingOverlay';
@@ -7,16 +8,18 @@ import './App.css';
 
 function App() {
   return (
-    <MusicProvider>
-      <div className="app">
-        <LoadingOverlay />
-        <OnboardingOverlay />
-        <ConfigBar />
-        <main className="main-content">
-          <LearnMode />
-        </main>
-      </div>
-    </MusicProvider>
+    <SettingsProvider>
+      <MusicProvider>
+        <div className="app">
+          <LoadingOverlay />
+          <OnboardingOverlay />
+          <ConfigBar />
+          <main className="main-content">
+            <LearnMode />
+          </main>
+        </div>
+      </MusicProvider>
+    </SettingsProvider>
   );
 }
 
