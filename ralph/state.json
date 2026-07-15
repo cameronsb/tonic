@@ -2,14 +2,15 @@
     "session_id": "ralph_p2_20260715",
     "started_at": "2026-07-15T20:30:00Z",
     "template": "p2-roadmap",
-    "status": "running",
-    "last_heartbeat": "2026-07-15T23:29:30Z",
-    "current_task": "P2-6",
+    "status": "complete",
+    "last_heartbeat": "2026-07-15T23:33:00Z",
+    "current_task": null,
     "commits": [
         "6b78b0a refactor(state): make settings the single owner of piano/scale toggle flags",
         "813673d refactor(state): split MusicContext into memoized state and actions contexts",
         "9640e60 perf(piano): memoize PianoKey and stabilize its callback props",
-        "6d1659f perf(chords): hoist PianoPreview out of ChordCard's render body"
+        "6d1659f perf(chords): hoist PianoPreview out of ChordCard's render body",
+        "de9c4d6 perf(chords): memoize scale and borrowed chord lists in ChordStrip"
     ],
     "tasks": {
         "P2-2": {
@@ -51,11 +52,11 @@
         "P2-6": {
             "title": "Memoize chord list computation in ChordStrip",
             "agent": "sonnet",
-            "status": "in_progress",
+            "status": "done",
             "attempts": 0,
             "depends_on": ["P2-3"],
             "last_error": null,
-            "completed_at": null
+            "completed_at": "2026-07-15T23:32:00Z"
         }
     }
 }
