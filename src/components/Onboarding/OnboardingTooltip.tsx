@@ -1,4 +1,4 @@
-import type { ReactNode } from 'react';
+import type { ReactNode, RefObject } from 'react';
 import { useFloating, offset, shift, flip, autoUpdate } from '@floating-ui/react';
 import type { OnboardingStep } from '../../types/onboarding';
 
@@ -12,6 +12,7 @@ interface OnboardingTooltipProps {
   onSkip: () => void;
   children?: ReactNode;
   dynamicButtonText?: string;
+  headingRef: RefObject<HTMLHeadingElement | null>;
 }
 
 interface TooltipContentProps {
@@ -23,6 +24,7 @@ interface TooltipContentProps {
   onSkip: () => void;
   children?: ReactNode;
   buttonText: string | null;
+  headingRef: RefObject<HTMLHeadingElement | null>;
 }
 
 function TooltipContent({
@@ -34,6 +36,7 @@ function TooltipContent({
   onSkip,
   children,
   buttonText,
+  headingRef,
 }: TooltipContentProps) {
   return (
     <>
@@ -46,7 +49,7 @@ function TooltipContent({
         ))}
       </div>
 
-      <h2 id="onboarding-title" className="onboarding-title">
+      <h2 id="onboarding-title" className="onboarding-title" ref={headingRef} tabIndex={-1}>
         {step.title}
       </h2>
       <p id="onboarding-body" className="onboarding-body">
@@ -83,6 +86,7 @@ export function OnboardingTooltip({
   onSkip,
   children,
   dynamicButtonText,
+  headingRef,
 }: OnboardingTooltipProps) {
   const isCentered = !targetRect || step.tooltipPosition === 'center';
 
@@ -107,6 +111,7 @@ export function OnboardingTooltip({
     onSkip,
     children,
     buttonText,
+    headingRef,
   };
 
   if (isCentered) {

@@ -33,6 +33,7 @@ export function OnboardingOverlay() {
   const prevSelectedChordRef = useRef(musicState.selectedChords);
   const hasStartedRef = useRef(false);
   const wasCompletedRef = useRef(settings.onboarding.completed);
+  const headingRef = useRef<HTMLHeadingElement>(null);
 
   // Start onboarding when audio finishes loading successfully
   useEffect(() => {
@@ -86,6 +87,13 @@ export function OnboardingOverlay() {
 
     return () => clearTimeout(timer);
   }, [currentStep]);
+
+  // Move focus to the tooltip heading on every step change so keyboard/SR
+  // users don't lose their place when the coach-mark advances.
+  useEffect(() => {
+    if (!isActive || !currentStep) return;
+    headingRef.current?.focus();
+  }, [isActive, currentStep]);
 
   // Reset chord tracking when entering progression step to fix edge case
   // where chord from step 4 carries over
@@ -153,9 +161,21 @@ export function OnboardingOverlay() {
       ? 'Nice! Continue \u2192'
       : undefined;
 
+  // Only steps with no target (fully centered, no background element to
+  // interact with) are truly modal. Steps that highlight a background
+  // control must stay non-modal so assistive tech doesn't mark the rest
+  // of the page as inert while instructing the user to interact with it.
+  const isBlocking = currentStep.tooltipPosition === 'center';
+
   return (
-    <div className="onboarding-overlay" role="dialog" aria-modal="true">
+    <div className="onboarding-overlay" role="dialog" aria-modal={isBlocking || undefined}>
       <OnboardingSpotlight targetRect={targetRect} />
+
+      <div className="sr-only" aria-live="polite">
+        {currentStep.title}
+        {'. '}
+        {currentStep.body}
+      </div>
 
       <OnboardingTooltip
         step={currentStep}
@@ -166,6 +186,7 @@ export function OnboardingOverlay() {
         onNext={nextStep}
         onSkip={skip}
         dynamicButtonText={dynamicButtonText}
+        headingRef={headingRef}
       >
         {currentStep.id === 'play-progression' && (
           <ProgressionTracker
