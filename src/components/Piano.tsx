@@ -93,9 +93,14 @@ export function Piano({
     return notes;
   }, [state.selectedChords, settings.ui.piano.keyboardPreviewEnabled]);
 
-  const handleKeyPress = async (frequency: number) => {
-    await audio.playNote(frequency);
-  };
+  // Stable so PianoKey's React.memo isn't defeated by a new function identity
+  // on every Piano render (this is the hottest re-render path in the app).
+  const handleKeyPress = useCallback(
+    (frequency: number) => {
+      void audio.playNote(frequency);
+    },
+    [audio]
+  );
 
   // Keep the roving tab stop in bounds when the key count changes (e.g. the
   // flexible layout adds/removes octaves), so a valid key always has tabIndex 0.
@@ -131,6 +136,18 @@ export function Piano({
     },
     [noteFrequencies, audio]
   );
+
+  // Stable onFocus/keyRef for PianoKey: both take the key's index as an
+  // argument instead of closing over it, so the same function reference is
+  // passed to every key on every render (a fresh per-index closure here would
+  // defeat PianoKey's React.memo for the entire keyboard on any Piano render).
+  const handleKeyFocus = useCallback((index: number) => {
+    setFocusedIndex(index);
+  }, []);
+
+  const handleKeyRef = useCallback((index: number, el: HTMLDivElement | null) => {
+    keyRefs.current[index] = el;
+  }, []);
 
   const getKeyIdentifier = useCallback(
     (element: Element) => element.getAttribute('aria-label'),
@@ -257,12 +274,11 @@ export function Piano({
         {keys.map((keyData, index) => (
           <PianoKey
             key={keyData.note}
+            index={index}
             keyData={keyData}
             tabIndex={index === focusedIndex ? 0 : -1}
-            onFocus={() => setFocusedIndex(index)}
-            keyRef={(el) => {
-              keyRefs.current[index] = el;
-            }}
+            onFocus={handleKeyFocus}
+            keyRef={handleKeyRef}
             onPress={handleKeyPress}
             isInScale={scaleNotes.has(keyData.baseNote)}
             isInChord={chordNotes.has(keyData.baseNote)}

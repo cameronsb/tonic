@@ -335,7 +335,7 @@ This document is the prioritized backlog of code-quality, UX, and accessibility 
 **Acceptance:** React DevTools profiler: selecting a chord no longer re-renders `ConfigBar`. Highlight-updates shows only `Piano`/`ChordStrip` subtrees repainting.
 
 <a id="p2-4"></a>
-### - [ ] P2-4 · `React.memo(PianoKey)` + stable `onPress` (S)
+### - [x] P2-4 · `React.memo(PianoKey)` + stable `onPress` (S)
 
 **Problem:** `handleKeyPress` in `src/components/Piano.tsx:74-76` is recreated every render and passed to every key (`:178-193`), and `PianoKey` (`src/components/PianoKey.tsx:21`) is not memoized — so every `setActiveMidiNotes`/`setIsGlissandoActive` update re-renders all ~25 keys. Found independently by both the state-flow and UI reviewers. This is the hottest rendering path in the app (per-note during MIDI/glissando play), and the one place memoization clearly pays for itself.
 

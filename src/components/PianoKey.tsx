@@ -1,4 +1,5 @@
 import {
+  memo,
   useState,
   useCallback,
   useRef,
@@ -25,11 +26,12 @@ interface PianoKeyProps {
   isGlissandoPressed?: boolean; // Whether this key is the one under the finger during a touch glissando
   isMidiActive?: boolean; // Whether this key is currently pressed via MIDI
   tabIndex?: number; // Roving tabindex: 0 for the active key, -1 for the rest
-  onFocus?: () => void; // Notify parent so the focused key becomes the roving tab stop
-  keyRef?: (el: HTMLDivElement | null) => void; // Register the DOM node so the parent can move focus
+  index?: number; // This key's index within the keyboard, forwarded to onFocus/keyRef so those callbacks can stay referentially stable in the parent
+  onFocus?: (index: number) => void; // Notify parent so the focused key becomes the roving tab stop
+  keyRef?: (index: number, el: HTMLDivElement | null) => void; // Register the DOM node so the parent can move focus
 }
 
-export function PianoKey({
+function PianoKeyImpl({
   keyData,
   onPress,
   isInScale,
@@ -43,6 +45,7 @@ export function PianoKey({
   isGlissandoPressed = false,
   isMidiActive = false,
   tabIndex = -1,
+  index = -1,
   onFocus,
   keyRef,
 }: PianoKeyProps) {
@@ -211,7 +214,7 @@ export function PianoKey({
         isInChord ? 'in-chord' : ''
       } ${notInScale ? 'not-in-scale' : ''} ${isMidiActive ? 'midi-active' : ''}`}
       style={{ left: leftPosition }}
-      ref={keyRef}
+      ref={(el) => keyRef?.(index, el)}
       onMouseDown={handleMouseDown}
       onMouseEnter={handleMouseEnter}
       onMouseUp={handleMouseUp}
@@ -221,7 +224,7 @@ export function PianoKey({
       onTouchCancel={handleTouchCancel}
       onKeyDown={handleKeyDown}
       onKeyUp={handleKeyUp}
-      onFocus={onFocus}
+      onFocus={() => onFocus?.(index)}
       onBlur={handleBlur}
       role="button"
       tabIndex={tabIndex}
@@ -234,3 +237,9 @@ export function PianoKey({
     </div>
   );
 }
+
+// Memoized: PianoKey is the hottest render path in the app (re-evaluated per
+// note during MIDI/glissando play). All props are primitives or stable
+// callbacks from Piano, so a shallow prop comparison reliably skips
+// re-rendering keys whose props haven't actually changed.
+export const PianoKey = memo(PianoKeyImpl);

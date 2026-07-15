@@ -20,7 +20,7 @@ Every task that touches `src/` must pass the browser smoke check (see the accept
   - Agent: opus · Effort: M
   - Accept: React DevTools profiler — selecting a chord no longer re-renders `ConfigBar`; only `Piano`/`ChordStrip` subtrees repaint on highlight updates. Then run the browser smoke check (see below). (ROADMAP.md § P2-3)
 
-- [ ] **P2-4 · `React.memo(PianoKey)` + stable `onPress`**
+- [x] **P2-4 · `React.memo(PianoKey)` + stable `onPress`**
   - Scope: `const handleKeyPress = useCallback((freq: number) => audio.playNote(freq), [audio.playNote]);`; `export const PianoKey = React.memo(function PianoKey(props) { ... });`; verify remaining `PianoKey` props are stable (memoize any object/array props in `Piano`).
   - Files: `src/components/PianoKey.tsx`, `src/components/Piano.tsx`
   - Depends on: P2-3 (context split stabilizes the actions/props that feed the keys)

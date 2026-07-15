@@ -3,11 +3,12 @@
     "started_at": "2026-07-15T20:30:00Z",
     "template": "p2-roadmap",
     "status": "running",
-    "last_heartbeat": "2026-07-15T23:45:00Z",
+    "last_heartbeat": "2026-07-15T23:26:42Z",
     "current_task": null,
     "commits": [
         "6b78b0a refactor(state): make settings the single owner of piano/scale toggle flags",
-        "813673d refactor(state): split MusicContext into memoized state and actions contexts"
+        "813673d refactor(state): split MusicContext into memoized state and actions contexts",
+        "PENDING_COMMIT_HASH perf(piano): memoize PianoKey and stabilize its callback props"
     ],
     "tasks": {
         "P2-2": {
@@ -31,11 +32,11 @@
         "P2-4": {
             "title": "React.memo(PianoKey) + stable onPress",
             "agent": "sonnet",
-            "status": "pending",
+            "status": "done",
             "attempts": 0,
             "depends_on": ["P2-3"],
             "last_error": null,
-            "completed_at": null
+            "completed_at": "2026-07-15T23:26:42Z"
         },
         "P2-5": {
             "title": "Hoist PianoPreview out of ChordCard's render body",
