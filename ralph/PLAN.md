@@ -44,7 +44,7 @@ Ordered task queue for the P1 tier of `ROADMAP.md` (core-interaction accessibili
   - Agent: sonnet · Effort: S
   - Accept: a screen reader announces loading start and completion; the progress bar reports its value. (ROADMAP.md § P1-6)
 
-- [ ] **P1-7 · Clear stuck pressed visual state during keyboard navigation**
+- [x] **P1-7 · Clear stuck pressed visual state during keyboard navigation**
   - Scope: user-reported during P1-1 testing — rapidly pressing Enter and arrowing to the next key can leave a key visually "pressed": keydown sets pressed state on key A, focus moves before keyup, so keyup fires on key B and key A never clears. Add an `onBlur` handler on `PianoKey` that clears the keyboard-pressed state (clear on focus loss regardless of which key receives keyup), and verify the keydown `e.repeat` guard + keyup pairing.
   - Files: `src/components/PianoKey.tsx` (and `src/components/Piano.tsx` if the roving-focus logic needs a hook)
   - Depends on: —

@@ -2,8 +2,8 @@
     "session_id": "ralph_p1_20260715",
     "started_at": "2026-07-15T17:43:46Z",
     "template": "p1-roadmap",
-    "status": "running",
-    "last_heartbeat": "2026-07-15T18:07:00Z",
+    "status": "complete",
+    "last_heartbeat": "2026-07-15T19:10:00Z",
     "current_task": null,
     "commits": [
         "df96bba feat(piano): make keys keyboard operable with roving tabindex",
@@ -11,7 +11,8 @@
         "8930a4d fix(a11y): make settings drawer inert when closed with proper dialog semantics",
         "16820a0 fix(a11y): re-enable pinch zoom by dropping viewport zoom restrictions",
         "8542e91 fix(a11y): remove blocking aria-modal from onboarding coach-marks and fix focus",
-        "290c0d1 fix(a11y): add live-region and progressbar semantics to loading overlay"
+        "290c0d1 fix(a11y): add live-region and progressbar semantics to loading overlay",
+        "c475d60 fix(piano): clear stuck pressed state on keyboard focus loss"
     ],
     "tasks": {
         "P1-1": {
@@ -71,11 +72,11 @@
         "P1-7": {
             "title": "Clear stuck pressed visual state during keyboard navigation",
             "agent": "sonnet",
-            "status": "pending",
-            "attempts": 0,
+            "status": "done",
+            "attempts": 1,
             "depends_on": [],
             "last_error": null,
-            "completed_at": null
+            "completed_at": "2026-07-15T19:10:00Z"
         }
     }
 }
