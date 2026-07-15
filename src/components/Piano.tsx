@@ -27,6 +27,12 @@ export function Piano({
   const { state, audio } = useMusic();
   const pianoContainerRef = useRef<HTMLDivElement>(null);
 
+  // Roving tabindex: only one key is a tab stop at a time. `focusedIndex` is the
+  // active key; ArrowLeft/ArrowRight move it. Refs to each key's DOM node let us
+  // move focus programmatically.
+  const [focusedIndex, setFocusedIndex] = useState(0);
+  const keyRefs = useRef<(HTMLDivElement | null)[]>([]);
+
   // Track glissando state (mouse down or touch active)
   const [isGlissandoActive, setIsGlissandoActive] = useState(false);
 
@@ -89,6 +95,27 @@ export function Piano({
   const handleKeyPress = async (frequency: number) => {
     await audio.playNote(frequency);
   };
+
+  // Keep the roving tab stop in bounds when the key count changes (e.g. the
+  // flexible layout adds/removes octaves), so a valid key always has tabIndex 0.
+  useEffect(() => {
+    setFocusedIndex((i) => Math.min(i, keys.length - 1));
+  }, [keys.length]);
+
+  // Arrow-key navigation for the roving tabindex. Handled on the container so a
+  // single listener covers every key; Enter/Space bubble past it untouched.
+  const handleKeyboardNav = useCallback(
+    (e: React.KeyboardEvent) => {
+      if (e.key !== 'ArrowRight' && e.key !== 'ArrowLeft') return;
+      e.preventDefault();
+      const delta = e.key === 'ArrowRight' ? 1 : -1;
+      const next = Math.min(Math.max(focusedIndex + delta, 0), keys.length - 1);
+      if (next === focusedIndex) return;
+      setFocusedIndex(next);
+      keyRefs.current[next]?.focus();
+    },
+    [focusedIndex, keys.length]
+  );
 
   // Touch glissando: play each key the finger slides onto exactly once and mark
   // it as the pressed key. The initial note is played by the key's own
@@ -224,11 +251,17 @@ export function Piano({
         onTouchMove={glissando.handlers.onTouchMove}
         onTouchEnd={glissando.handlers.onTouchEnd}
         onTouchCancel={glissando.handlers.onTouchCancel}
+        onKeyDown={handleKeyboardNav}
       >
-        {keys.map((keyData) => (
+        {keys.map((keyData, index) => (
           <PianoKey
             key={keyData.note}
             keyData={keyData}
+            tabIndex={index === focusedIndex ? 0 : -1}
+            onFocus={() => setFocusedIndex(index)}
+            keyRef={(el) => {
+              keyRefs.current[index] = el;
+            }}
             onPress={handleKeyPress}
             isInScale={scaleNotes.has(keyData.baseNote)}
             isInChord={chordNotes.has(keyData.baseNote)}

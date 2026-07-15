@@ -4,13 +4,13 @@
     "template": "p1-roadmap",
     "status": "running",
     "last_heartbeat": "2026-07-15T17:43:46Z",
-    "current_task": null,
+    "current_task": "P1-1",
     "commits": [],
     "tasks": {
         "P1-1": {
             "title": "Make piano keys keyboard operable",
             "agent": "opus",
-            "status": "pending",
+            "status": "in_progress",
             "attempts": 0,
             "depends_on": [],
             "last_error": null,

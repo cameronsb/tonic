@@ -1,4 +1,11 @@
-import { useState, useCallback, useRef, type MouseEvent, type TouchEvent } from 'react';
+import {
+  useState,
+  useCallback,
+  useRef,
+  type MouseEvent,
+  type TouchEvent,
+  type KeyboardEvent,
+} from 'react';
 import type { PianoKeyData } from '../utils/pianoUtils';
 import { getScaleDegreeNumeral } from '../utils/musicTheory';
 import type { Note } from '../types/music';
@@ -17,6 +24,9 @@ interface PianoKeyProps {
   isGlissandoActive?: boolean; // Whether glissando mode is active (mouse down or touch)
   isGlissandoPressed?: boolean; // Whether this key is the one under the finger during a touch glissando
   isMidiActive?: boolean; // Whether this key is currently pressed via MIDI
+  tabIndex?: number; // Roving tabindex: 0 for the active key, -1 for the rest
+  onFocus?: () => void; // Notify parent so the focused key becomes the roving tab stop
+  keyRef?: (el: HTMLDivElement | null) => void; // Register the DOM node so the parent can move focus
 }
 
 export function PianoKey({
@@ -32,6 +42,9 @@ export function PianoKey({
   isGlissandoActive = false,
   isGlissandoPressed = false,
   isMidiActive = false,
+  tabIndex = -1,
+  onFocus,
+  keyRef,
 }: PianoKeyProps) {
   // Separate mouse and touch tracking for correct multi-touch behavior
   const [isMousePressed, setIsMousePressed] = useState(false);
@@ -134,6 +147,31 @@ export function PianoKey({
     }
   }, []);
 
+  // ===== Keyboard Handlers =====
+  // Enter/Space play the focused key, mirroring a mouse press. `e.repeat` is
+  // guarded so a held key doesn't machine-gun the note. Arrow-key navigation is
+  // handled by the parent Piano (roving tabindex), so those keys bubble up
+  // untouched here.
+
+  const handleKeyDown = useCallback(
+    (e: KeyboardEvent) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        if (e.repeat) return;
+        e.preventDefault();
+        setIsMousePressed(true);
+        playNote();
+      }
+    },
+    [playNote]
+  );
+
+  const handleKeyUp = useCallback((e: KeyboardEvent) => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      setIsMousePressed(false);
+    }
+  }, []);
+
   // Get scale degree numeral if in scale OR if showing labels
   const scaleDegree =
     isInScale || showScaleLabels
@@ -158,6 +196,7 @@ export function PianoKey({
         isInChord ? 'in-chord' : ''
       } ${notInScale ? 'not-in-scale' : ''} ${isMidiActive ? 'midi-active' : ''}`}
       style={{ left: leftPosition }}
+      ref={keyRef}
       onMouseDown={handleMouseDown}
       onMouseEnter={handleMouseEnter}
       onMouseUp={handleMouseUp}
@@ -165,8 +204,11 @@ export function PianoKey({
       onTouchStart={handleTouchStart}
       onTouchEnd={handleTouchEnd}
       onTouchCancel={handleTouchCancel}
+      onKeyDown={handleKeyDown}
+      onKeyUp={handleKeyUp}
+      onFocus={onFocus}
       role="button"
-      tabIndex={0}
+      tabIndex={tabIndex}
       aria-label={`${keyData.note}`}
     >
       <div className="key-label">
