@@ -6,14 +6,14 @@ P2-1 (single `SettingsProvider`) is already complete and merged to main — this
 
 Every task that touches `src/` must pass the browser smoke check (see the acceptance criteria and PROMPT.md's iteration protocol) after `npm run validate` and before commit.
 
-- [ ] **P2-2 · Remove toggle-state duplication between reducer and settings**
+- [x] **P2-2 · Remove toggle-state duplication between reducer and settings**
   - Scope: delete `showInScaleColors`, `keyboardPreviewEnabled`, `scaleViewEnabled` from `MusicState`, their reducer branches, and the seed logic (`MusicContext.tsx:135-140`); consumers read `settings.ui.*` directly from `useSettings()`; toggle actions become thin wrappers over the settings setters (or are deleted in favor of calling the setters directly).
   - Files: `src/contexts/MusicContext.tsx` (and the consumers that read the three flags)
   - Depends on: — (P2-1 already merged to main)
   - Agent: opus · Effort: M
   - Accept: "Reset settings" immediately reverts key highlighting/preview behavior on screen with no remount; grep confirms the three flags exist in exactly one place. Then run the browser smoke check (see below). (ROADMAP.md § P2-2)
 
-- [ ] **P2-3 · Split context into state + actions contexts, memoize both**
+- [x] **P2-3 · Split context into state + actions contexts, memoize both**
   - Scope: create `MusicStateContext` (state + settings-derived values + `audio.loading`) and `MusicActionsContext` (`actions` + stable `audio` functions) in the same file; the actions value is memoized with only stable callbacks in deps so it never changes after mount; export `useMusicState()` / `useMusicActions()`; migrate consumers so action-only consumers (ConfigBar selects) use `useMusicActions()`; keep a compatibility `useMusic()` during migration if useful, then delete it.
   - Files: `src/contexts/MusicContext.tsx` (and the consumers being migrated)
   - Depends on: P2-2 (shrinks the state surface first; P0-2 memoized sub-objects already landed)

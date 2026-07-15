@@ -302,7 +302,7 @@ This document is the prioritized backlog of code-quality, UX, and accessibility 
 **Acceptance:** Grep confirms a single `useLocalStorage` call for settings. Toggling a setting in the drawer updates every consumer in one render. "Reset settings" in one tab resets the other tab. React StrictMode double-render produces no duplicate migration side effects. All existing behavior (drawer toggles, onboarding replay) still works.
 
 <a id="p2-2"></a>
-### - [ ] P2-2 · Remove toggle-state duplication between reducer and settings (M)
+### - [x] P2-2 · Remove toggle-state duplication between reducer and settings (M)
 
 **Problem:** `showInScaleColors`, `keyboardPreviewEnabled`, and `scaleViewEnabled` live in **both** the `MusicContext` reducer (`src/contexts/MusicContext.tsx:13-15,36-38`) and persisted `settings.ui.*` (`src/hooks/useSettings.ts:104-180`). The reducer seeds from settings once (`MusicContext.tsx:135-140`); toggle actions then write to both (`:195-211`).
 
@@ -318,7 +318,7 @@ This document is the prioritized backlog of code-quality, UX, and accessibility 
 **Acceptance:** "Reset settings" immediately reverts key highlighting/preview behavior on screen, with no remount. Grep confirms the three flags exist in exactly one place.
 
 <a id="p2-3"></a>
-### - [ ] P2-3 · Split context into state + actions contexts (M)
+### - [x] P2-3 · Split context into state + actions contexts (M)
 
 **Problem:** Beyond the P0-2 memoization, `MusicProvider` still fans every reducer dispatch out to all consumers — selecting one chord re-renders `Piano` (all keys), `ChordStrip` (all cards), `ConfigBar`, `LearnMode`, `OnboardingOverlay`, and `LoadingOverlay` simultaneously, because state and actions travel in one context value (`src/contexts/MusicContext.tsx:217-240`).
 
