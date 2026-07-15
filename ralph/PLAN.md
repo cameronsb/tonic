@@ -1,45 +1,49 @@
-# Ralph Plan — Tonic P0
+# Ralph Plan — Tonic P1
 
-Ordered task queue for the P0 tier of `ROADMAP.md`. One task per iteration, in this order; full implementation detail and acceptance criteria live in each task's ROADMAP.md section (IDs match). `agent:` names the model assigned to the task.
+Ordered task queue for the P1 tier of `ROADMAP.md` (core-interaction accessibility). One task per iteration, in this order; full implementation detail and acceptance criteria live in each task's ROADMAP.md section (IDs match). `agent:` names the model assigned to the task.
 
-- [x] **P0-1 · Gate the deploy on lint + tests**
-  - Scope: add `npm run validate` as a step before Build in the deploy workflow so red code can't ship.
-  - Files: `.github/workflows/deploy.yml`
-  - Depends on: —
-  - Agent: sonnet · Effort: S
-  - Accept: workflow fails before deploy on a failing test; green push deploys. (Full detail: ROADMAP.md § P0-1)
-
-- [x] **P0-2 · Memoize the context `audio` object and full context value**
-  - Scope: wrap `audio`, `actions`, and the context `value` in `useMemo` so their identities only change when their contents do.
-  - Files: `src/contexts/MusicContext.tsx`
-  - Depends on: —
-  - Agent: opus · Effort: S
-  - Accept: a `useEffect(..., [audio])` probe in a consumer fires only on loading/instrument changes, not per chord selection. (ROADMAP.md § P0-2)
-
-- [x] **P0-3 · Fix MIDI listener leak and re-subscription churn**
-  - Scope: return cleanup synchronously from the effect (not inside `.then`), hold `onNoteOn`/`onNoteOff` in refs, subscribe once with `[]` deps.
-  - Files: `src/hooks/useMidiInput.ts`, `src/components/Piano.tsx`
-  - Depends on: P0-2 (stable `audio` stops the callback identity churn)
-  - Agent: opus · Effort: M
-  - Accept: after several chord selections, one physical key press fires the handler exactly once; UI interaction no longer re-runs the MIDI effect. (ROADMAP.md § P0-3)
-
-- [x] **P0-4 · Fix touch glissando by adopting the existing `useGlissando` hook**
-  - Scope: wire the orphaned `src/hooks/useGlissando.ts` (elementFromPoint-based) into `Piano.tsx`, replacing the inline mouse-only glissando logic; dedupe repeat notes.
-  - Files: `src/components/Piano.tsx`, `src/hooks/useGlissando.ts`
+- [ ] **P1-1 · Make piano keys keyboard operable**
+  - Scope: add `onKeyDown`/`onKeyUp` (Enter/Space, guard `e.repeat`) to `PianoKey`; implement roving tabindex in `Piano` (single tab stop, ArrowLeft/ArrowRight move focus); ensure each key has a meaningful `aria-label`.
+  - Files: `src/components/PianoKey.tsx`, `src/components/Piano.tsx`
   - Depends on: —
   - Agent: opus · Effort: M
-  - Accept: touch-dragging across five keys plays each exactly once with pressed visuals following the finger; mouse drag unchanged. (ROADMAP.md § P0-4)
+  - Accept: Tab reaches the piano once; arrow keys move between keys; Enter/Space plays the focused key with the pressed visual; a screen reader announces each key's note name. (ROADMAP.md § P1-1)
 
-- [x] **P0-5 · Surface soundfont load failure with retry UI**
-  - Scope: add `error` state + `retry()` to `useAudioEngine`, thread through the context `audio` object (add to the P0-2 memo deps), render an error + Retry state in `LoadingOverlay` instead of `null`; gate onboarding audio steps on `!loading && !error`.
-  - Files: `src/hooks/useAudioEngine.ts`, `src/contexts/MusicContext.tsx`, `src/components/LoadingOverlay.tsx`
-  - Depends on: P0-2 (error/retry ride the memoized `audio` object)
-  - Agent: sonnet · Effort: M
-  - Accept: blocking the soundfont CDN yields an error message + working Retry instead of a silent app. (ROADMAP.md § P0-5)
-
-- [x] **P0-6 · Fix borrowed-chord modifier reset bug**
-  - Scope: key `ChordCard`'s modifier-reset effect on stable primitives (`keyRoot`, `mode`, `numeral`) instead of the `baseIntervals` array reference.
+- [ ] **P1-2 · Make chord modifier buttons keyboard operable**
+  - Scope: add `onClick` tap path to modifier buttons (prevent double-fire with the existing pointer handlers), add a keyboard "lock" path (Shift+Enter / Shift+Space mirroring long-press), reflect lock state via `aria-pressed`.
   - Files: `src/components/ChordCard.tsx`
   - Depends on: —
+  - Agent: opus · Effort: M
+  - Accept: keyboard only — Tab to a modifier, Enter plays the modified chord, Shift+Enter locks it (visual + `aria-pressed`), pointer behavior unchanged (no double-plays). (ROADMAP.md § P1-2)
+
+- [ ] **P1-3 · Settings drawer: `inert` when closed, dialog semantics + focus trap when open**
+  - Scope: `inert={!isOpen}` on the drawer `<aside>`; add `role="dialog" aria-modal="true" aria-label="Settings"`; focus close button on open and restore focus to the settings trigger on close; trap Tab within the drawer; close on Escape.
+  - Files: `src/components/ConfigBar.tsx`
+  - Depends on: —
+  - Agent: sonnet · Effort: M
+  - Accept: drawer closed — Tab never lands on drawer controls; opening moves focus into the drawer; Tab cycles within it; Escape closes and returns focus to the settings button. (ROADMAP.md § P1-3)
+
+- [ ] **P1-4 · Re-enable pinch zoom**
+  - Scope: change the viewport meta to `width=device-width, initial-scale=1.0`, dropping `maximum-scale` and `user-scalable=no`.
+  - Files: `index.html`
+  - Depends on: —
   - Agent: sonnet · Effort: S
-  - Accept: a locked modifier on a borrowed chord survives selecting another chord; changing key/mode still clears all cards. (ROADMAP.md § P0-6)
+  - Accept: pinch zoom works on mobile; double-tap on piano keys still doesn't trigger zoom (`touch-action: manipulation` covers interactive surfaces). (ROADMAP.md § P1-4)
+
+- [ ] **P1-5 · Fix onboarding `aria-modal` and focus management**
+  - Scope: remove `aria-modal="true"` from non-blocking coach-mark steps; on step change move focus to the tooltip heading (`tabIndex={-1}` + `.focus()` in an effect keyed on step id); add an `aria-live="polite"` region announcing step title/body.
+  - Files: `src/components/Onboarding/OnboardingOverlay.tsx`
+  - Depends on: —
+  - Agent: sonnet · Effort: S
+  - Accept: during the "select a key" step, background controls remain reachable/operable; advancing a step announces the new instruction and focus lands on the tooltip. (ROADMAP.md § P1-5)
+
+- [ ] **P1-6 · Loading overlay accessibility semantics**
+  - Scope: add `role="status" aria-live="polite"` to the overlay root; add `role="progressbar"` + `aria-valuenow`/`aria-valuemin`/`aria-valuemax` to the progress bar. (Error state from P0-5 already shares this region.)
+  - Files: `src/components/LoadingOverlay.tsx`
+  - Depends on: —
+  - Agent: sonnet · Effort: S
+  - Accept: a screen reader announces loading start and completion; the progress bar reports its value. (ROADMAP.md § P1-6)
+
+---
+
+Completed: P0 tier (see git history / ROADMAP.md).
