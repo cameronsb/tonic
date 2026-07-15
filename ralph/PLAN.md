@@ -34,7 +34,7 @@ Every task that touches `src/` must pass the browser smoke check (see the accept
   - Agent: sonnet · Effort: S
   - Accept: in DevTools Elements panel the preview SVG nodes persist (no flash/recreate) when selecting chords. Then run the browser smoke check (see below). (ROADMAP.md § P2-5)
 
-- [ ] **P2-6 · Memoize chord list computation in `ChordStrip`**
+- [x] **P2-6 · Memoize chord list computation in `ChordStrip`**
   - Scope: `const diatonicChords = useMemo(() => getScaleChords(key, mode), [key, mode]);` and `const borrowedChords = useMemo(() => getBorrowedChords(key, mode), [key, mode]);` in `ChordStrip`; optionally wrap `ChordCard` in `React.memo` once its props are stable.
   - Files: `src/components/ChordStrip.tsx`
   - Depends on: P2-3 (stable context props are what make `ChordCard` memoization effective)

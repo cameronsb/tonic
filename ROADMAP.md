@@ -360,7 +360,7 @@ This document is the prioritized backlog of code-quality, UX, and accessibility 
 **Acceptance:** In DevTools Elements panel, the preview SVG nodes persist (no flash/recreate) when selecting chords.
 
 <a id="p2-6"></a>
-### - [ ] P2-6 · Memoize chord list computation in `ChordStrip` (S)
+### - [x] P2-6 · Memoize chord list computation in `ChordStrip` (S)
 
 **Problem:** `getScaleChords(key, mode)` and `getBorrowedChords(key, mode)` are called unconditionally on every `ChordStrip` render (`src/components/ChordStrip.tsx:17-18`), producing new object arrays each time and feeding unstable props to every `ChordCard`.
 

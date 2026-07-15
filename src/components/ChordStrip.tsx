@@ -1,3 +1,4 @@
+import { useMemo } from 'react';
 import { useMusicState } from '../hooks/useMusic';
 import { useSettings } from '../hooks/useSettings';
 import { getScaleChords, getBorrowedChords } from '../utils/musicTheory';
@@ -14,8 +15,8 @@ export function ChordStrip({ layout = 'default' }: ChordStripProps) {
   const { key, mode } = state;
   const showBorrowed = settings.ui.chordStrip.showBorrowed;
 
-  const diatonicChords = getScaleChords(key, mode);
-  const borrowedChords = getBorrowedChords(key, mode);
+  const diatonicChords = useMemo(() => getScaleChords(key, mode), [key, mode]);
+  const borrowedChords = useMemo(() => getBorrowedChords(key, mode), [key, mode]);
 
   // For sidebar layout, use vertical stack (legacy support)
   if (layout === 'sidebar') {
