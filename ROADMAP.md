@@ -263,7 +263,7 @@ This document is the prioritized backlog of code-quality, UX, and accessibility 
 **Acceptance:** With VoiceOver, during the "select a key" step the piano/config controls remain reachable and operable; advancing a step announces the new instruction and focus lands on the tooltip.
 
 <a id="p1-6"></a>
-### - [ ] P1-6 · Loading overlay accessibility semantics (S)
+### - [x] P1-6 · Loading overlay accessibility semantics (S)
 
 **Problem:** The loading overlay (`src/components/LoadingOverlay.tsx:65-95`) has no `role="status"`/`aria-live`, and the progress bar is a styled `div` with no `role="progressbar"` or value attributes.
 

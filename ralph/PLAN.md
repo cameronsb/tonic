@@ -37,7 +37,7 @@ Ordered task queue for the P1 tier of `ROADMAP.md` (core-interaction accessibili
   - Agent: sonnet · Effort: S
   - Accept: during the "select a key" step, background controls remain reachable/operable; advancing a step announces the new instruction and focus lands on the tooltip. (ROADMAP.md § P1-5)
 
-- [ ] **P1-6 · Loading overlay accessibility semantics**
+- [x] **P1-6 · Loading overlay accessibility semantics**
   - Scope: add `role="status" aria-live="polite"` to the overlay root; add `role="progressbar"` + `aria-valuenow`/`aria-valuemin`/`aria-valuemax` to the progress bar. (Error state from P0-5 already shares this region.)
   - Files: `src/components/LoadingOverlay.tsx`
   - Depends on: —

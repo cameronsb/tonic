@@ -60,7 +60,7 @@ export function LoadingOverlay() {
 
   if (audio.error) {
     return (
-      <div className="loading-overlay">
+      <div className="loading-overlay" role="status" aria-live="polite">
         <div className="loading-content">
           <p className="loading-error-text">{audio.error}</p>
           <button type="button" className="loading-retry-button" onClick={audio.retry}>
@@ -76,7 +76,7 @@ export function LoadingOverlay() {
   }
 
   return (
-    <div className="loading-overlay">
+    <div className="loading-overlay" role="status" aria-live="polite">
       <div className="loading-content">
         <div className="loading-piano">
           <div className="loading-key white"></div>
@@ -92,7 +92,13 @@ export function LoadingOverlay() {
         <div className="loading-info">
           <p className="loading-text">Loading high-quality piano samples...</p>
           <div className="loading-progress-container">
-            <div className="loading-progress-bar">
+            <div
+              className="loading-progress-bar"
+              role="progressbar"
+              aria-valuenow={Math.round(progress)}
+              aria-valuemin={0}
+              aria-valuemax={100}
+            >
               <div className="loading-progress-fill" style={{ width: `${progress}%` }} />
             </div>
             <span className="loading-percentage">{Math.round(progress)}%</span>
