@@ -249,7 +249,7 @@ This document is the prioritized backlog of code-quality, UX, and accessibility 
 **Acceptance:** Pinch zoom works on a mobile device; double-tap on piano keys still doesn't trigger zoom (verify `touch-action: manipulation` covers the interactive surfaces).
 
 <a id="p1-5"></a>
-### - [ ] P1-5 · Fix onboarding `aria-modal` and focus management (S)
+### - [x] P1-5 · Fix onboarding `aria-modal` and focus management (S)
 
 **Problem:** The onboarding overlay is `role="dialog" aria-modal="true"` (`src/components/Onboarding/OnboardingOverlay.tsx:157`) while its container is `pointer-events: none` and the design **requires** interacting with the highlighted background element. `aria-modal="true"` tells assistive tech the rest of the page is inert — the opposite of what a coach-mark needs. Focus also never moves to the tooltip on step changes.
 

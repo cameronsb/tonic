@@ -30,7 +30,7 @@ Ordered task queue for the P1 tier of `ROADMAP.md` (core-interaction accessibili
   - Agent: sonnet · Effort: S
   - Accept: pinch zoom works on mobile; double-tap on piano keys still doesn't trigger zoom (`touch-action: manipulation` covers interactive surfaces). (ROADMAP.md § P1-4)
 
-- [ ] **P1-5 · Fix onboarding `aria-modal` and focus management**
+- [x] **P1-5 · Fix onboarding `aria-modal` and focus management**
   - Scope: remove `aria-modal="true"` from non-blocking coach-mark steps; on step change move focus to the tooltip heading (`tabIndex={-1}` + `.focus()` in an effect keyed on step id); add an `aria-live="polite"` region announcing step title/body.
   - Files: `src/components/Onboarding/OnboardingOverlay.tsx`
   - Depends on: —
