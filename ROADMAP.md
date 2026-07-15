@@ -222,7 +222,7 @@ This document is the prioritized backlog of code-quality, UX, and accessibility 
 **Acceptance:** With keyboard only: Tab to a modifier, Enter plays the modified chord, Shift+Enter locks it (visual + `aria-pressed` update), and pointer behavior is unchanged (no double-plays).
 
 <a id="p1-3"></a>
-### - [ ] P1-3 · Settings drawer: `inert` when closed, dialog semantics + focus trap when open (M)
+### - [x] P1-3 · Settings drawer: `inert` when closed, dialog semantics + focus trap when open (M)
 
 **Problem:** The `<aside className="settings-drawer">` (`src/components/ConfigBar.tsx:101-197`) is always mounted and merely translated off-screen when closed (`src/components/ConfigBar.css:138-159`). Its selects, slider, and buttons remain in the tab order and the SR virtual cursor while invisible. When open, there's no focus trap, no initial focus move, no focus restore, and no `role="dialog"`.
 

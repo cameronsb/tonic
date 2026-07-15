@@ -3,11 +3,12 @@
     "started_at": "2026-07-15T17:43:46Z",
     "template": "p1-roadmap",
     "status": "running",
-    "last_heartbeat": "2026-07-15T17:52:10Z",
-    "current_task": "P1-3",
+    "last_heartbeat": "2026-07-15T17:57:09Z",
+    "current_task": "P1-4",
     "commits": [
         "df96bba feat(piano): make keys keyboard operable with roving tabindex",
-        "32f7b16 feat(chords): make modifier buttons keyboard operable"
+        "32f7b16 feat(chords): make modifier buttons keyboard operable",
+        "8930a4d fix(a11y): make settings drawer inert when closed with proper dialog semantics"
     ],
     "tasks": {
         "P1-1": {
@@ -31,16 +32,16 @@
         "P1-3": {
             "title": "Settings drawer: inert when closed, dialog semantics + focus trap when open",
             "agent": "sonnet",
-            "status": "in_progress",
-            "attempts": 0,
+            "status": "done",
+            "attempts": 1,
             "depends_on": [],
             "last_error": null,
-            "completed_at": null
+            "completed_at": "2026-07-15T17:57:09Z"
         },
         "P1-4": {
             "title": "Re-enable pinch zoom",
             "agent": "sonnet",
-            "status": "pending",
+            "status": "in_progress",
             "attempts": 0,
             "depends_on": [],
             "last_error": null,

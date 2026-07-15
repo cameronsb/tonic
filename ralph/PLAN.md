@@ -16,7 +16,7 @@ Ordered task queue for the P1 tier of `ROADMAP.md` (core-interaction accessibili
   - Agent: opus · Effort: M
   - Accept: keyboard only — Tab to a modifier, Enter plays the modified chord, Shift+Enter locks it (visual + `aria-pressed`), pointer behavior unchanged (no double-plays). (ROADMAP.md § P1-2)
 
-- [ ] **P1-3 · Settings drawer: `inert` when closed, dialog semantics + focus trap when open**
+- [x] **P1-3 · Settings drawer: `inert` when closed, dialog semantics + focus trap when open**
   - Scope: `inert={!isOpen}` on the drawer `<aside>`; add `role="dialog" aria-modal="true" aria-label="Settings"`; focus close button on open and restore focus to the settings trigger on close; trap Tab within the drawer; close on Escape.
   - Files: `src/components/ConfigBar.tsx`
   - Depends on: —
