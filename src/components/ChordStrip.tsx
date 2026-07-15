@@ -1,4 +1,4 @@
-import { useMusic } from '../hooks/useMusic';
+import { useMusicState } from '../hooks/useMusic';
 import { useSettings } from '../hooks/useSettings';
 import { getScaleChords, getBorrowedChords } from '../utils/musicTheory';
 import { ChordCard } from './ChordCard';
@@ -9,7 +9,7 @@ interface ChordStripProps {
 }
 
 export function ChordStrip({ layout = 'default' }: ChordStripProps) {
-  const { state } = useMusic();
+  const { state } = useMusicState();
   const { settings, setShowMiniPreview, setShowBorrowed } = useSettings();
   const { key, mode } = state;
   const showBorrowed = settings.ui.chordStrip.showBorrowed;

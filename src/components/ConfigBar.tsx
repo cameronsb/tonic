@@ -1,5 +1,5 @@
 import { useState, useCallback, useEffect, useRef } from 'react';
-import { useMusic } from '../hooks/useMusic';
+import { useMusicState, useMusicActions } from '../hooks/useMusic';
 import { useSettings } from '../hooks/useSettings';
 import { NOTES } from '../utils/musicTheory';
 import { VolumeSlider } from './VolumeSlider';
@@ -10,7 +10,8 @@ const FOCUSABLE_SELECTOR =
   'a[href], button:not([disabled]), textarea:not([disabled]), input:not([disabled]), select:not([disabled]), [tabindex]:not([tabindex="-1"])';
 
 export function ConfigBar() {
-  const { state, actions } = useMusic();
+  const { state } = useMusicState();
+  const { actions } = useMusicActions();
   const { settings, resetOnboarding, skipOnboarding } = useSettings();
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const settingsButtonRef = useRef<HTMLButtonElement>(null);

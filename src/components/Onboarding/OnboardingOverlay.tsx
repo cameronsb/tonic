@@ -1,6 +1,6 @@
 import { useEffect, useState, useRef, useCallback } from 'react';
 import { useOnboarding } from '../../hooks/useOnboarding';
-import { useMusic } from '../../hooks/useMusic';
+import { useMusicState } from '../../hooks/useMusic';
 import { useSettings } from '../../hooks/useSettings';
 import { OnboardingTooltip } from './OnboardingTooltip';
 import { OnboardingSpotlight } from './OnboardingSpotlight';
@@ -24,7 +24,7 @@ export function OnboardingOverlay() {
     startOnboarding,
   } = useOnboarding();
 
-  const { state: musicState, audio } = useMusic();
+  const { state: musicState, audio } = useMusicState();
   const { settings } = useSettings();
   const [targetRect, setTargetRect] = useState<DOMRect | null>(null);
   const [showHint, setShowHint] = useState(false);

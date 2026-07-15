@@ -1,5 +1,5 @@
 import React, { useMemo, useRef, useState, useEffect, useCallback } from 'react';
-import { useMusic } from '../hooks/useMusic';
+import { useMusicState, useMusicActions } from '../hooks/useMusic';
 import { usePianoLayout } from '../hooks/usePianoLayout';
 import { useMidiInput } from '../hooks/useMidiInput';
 import { useGlissando } from '../hooks/useGlissando';
@@ -24,7 +24,8 @@ export function Piano({
   flexible = true,
   adjustHeight = false,
 }: PianoProps) {
-  const { state, settings, audio } = useMusic();
+  const { state, settings } = useMusicState();
+  const { audio } = useMusicActions();
   const pianoContainerRef = useRef<HTMLDivElement>(null);
 
   // Roving tabindex: only one key is a tab stop at a time. `focusedIndex` is the

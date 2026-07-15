@@ -2,14 +2,14 @@ import { useCallback, useEffect } from 'react';
 import { Piano } from './Piano';
 import { ChordStrip } from './ChordStrip';
 import { useSettings } from '../hooks/useSettings';
-import { useMusic } from '../hooks/useMusic';
+import { useMusicActions } from '../hooks/useMusic';
 import { useResizable } from '../hooks/useResizable';
 import { SIZES } from '../config';
 import './LearnMode.css';
 
 export function LearnMode() {
   const { settings, setLearnTabletPianoHeight } = useSettings();
-  const { actions } = useMusic();
+  const { actions } = useMusicActions();
 
   // Resizable piano height
   const handlePianoResize = useCallback(

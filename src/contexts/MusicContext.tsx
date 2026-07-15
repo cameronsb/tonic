@@ -69,17 +69,29 @@ function musicReducer(state: MusicState, action: MusicAction): MusicState {
   }
 }
 
-interface MusicContextType {
+// State that changes over the app's lifetime — anything here re-renders its
+// consumers when it updates. Audio load-status (`loading`/`error`) and the live
+// audio handles live here because they change as the soundfont loads.
+export interface MusicStateContextType {
   state: MusicState;
   settings: UserSettings;
   audio: {
-    playNote: (frequency: number, duration?: number, volume?: number) => Promise<void>;
-    playChord: (frequencies: number[], duration?: number, volume?: number) => Promise<void>;
     loading: boolean;
     error: string | null;
-    retry: () => void;
     audioContext: AudioContext | null;
     instrument: Player | null;
+  };
+}
+
+// Stable callbacks only. This value is memoized so it never changes after mount,
+// letting action-only consumers (e.g. ConfigBar's selects) skip re-renders when
+// state changes. The audio functions here are stable playback triggers, kept
+// separate from the load-status values above.
+export interface MusicActionsContextType {
+  audio: {
+    playNote: (frequency: number, duration?: number, volume?: number) => Promise<void>;
+    playChord: (frequencies: number[], duration?: number, volume?: number) => Promise<void>;
+    retry: () => void;
   };
   actions: {
     selectKey: (key: Note) => void;
@@ -95,7 +107,9 @@ interface MusicContextType {
 }
 
 // eslint-disable-next-line react-refresh/only-export-components
-export const MusicContext = createContext<MusicContextType | undefined>(undefined);
+export const MusicStateContext = createContext<MusicStateContextType | undefined>(undefined);
+// eslint-disable-next-line react-refresh/only-export-components
+export const MusicActionsContext = createContext<MusicActionsContextType | undefined>(undefined);
 
 interface MusicProviderProps {
   children: ReactNode;
@@ -185,17 +199,27 @@ export function MusicProvider({ children }: MusicProviderProps) {
     dispatch({ type: 'SET_PIANO_RANGE', payload: { startMidi, endMidi } });
   }, []);
 
-  const audio = useMemo(
+  // Load-status half of audio — changes as the soundfont loads/errors, so it
+  // belongs with state rather than the stable actions value.
+  const audioStatus = useMemo(
     () => ({
-      playNote,
-      playChord,
       loading,
       error,
-      retry,
       audioContext,
       instrument,
     }),
-    [playNote, playChord, loading, error, retry, audioContext, instrument]
+    [loading, error, audioContext, instrument]
+  );
+
+  // Playback half of audio — stable triggers grouped with the actions so
+  // consumers that only fire notes/chords don't re-render on state changes.
+  const audioControls = useMemo(
+    () => ({
+      playNote,
+      playChord,
+      retry,
+    }),
+    [playNote, playChord, retry]
   );
 
   const actions = useMemo(
@@ -223,15 +247,26 @@ export function MusicProvider({ children }: MusicProviderProps) {
     ]
   );
 
-  const value: MusicContextType = useMemo(
+  const stateValue: MusicStateContextType = useMemo(
     () => ({
       state,
       settings,
-      audio,
-      actions,
+      audio: audioStatus,
     }),
-    [state, settings, audio, actions]
+    [state, settings, audioStatus]
   );
 
-  return <MusicContext.Provider value={value}>{children}</MusicContext.Provider>;
+  const actionsValue: MusicActionsContextType = useMemo(
+    () => ({
+      audio: audioControls,
+      actions,
+    }),
+    [audioControls, actions]
+  );
+
+  return (
+    <MusicActionsContext.Provider value={actionsValue}>
+      <MusicStateContext.Provider value={stateValue}>{children}</MusicStateContext.Provider>
+    </MusicActionsContext.Provider>
+  );
 }

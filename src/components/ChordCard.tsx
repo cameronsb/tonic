@@ -7,7 +7,7 @@ import {
   type KeyboardEvent,
   type MouseEvent,
 } from 'react';
-import { useMusic } from '../hooks/useMusic';
+import { useMusicState, useMusicActions } from '../hooks/useMusic';
 import {
   getFullChordName,
   getChordDisplayName,
@@ -43,7 +43,8 @@ export function ChordCard({
   mode,
   showPreview = true,
 }: ChordCardProps) {
-  const { audio, actions, state } = useMusic();
+  const { state } = useMusicState();
+  const { audio, actions } = useMusicActions();
 
   // Locked modifiers persist until explicitly unlocked via long-press
   const [lockedModifiers, setLockedModifiers] = useState<Set<string>>(new Set());

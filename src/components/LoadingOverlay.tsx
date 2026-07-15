@@ -1,4 +1,4 @@
-import { useMusic } from '../hooks/useMusic';
+import { useMusicState, useMusicActions } from '../hooks/useMusic';
 import { useState, useEffect } from 'react';
 import './LoadingOverlay.css';
 
@@ -16,7 +16,10 @@ const MUSIC_TIPS = [
 ];
 
 export function LoadingOverlay() {
-  const { audio } = useMusic();
+  const { audio } = useMusicState();
+  const {
+    audio: { retry },
+  } = useMusicActions();
   const [progress, setProgress] = useState(0);
   const [currentTip, setCurrentTip] = useState(0);
 
@@ -63,7 +66,7 @@ export function LoadingOverlay() {
       <div className="loading-overlay" role="status" aria-live="polite">
         <div className="loading-content">
           <p className="loading-error-text">{audio.error}</p>
-          <button type="button" className="loading-retry-button" onClick={audio.retry}>
+          <button type="button" className="loading-retry-button" onClick={retry}>
             Retry
           </button>
         </div>
