@@ -152,6 +152,23 @@
   transform: scale(1.1);
 }
 
+/* Focus styles */
+.volume-slider-input:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+  border-radius: 3px;
+}
+
+.volume-slider-input:focus-visible::-webkit-slider-thumb {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.volume-slider-input:focus-visible::-moz-range-thumb {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
 .volume-slider-value {
   font-size: 11px;
   font-weight: 600;
