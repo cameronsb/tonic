@@ -1,14 +1,4 @@
-import type { Note } from '../types/music';
-
-export interface PianoKeyData {
-  note: string; // e.g., "C4", "C#4"
-  baseNote: Note; // e.g., "C", "C#"
-  octave: number;
-  midiNumber: number;
-  frequency: number;
-  isBlack: boolean;
-  whiteKeyIndex: number; // Index among white keys only (for white keys) or left white key (for black keys)
-}
+import type { Note, PianoKeyData } from '../types/music';
 
 const BLACK_KEY_PATTERN = [
   false,

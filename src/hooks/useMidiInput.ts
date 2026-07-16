@@ -1,4 +1,4 @@
-import { useEffect, useRef, useCallback, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 interface MidiInputOptions {
   onNoteOn?: (midiNote: number, velocity: number) => void;
@@ -25,7 +25,7 @@ interface MIDIAccess {
 
 export function useMidiInput({ onNoteOn, onNoteOff }: MidiInputOptions) {
   const [midiAccess, setMidiAccess] = useState<MIDIAccess | null>(null);
-  const [isSupported, setIsSupported] = useState(false);
+  const [, setIsSupported] = useState(false);
   const [devices, setDevices] = useState<string[]>([]);
   const activeNotesRef = useRef<Set<number>>(new Set());
 
@@ -119,17 +119,8 @@ export function useMidiInput({ onNoteOn, onNoteOff }: MidiInputOptions) {
     };
   }, []);
 
-  const stopAllNotes = useCallback(() => {
-    activeNotesRef.current.forEach((note) => {
-      onNoteOffRef.current?.(note);
-    });
-    activeNotesRef.current.clear();
-  }, []);
-
   return {
-    isSupported,
     isConnected: midiAccess !== null && devices.length > 0,
     devices,
-    stopAllNotes,
   };
 }

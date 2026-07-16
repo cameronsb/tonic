@@ -10,27 +10,17 @@ interface MusicState {
   key: Note;
   mode: Mode;
   selectedChords: SelectedChord[];
-  pianoRange: {
-    startMidi: number;
-    endMidi: number;
-  };
 }
 
 type MusicAction =
   | { type: 'SELECT_KEY'; payload: Note }
   | { type: 'SET_MODE'; payload: Mode }
-  | { type: 'SELECT_CHORD'; payload: SelectedChord }
-  | { type: 'DESELECT_CHORDS' }
-  | { type: 'SET_PIANO_RANGE'; payload: { startMidi: number; endMidi: number } };
+  | { type: 'SELECT_CHORD'; payload: SelectedChord };
 
 const initialState: MusicState = {
   key: 'C',
   mode: 'major',
   selectedChords: [],
-  pianoRange: {
-    startMidi: 60,
-    endMidi: 83,
-  },
 };
 
 function musicReducer(state: MusicState, action: MusicAction): MusicState {
@@ -53,15 +43,6 @@ function musicReducer(state: MusicState, action: MusicAction): MusicState {
       return {
         ...state,
         selectedChords: [action.payload],
-      };
-
-    case 'DESELECT_CHORDS':
-      return { ...state, selectedChords: [] };
-
-    case 'SET_PIANO_RANGE':
-      return {
-        ...state,
-        pianoRange: action.payload,
       };
 
     default:
@@ -97,11 +78,8 @@ export interface MusicActionsContextType {
     selectKey: (key: Note) => void;
     setMode: (mode: Mode) => void;
     selectChord: (rootNote: Note, intervals: number[], numeral: string) => void;
-    deselectChords: () => void;
-    toggleScaleView: () => void;
     toggleChordHighlight: () => void;
     toggleInScaleColors: () => void;
-    setPianoRange: (startMidi: number, endMidi: number) => void;
     setMasterVolume: (volume: number) => void;
   };
 }
@@ -116,13 +94,8 @@ interface MusicProviderProps {
 }
 
 export function MusicProvider({ children }: MusicProviderProps) {
-  const {
-    settings,
-    setMasterVolume,
-    setShowInScaleColors,
-    setKeyboardPreviewEnabled,
-    setScaleViewEnabled,
-  } = useSettings();
+  const { settings, setMasterVolume, setShowInScaleColors, setKeyboardPreviewEnabled } =
+    useSettings();
 
   const [state, dispatch] = useReducer(musicReducer, initialState);
 
@@ -177,16 +150,8 @@ export function MusicProvider({ children }: MusicProviderProps) {
     []
   );
 
-  const deselectChords = useCallback(() => {
-    dispatch({ type: 'DESELECT_CHORDS' });
-  }, []);
-
   // Toggle actions are thin wrappers over the persisted settings setters —
   // `settings.ui.*` is the single source of truth for these flags.
-  const toggleScaleView = useCallback(() => {
-    setScaleViewEnabled(!settings.ui.scale.viewEnabled);
-  }, [settings.ui.scale.viewEnabled, setScaleViewEnabled]);
-
   const toggleChordHighlight = useCallback(() => {
     setKeyboardPreviewEnabled(!settings.ui.piano.keyboardPreviewEnabled);
   }, [settings.ui.piano.keyboardPreviewEnabled, setKeyboardPreviewEnabled]);
@@ -194,10 +159,6 @@ export function MusicProvider({ children }: MusicProviderProps) {
   const toggleInScaleColors = useCallback(() => {
     setShowInScaleColors(!settings.ui.piano.showInScaleColors);
   }, [settings.ui.piano.showInScaleColors, setShowInScaleColors]);
-
-  const setPianoRange = useCallback((startMidi: number, endMidi: number) => {
-    dispatch({ type: 'SET_PIANO_RANGE', payload: { startMidi, endMidi } });
-  }, []);
 
   // Load-status half of audio — changes as the soundfont loads/errors, so it
   // belongs with state rather than the stable actions value.
@@ -227,24 +188,11 @@ export function MusicProvider({ children }: MusicProviderProps) {
       selectKey,
       setMode,
       selectChord,
-      deselectChords,
-      toggleScaleView,
       toggleChordHighlight,
       toggleInScaleColors,
-      setPianoRange,
       setMasterVolume,
     }),
-    [
-      selectKey,
-      setMode,
-      selectChord,
-      deselectChords,
-      toggleScaleView,
-      toggleChordHighlight,
-      toggleInScaleColors,
-      setPianoRange,
-      setMasterVolume,
-    ]
+    [selectKey, setMode, selectChord, toggleChordHighlight, toggleInScaleColors, setMasterVolume]
   );
 
   const stateValue: MusicStateContextType = useMemo(

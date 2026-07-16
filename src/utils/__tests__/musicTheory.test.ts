@@ -16,8 +16,6 @@ import {
   getScaleNotes,
   getScaleDegreeLabel,
   midiToFrequency,
-  midiToNoteName,
-  noteToMidi,
   getScaleChords,
   getChordTypeFromIntervals,
   isNoteInScale,
@@ -297,68 +295,6 @@ describe('midiToFrequency', () => {
 
   it('returns approximately 4186 Hz for MIDI 108 (C8, highest piano key)', () => {
     expect(midiToFrequency(108)).toBeCloseTo(4186.01, 0);
-  });
-});
-
-describe('midiToNoteName', () => {
-  it('returns C4 for MIDI 60 (middle C)', () => {
-    expect(midiToNoteName(60)).toBe('C4');
-  });
-
-  it('returns A4 for MIDI 69 (concert A)', () => {
-    expect(midiToNoteName(69)).toBe('A4');
-  });
-
-  it('returns A0 for MIDI 21 (lowest piano key)', () => {
-    expect(midiToNoteName(21)).toBe('A0');
-  });
-
-  it('returns C8 for MIDI 108 (highest piano key)', () => {
-    expect(midiToNoteName(108)).toBe('C8');
-  });
-
-  it('returns correct sharp note names', () => {
-    expect(midiToNoteName(61)).toBe('C#4');
-    expect(midiToNoteName(70)).toBe('A#4');
-  });
-
-  it('handles octave boundaries correctly', () => {
-    expect(midiToNoteName(59)).toBe('B3');
-    expect(midiToNoteName(60)).toBe('C4');
-    expect(midiToNoteName(71)).toBe('B4');
-    expect(midiToNoteName(72)).toBe('C5');
-  });
-});
-
-describe('noteToMidi', () => {
-  it('returns 60 for C4 (middle C)', () => {
-    expect(noteToMidi('C4')).toBe(60);
-  });
-
-  it('returns 69 for A4 (concert A)', () => {
-    expect(noteToMidi('A4')).toBe(69);
-  });
-
-  it('returns 21 for A0 (lowest piano key)', () => {
-    expect(noteToMidi('A0')).toBe(21);
-  });
-
-  it('returns 108 for C8 (highest piano key)', () => {
-    expect(noteToMidi('C8')).toBe(108);
-  });
-
-  it('handles sharp notes correctly', () => {
-    expect(noteToMidi('C#4')).toBe(61);
-    expect(noteToMidi('F#4')).toBe(66);
-  });
-
-  // Round-trip test: noteToMidi(midiToNoteName(n)) === n
-  it('round-trips correctly with midiToNoteName', () => {
-    const testMidiNumbers = [21, 60, 69, 72, 108];
-    testMidiNumbers.forEach((midi) => {
-      const noteName = midiToNoteName(midi);
-      expect(noteToMidi(noteName)).toBe(midi);
-    });
   });
 });
 

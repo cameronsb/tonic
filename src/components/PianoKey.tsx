@@ -7,9 +7,8 @@ import {
   type TouchEvent,
   type KeyboardEvent,
 } from 'react';
-import type { PianoKeyData } from '../utils/pianoUtils';
 import { getScaleDegreeNumeral } from '../utils/musicTheory';
-import type { Note } from '../types/music';
+import type { Note, PianoKeyData } from '../types/music';
 import './PianoKey.css';
 
 interface PianoKeyProps {

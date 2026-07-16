@@ -22,16 +22,13 @@ export interface FrequencyMap {
 }
 
 export interface PianoKeyData {
-  note: NoteWithOctave;
-  baseNote: Note;
-  displayName?: string; // Enharmonic spelling based on current key context
-  angle: number;
-  x: number;
-  y: number;
-  isBlack: boolean;
+  note: string; // e.g., "C4", "C#4"
+  baseNote: Note; // e.g., "C", "C#"
   octave: number;
-  midiNumber: number; // MIDI note number (A0=21, C8=108)
-  frequency: number; // Exact frequency in Hz
+  midiNumber: number;
+  frequency: number;
+  isBlack: boolean;
+  whiteKeyIndex: number; // Index among white keys only (for white keys) or left white key (for black keys)
 }
 
 export interface SelectedChord {

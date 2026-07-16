@@ -3,14 +3,14 @@
     "started_at": "2026-07-16T19:00:00Z",
     "template": "p4-roadmap",
     "status": "running",
-    "last_heartbeat": "2026-07-16T19:00:00Z",
-    "current_task": null,
+    "last_heartbeat": "2026-07-16T19:10:00Z",
+    "current_task": "P4-1",
     "commits": [],
     "tasks": {
         "P4-1": {
             "title": "Delete dead code (88-key subsystem, dead context/midi surface, dead CSS, broken scripts, lint-staged)",
             "agent": "opus",
-            "status": "pending",
+            "status": "in_progress",
             "attempts": 0,
             "depends_on": [],
             "last_error": null,
