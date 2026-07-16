@@ -4,7 +4,7 @@
     "template": "p4-roadmap",
     "status": "running",
     "last_heartbeat": "2026-07-16T19:20:57Z",
-    "current_task": null,
+    "current_task": "P4-3",
     "commits": [
         "456e4e4 refactor: delete dead code (88-key subsystem, dead context/midi surface, sidebar CSS, broken scripts)",
         "5dd9e65 fix(audio): consolidate equal-temperament formula into midiToFrequency"
@@ -31,7 +31,7 @@
         "P4-3": {
             "title": "Move domain data into config/; table-drive getBorrowedChords",
             "agent": "opus",
-            "status": "pending",
+            "status": "in_progress",
             "attempts": 0,
             "depends_on": ["P4-1"],
             "last_error": null,

@@ -27,27 +27,27 @@ describe('getBorrowedChords', () => {
       });
     });
 
-    it('bVI is Ab major', () => {
+    it('♭VI is Ab major', () => {
       expect(borrowed).toContainEqual({
-        numeral: 'bVI',
+        numeral: '♭VI',
         rootNote: 'G#',
         intervals: [0, 4, 7],
         type: 'maj',
       });
     });
 
-    it('bVII is Bb major', () => {
+    it('♭VII is Bb major', () => {
       expect(borrowed).toContainEqual({
-        numeral: 'bVII',
+        numeral: '♭VII',
         rootNote: 'A#',
         intervals: [0, 4, 7],
         type: 'maj',
       });
     });
 
-    it('bIII is Eb major', () => {
+    it('♭III is Eb major', () => {
       expect(borrowed).toContainEqual({
-        numeral: 'bIII',
+        numeral: '♭III',
         rootNote: 'D#',
         intervals: [0, 4, 7],
         type: 'maj',

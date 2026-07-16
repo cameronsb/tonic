@@ -1,90 +1,12 @@
-import type { Note, Mode, ChordData, ChordType } from '../types/music';
+import type { Note, Mode, ChordType } from '../types/music';
 import type { ModifierLabel } from '../types/chords';
+import { NOTES, SCALES, MAJOR_SCALE_SPELLINGS, MINOR_SCALE_SPELLINGS } from '../config/scales';
+import { CHORD_TYPES } from '../config/diatonicChords';
 
-export const NOTES: Note[] = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
-
-export const SCALES = {
-  major: [0, 2, 4, 5, 7, 9, 11],
-  minor: [0, 2, 3, 5, 7, 8, 10],
-};
-
-// Standard major scale spellings for all 12 tonics
-// Using circle of fifths conventions: sharp keys use sharps, flat keys use flats
-// Each scale must use each letter name exactly once (C-D-E-F-G-A-B)
-export const MAJOR_SCALE_SPELLINGS: Record<Note, string[]> = {
-  C: ['C', 'D', 'E', 'F', 'G', 'A', 'B'],
-  'C#': ['Db', 'Eb', 'F', 'Gb', 'Ab', 'Bb', 'C'], // Db major (5 flats)
-  D: ['D', 'E', 'F#', 'G', 'A', 'B', 'C#'],
-  'D#': ['Eb', 'F', 'G', 'Ab', 'Bb', 'C', 'D'], // Eb major (3 flats)
-  E: ['E', 'F#', 'G#', 'A', 'B', 'C#', 'D#'],
-  F: ['F', 'G', 'A', 'Bb', 'C', 'D', 'E'],
-  'F#': ['F#', 'G#', 'A#', 'B', 'C#', 'D#', 'E#'], // F# major (6 sharps)
-  G: ['G', 'A', 'B', 'C', 'D', 'E', 'F#'],
-  'G#': ['Ab', 'Bb', 'C', 'Db', 'Eb', 'F', 'G'], // Ab major (4 flats)
-  A: ['A', 'B', 'C#', 'D', 'E', 'F#', 'G#'],
-  'A#': ['Bb', 'C', 'D', 'Eb', 'F', 'G', 'A'], // Bb major (2 flats)
-  B: ['B', 'C#', 'D#', 'E', 'F#', 'G#', 'A#'],
-};
-
-// Standard natural minor scale spellings for all 12 tonics
-// Minor keys use the same key signature as their relative major
-export const MINOR_SCALE_SPELLINGS: Record<Note, string[]> = {
-  C: ['C', 'D', 'Eb', 'F', 'G', 'Ab', 'Bb'], // C minor (3 flats, relative to Eb major)
-  'C#': ['C#', 'D#', 'E', 'F#', 'G#', 'A', 'B'], // C# minor (4 sharps, relative to E major)
-  D: ['D', 'E', 'F', 'G', 'A', 'Bb', 'C'], // D minor (1 flat, relative to F major)
-  'D#': ['Eb', 'F', 'Gb', 'Ab', 'Bb', 'Cb', 'Db'], // Eb minor (6 flats, relative to Gb major)
-  E: ['E', 'F#', 'G', 'A', 'B', 'C', 'D'], // E minor (1 sharp, relative to G major)
-  F: ['F', 'G', 'Ab', 'Bb', 'C', 'Db', 'Eb'], // F minor (4 flats, relative to Ab major)
-  'F#': ['F#', 'G#', 'A', 'B', 'C#', 'D', 'E'], // F# minor (3 sharps, relative to A major)
-  G: ['G', 'A', 'Bb', 'C', 'D', 'Eb', 'F'], // G minor (2 flats, relative to Bb major)
-  'G#': ['G#', 'A#', 'B', 'C#', 'D#', 'E', 'F#'], // G# minor (5 sharps, relative to B major)
-  A: ['A', 'B', 'C', 'D', 'E', 'F', 'G'], // A minor (0 sharps/flats, relative to C major)
-  'A#': ['Bb', 'C', 'Db', 'Eb', 'F', 'Gb', 'Ab'], // Bb minor (5 flats, relative to Db major)
-  B: ['B', 'C#', 'D', 'E', 'F#', 'G', 'A'], // B minor (2 sharps, relative to D major)
-};
-
-export const CHORD_TYPES: Record<Mode, ChordData> = {
-  major: {
-    triads: [
-      { numeral: 'I', type: 'maj', intervals: [0, 4, 7] },
-      { numeral: 'ii', type: 'min', intervals: [0, 3, 7] },
-      { numeral: 'iii', type: 'min', intervals: [0, 3, 7] },
-      { numeral: 'IV', type: 'maj', intervals: [0, 4, 7] },
-      { numeral: 'V', type: 'maj', intervals: [0, 4, 7] },
-      { numeral: 'vi', type: 'min', intervals: [0, 3, 7] },
-      { numeral: 'vii°', type: 'dim', intervals: [0, 3, 6] },
-    ],
-    sevenths: [
-      { numeral: 'Imaj7', type: 'maj7', intervals: [0, 4, 7, 11] },
-      { numeral: 'ii7', type: 'min7', intervals: [0, 3, 7, 10] },
-      { numeral: 'iii7', type: 'min7', intervals: [0, 3, 7, 10] },
-      { numeral: 'IVmaj7', type: 'maj7', intervals: [0, 4, 7, 11] },
-      { numeral: 'V7', type: 'dom7', intervals: [0, 4, 7, 10] },
-      { numeral: 'vi7', type: 'min7', intervals: [0, 3, 7, 10] },
-      { numeral: 'viiø7', type: 'half-dim7', intervals: [0, 3, 6, 10] },
-    ],
-  },
-  minor: {
-    triads: [
-      { numeral: 'i', type: 'min', intervals: [0, 3, 7] },
-      { numeral: 'ii°', type: 'dim', intervals: [0, 3, 6] },
-      { numeral: 'III', type: 'maj', intervals: [0, 4, 7] },
-      { numeral: 'iv', type: 'min', intervals: [0, 3, 7] },
-      { numeral: 'v', type: 'min', intervals: [0, 3, 7] },
-      { numeral: 'VI', type: 'maj', intervals: [0, 4, 7] },
-      { numeral: 'VII', type: 'maj', intervals: [0, 4, 7] },
-    ],
-    sevenths: [
-      { numeral: 'i7', type: 'min7', intervals: [0, 3, 7, 10] },
-      { numeral: 'iiø7', type: 'half-dim7', intervals: [0, 3, 6, 10] },
-      { numeral: 'IIImaj7', type: 'maj7', intervals: [0, 4, 7, 11] },
-      { numeral: 'iv7', type: 'min7', intervals: [0, 3, 7, 10] },
-      { numeral: 'v7', type: 'min7', intervals: [0, 3, 7, 10] },
-      { numeral: 'VImaj7', type: 'maj7', intervals: [0, 4, 7, 11] },
-      { numeral: 'VII7', type: 'dom7', intervals: [0, 4, 7, 10] },
-    ],
-  },
-};
+// The static domain-data tables now live in `config/` (config/ = data,
+// utils/ = behavior). Re-export them here so existing consumers that import
+// these constants from `musicTheory` continue to resolve.
+export { NOTES, SCALES, MAJOR_SCALE_SPELLINGS, MINOR_SCALE_SPELLINGS, CHORD_TYPES };
 
 export function getChordName(rootNote: Note, scaleType: Mode, degree: number): Note {
   const noteIndex = NOTES.indexOf(rootNote);
@@ -347,102 +269,49 @@ export function getScaleChords(rootNote: Note, mode: Mode) {
 }
 
 /**
- * Get common borrowed chords from parallel key (modal interchange)
+ * Borrowed-chord tables for modal interchange, keyed by the mode you are
+ * borrowing INTO. Each entry carries only numeral/offset/quality data; the
+ * concrete root note is computed at call time as
+ * `NOTES[(rootIndex + semitoneOffset) % 12]`. Table-driven so every borrowed
+ * chord is defined once, in one shape, rather than as hand-copied push blocks.
+ */
+const BORROWED_CHORDS: Record<
+  Mode,
+  Array<{ numeral: string; semitoneOffset: number; intervals: number[]; type: ChordType }>
+> = {
+  // Borrowing from the parallel minor. Numerals use the ♭ glyph to match the
+  // accidental notation used elsewhere in the app (e.g. getScaleDegreeLabel).
+  major: [
+    { numeral: 'iv', semitoneOffset: 5, intervals: [0, 3, 7], type: 'min' }, // minor four — emotional depth
+    { numeral: '♭VI', semitoneOffset: 8, intervals: [0, 4, 7], type: 'maj' }, // flat six — dreamy, Beatles-esque
+    { numeral: '♭VII', semitoneOffset: 10, intervals: [0, 4, 7], type: 'maj' }, // flat seven — modal/rock sound
+    { numeral: '♭III', semitoneOffset: 3, intervals: [0, 4, 7], type: 'maj' }, // flat three — Phrygian flavor
+  ],
+  // Borrowing from the parallel MAJOR (true modal interchange): each chord is
+  // diatonic to the parallel major key, so its quality matches that major
+  // scale — I and IV are major, vi is minor, vii° is diminished (not four
+  // major triads).
+  minor: [
+    { numeral: 'I', semitoneOffset: 0, intervals: [0, 4, 7], type: 'maj' }, // Picardy tonic — bright major on the tonic
+    { numeral: 'IV', semitoneOffset: 5, intervals: [0, 4, 7], type: 'maj' }, // major four — brightness
+    { numeral: 'vi', semitoneOffset: 9, intervals: [0, 3, 7], type: 'min' }, // minor triad on the raised (major-scale) 6th degree
+    { numeral: 'vii°', semitoneOffset: 11, intervals: [0, 3, 6], type: 'dim' }, // leading-tone diminished triad
+  ],
+};
+
+/**
+ * Get common borrowed chords from the parallel key (modal interchange).
  */
 export function getBorrowedChords(rootNote: Note, mode: Mode) {
   const rootIndex = NOTES.indexOf(rootNote);
-  // Every root below is NOTES[(rootIndex + n) % 12]; the % 12 keeps the index
-  // within 0-11, so each lookup is always in range of the 12-element NOTES array.
-  const borrowedChords: Array<{
-    numeral: string;
-    rootNote: Note;
-    intervals: number[];
-    type: ChordType;
-  }> = [];
-
-  if (mode === 'major') {
-    // Borrowing from parallel minor
-    // iv chord (minor four) - adds emotional depth
-    const ivRoot = NOTES[(rootIndex + 5) % 12]!;
-    borrowedChords.push({
-      numeral: 'iv',
-      rootNote: ivRoot,
-      intervals: [0, 3, 7],
-      type: 'min',
-    });
-
-    // bVI chord (flat six) - dreamy, Beatles-esque
-    const bVIRoot = NOTES[(rootIndex + 8) % 12]!;
-    borrowedChords.push({
-      numeral: 'bVI',
-      rootNote: bVIRoot,
-      intervals: [0, 4, 7],
-      type: 'maj',
-    });
-
-    // bVII chord (flat seven) - modal/rock sound
-    const bVIIRoot = NOTES[(rootIndex + 10) % 12]!;
-    borrowedChords.push({
-      numeral: 'bVII',
-      rootNote: bVIIRoot,
-      intervals: [0, 4, 7],
-      type: 'maj',
-    });
-
-    // bIII chord (flat three) - Phrygian flavor
-    const bIIIRoot = NOTES[(rootIndex + 3) % 12]!;
-    borrowedChords.push({
-      numeral: 'bIII',
-      rootNote: bIIIRoot,
-      intervals: [0, 4, 7],
-      type: 'maj',
-    });
-  } else {
-    // Borrowing from parallel major (true modal interchange): each chord below
-    // is diatonic to the parallel MAJOR key, so its quality matches that major
-    // scale — I and IV are major, vi is minor, vii° is diminished. (Not every
-    // triad is major: only I, IV, and V are, so the parallel-major set here is
-    // the major/minor/diminished mix of the major scale, not four major triads.)
-
-    // I chord (major tonic) - the Picardy third: a bright major color on the
-    // tonic in place of the diatonic minor i.
-    const IRoot = NOTES[(rootIndex + 0) % 12]!;
-    borrowedChords.push({
-      numeral: 'I',
-      rootNote: IRoot,
-      intervals: [0, 4, 7],
-      type: 'maj',
-    });
-
-    // IV chord (major four) - brightness
-    const IVRoot = NOTES[(rootIndex + 5) % 12]!;
-    borrowedChords.push({
-      numeral: 'IV',
-      rootNote: IVRoot,
-      intervals: [0, 4, 7],
-      type: 'maj',
-    });
-
-    // vi chord (minor six) - minor triad on the raised (major-scale) 6th degree
-    const viRoot = NOTES[(rootIndex + 9) % 12]!;
-    borrowedChords.push({
-      numeral: 'vi',
-      rootNote: viRoot,
-      intervals: [0, 3, 7],
-      type: 'min',
-    });
-
-    // vii° chord (diminished seven) - leading-tone diminished triad
-    const viiRoot = NOTES[(rootIndex + 11) % 12]!;
-    borrowedChords.push({
-      numeral: 'vii°',
-      rootNote: viiRoot,
-      intervals: [0, 3, 6],
-      type: 'dim',
-    });
-  }
-
-  return borrowedChords;
+  // Each root is NOTES[(rootIndex + semitoneOffset) % 12]; the % 12 keeps the
+  // index within 0-11, so every lookup is in range of the 12-element NOTES array.
+  return BORROWED_CHORDS[mode].map((chord) => ({
+    numeral: chord.numeral,
+    rootNote: NOTES[(rootIndex + chord.semitoneOffset) % 12]!,
+    intervals: chord.intervals,
+    type: chord.type,
+  }));
 }
 
 /**
