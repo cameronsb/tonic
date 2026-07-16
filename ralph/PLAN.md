@@ -41,7 +41,7 @@ Some P4 sub-points were incidentally addressed by P2/P3 work. Verify against cur
   - Agent: sonnet · Effort: S — swap three inline formulas for a shared call; mechanical, pinned by existing tests.
   - Accept: one grep hit for `Math.pow(2` (or `2 **`) in frequency code — inside `midiToFrequency` only; tests pass. Then run the browser smoke check. (ROADMAP.md § P4-2)
 
-- [ ] **P4-3 · Move domain data into `config/`; table-drive `getBorrowedChords`**
+- [x] **P4-3 · Move domain data into `config/`; table-drive `getBorrowedChords`**
   - Scope: (1) move the static tables out of `musicTheory.ts` into `config/` — `NOTES`, `SCALES`, `MAJOR/MINOR_SCALE_SPELLINGS` → `config/scales.ts`; `CHORD_TYPES` → `config/diatonicChords.ts` — leaving `musicTheory.ts` as pure functions importing from config (`config/` = data, `utils/` = behavior, `types/` = shapes). (2) Replace `getBorrowedChords`' hand-copied `push` blocks with a `Record<Mode, Array<{ numeral; semitoneOffset; intervals; type }>>` table and a `.map` computing `rootNote: NOTES[(rootIndex + semitoneOffset) % 12]`. **Preserve P3-9's exact chord output** (major: iv/♭VI/♭VII/♭III; minor: I/IV/vi/vii°). (3) Standardize the major-branch numerals from ASCII `bVI`/`bVII`/`bIII` to the `♭` glyph. Update the co-located `getBorrowedChords.test.ts` for the numeral-glyph change only (deliberate) — no other assertion changes; record it in findings-log.md.
   - Files: `src/utils/musicTheory.ts`, `src/config/scales.ts` (new), `src/config/diatonicChords.ts` (new), `src/utils/__tests__/getBorrowedChords.test.ts`, and any importers of the moved tables
   - Depends on: P4-1 (must move only LIVE tables — do not relocate data P4-1 is deleting)

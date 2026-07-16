@@ -500,7 +500,7 @@ Optionally wrap `ChordCard` in `React.memo` once its props are stable.
 **Acceptance:** One grep hit for `Math.pow(2` (or `2 **`) in frequency code; tests pass.
 
 <a id="p4-3"></a>
-### - [ ] P4-3 · Move domain data into `config/`; table-drive `getBorrowedChords` (M)
+### - [x] P4-3 · Move domain data into `config/`; table-drive `getBorrowedChords` (M)
 
 **Problem:** Half the music domain data lives in `config/` (`CHORD_MODIFIERS`, modifier rules) and half is embedded in the 846-line `src/utils/musicTheory.ts` (`NOTES`, `SCALES`, `MAJOR/MINOR_SCALE_SPELLINGS`, `CHORD_TYPES` at `:174-215`). Separately, `getBorrowedChords` (`:650-736`) is eight hand-copied `push` blocks differing only in numeral/offset/intervals/type, and its numerals use ASCII `'bVI'` while the rest of the app uses the `♭` glyph.
 

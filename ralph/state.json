@@ -3,11 +3,12 @@
     "started_at": "2026-07-16T19:00:00Z",
     "template": "p4-roadmap",
     "status": "running",
-    "last_heartbeat": "2026-07-16T19:20:57Z",
-    "current_task": "P4-3",
+    "last_heartbeat": "2026-07-16T19:27:30Z",
+    "current_task": null,
     "commits": [
         "456e4e4 refactor: delete dead code (88-key subsystem, dead context/midi surface, sidebar CSS, broken scripts)",
-        "5dd9e65 fix(audio): consolidate equal-temperament formula into midiToFrequency"
+        "5dd9e65 fix(audio): consolidate equal-temperament formula into midiToFrequency",
+        "39559be refactor(theory): move domain tables to config/ and table-drive getBorrowedChords"
     ],
     "tasks": {
         "P4-1": {
@@ -31,11 +32,11 @@
         "P4-3": {
             "title": "Move domain data into config/; table-drive getBorrowedChords",
             "agent": "opus",
-            "status": "in_progress",
-            "attempts": 0,
+            "status": "done",
+            "attempts": 1,
             "depends_on": ["P4-1"],
             "last_error": null,
-            "completed_at": null
+            "completed_at": "2026-07-16T19:27:30Z"
         },
         "P4-4": {
             "title": "CSS hygiene pass (keyframes, z-index tokens, var(--text) fix, reduced motion, 44px touch targets, --text-muted contrast, MIDI badge)",
