@@ -378,7 +378,7 @@ Optionally wrap `ChordCard` in `React.memo` once its props are stable.
 ## P3 — Types, domain correctness & tests
 
 <a id="p3-1"></a>
-### - [ ] P3-1 · `getChordTypeFromIntervals` → `ChordType | null` (S)
+### - [x] P3-1 · `getChordTypeFromIntervals` → `ChordType | null` (S)
 
 **Problem:** `src/utils/musicTheory.ts:224-239` returns `string` (not the existing `ChordType` union from `src/types/music.ts:7`) and any un-catalogued interval set silently falls through to `return 'maj'` (`:238`). `getChordSymbol` (`:241`) likewise takes `chordType: string`.
 

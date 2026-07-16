@@ -3,9 +3,9 @@
     "started_at": "2026-07-16T00:00:00Z",
     "template": "p3-roadmap",
     "status": "running",
-    "last_heartbeat": "2026-07-16T09:37:00Z",
+    "last_heartbeat": "2026-07-16T16:40:30Z",
     "current_task": null,
-    "commits": ["20e12a7 test: pin behavior for chord display, borrowed chords, and settings merge"],
+    "commits": ["20e12a7 test: pin behavior for chord display, borrowed chords, and settings merge", "6225494 fix(musicTheory): stop defaulting unrecognized chord intervals to major"],
     "tasks": {
         "P3-5": {
             "title": "Add high-value missing tests",
@@ -19,11 +19,11 @@
         "P3-1": {
             "title": "getChordTypeFromIntervals -> ChordType | null (no silent 'maj')",
             "agent": "sonnet",
-            "status": "pending",
+            "status": "done",
             "attempts": 0,
             "depends_on": ["P3-5"],
             "last_error": null,
-            "completed_at": null
+            "completed_at": "2026-07-16T16:40:30Z"
         },
         "P3-2": {
             "title": "ModifierLabel union + ChordModifier discriminated union",

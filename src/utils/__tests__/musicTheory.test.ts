@@ -521,6 +521,12 @@ describe('getChordTypeFromIntervals', () => {
       expect(getChordTypeFromIntervals([0, 3, 6, 10])).toBe('half-dim7');
     });
   });
+
+  describe('Unrecognized intervals', () => {
+    it('returns null for an unrecognized interval set instead of defaulting to maj', () => {
+      expect(getChordTypeFromIntervals([0, 1, 2])).toBeNull();
+    });
+  });
 });
 
 // =============================================================================

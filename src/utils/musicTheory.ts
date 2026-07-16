@@ -221,7 +221,7 @@ export function getChordName(rootNote: Note, scaleType: Mode, degree: number): N
   return NOTES[chordRootIndex];
 }
 
-export function getChordTypeFromIntervals(intervals: number[]): string {
+export function getChordTypeFromIntervals(intervals: number[]): ChordType | null {
   const intervalStr = intervals.join(',');
 
   // Triads
@@ -235,10 +235,10 @@ export function getChordTypeFromIntervals(intervals: number[]): string {
   if (intervalStr === '0,4,7,10') return 'dom7';
   if (intervalStr === '0,3,6,10') return 'half-dim7';
 
-  return 'maj'; // default
+  return null; // unrecognized interval set - caller decides fallback
 }
 
-export function getChordSymbol(rootNote: Note, chordType: string): string {
+export function getChordSymbol(rootNote: Note, chordType: ChordType): string {
   let symbol = rootNote;
 
   switch (chordType) {
@@ -267,6 +267,8 @@ export function getChordSymbol(rootNote: Note, chordType: string): string {
 
 export function getFullChordName(rootNote: Note, intervals: number[]): string {
   const chordType = getChordTypeFromIntervals(intervals);
+  // Unrecognized interval set: skip the type symbol rather than mislabel the chord.
+  if (chordType === null) return rootNote;
   return getChordSymbol(rootNote, chordType);
 }
 

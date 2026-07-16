@@ -26,7 +26,7 @@ Every task that touches `src/` runtime code must pass the browser smoke check (s
   - Agent: sonnet · Effort: L
   - Accept: new test files pass under `npm run validate` in CI. **Tests-only task — browser smoke check is NOT required** (no runtime behavior changes). (ROADMAP.md § P3-5)
 
-- [ ] **P3-1 · `getChordTypeFromIntervals` → `ChordType | null` (no silent `'maj'`)**
+- [x] **P3-1 · `getChordTypeFromIntervals` → `ChordType | null` (no silent `'maj'`)**
   - Scope: change the signature to `getChordTypeFromIntervals(intervals: number[]): ChordType | null`, returning `null` on no match instead of falling through to `'maj'`; type `getChordSymbol(rootNote: Note, chordType: ChordType)`; fix each call site to decide what `null` means for it (fall back to raw intervals / skip the symbol).
   - Files: `src/utils/musicTheory.ts` (and its call sites)
   - Depends on: P3-5 (its pinning tests protect the shared `musicTheory.ts` display path; ROADMAP § sequencing item 4 names P3-1 explicitly)
