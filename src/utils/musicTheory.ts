@@ -151,7 +151,6 @@ export function getChordFrequencies(
   octave: number = 4
 ): number[] {
   const rootIndex = NOTES.indexOf(rootNote);
-  const A4 = 440;
 
   return intervals.map((interval) => {
     const noteIndex = (rootIndex + interval) % 12;
@@ -160,10 +159,8 @@ export function getChordFrequencies(
     const octaveAdjust = Math.floor((rootIndex + interval) / 12);
     const finalOctave = octave + octaveAdjust;
 
-    // Calculate frequency using equal temperament formula
-    // frequency = A4 * 2^((n - 49)/12) where n is MIDI note number
     const midiNote = (finalOctave + 1) * 12 + noteIndex;
-    return A4 * Math.pow(2, (midiNote - 69) / 12);
+    return midiToFrequency(midiNote);
   });
 }
 

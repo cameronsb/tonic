@@ -3,27 +3,30 @@
     "started_at": "2026-07-16T19:00:00Z",
     "template": "p4-roadmap",
     "status": "running",
-    "last_heartbeat": "2026-07-16T19:10:00Z",
-    "current_task": "P4-1",
-    "commits": [],
+    "last_heartbeat": "2026-07-16T19:20:57Z",
+    "current_task": null,
+    "commits": [
+        "456e4e4 refactor: delete dead code (88-key subsystem, dead context/midi surface, sidebar CSS, broken scripts)",
+        "PENDING_P4-2"
+    ],
     "tasks": {
         "P4-1": {
             "title": "Delete dead code (88-key subsystem, dead context/midi surface, dead CSS, broken scripts, lint-staged)",
             "agent": "opus",
-            "status": "in_progress",
-            "attempts": 0,
+            "status": "done",
+            "attempts": 1,
             "depends_on": [],
             "last_error": null,
-            "completed_at": null
+            "completed_at": "2026-07-16T19:17:30Z"
         },
         "P4-2": {
             "title": "Single source of truth for the equal-temperament formula (consolidate into midiToFrequency)",
             "agent": "sonnet",
-            "status": "pending",
-            "attempts": 0,
+            "status": "done",
+            "attempts": 1,
             "depends_on": ["P4-1"],
             "last_error": null,
-            "completed_at": null
+            "completed_at": "2026-07-16T19:20:57Z"
         },
         "P4-3": {
             "title": "Move domain data into config/; table-drive getBorrowedChords",

@@ -27,14 +27,14 @@ Some P4 sub-points were incidentally addressed by P2/P3 work. Verify against cur
 
 ---
 
-- [ ] **P4-1 · Delete dead code**
+- [x] **P4-1 · Delete dead code**
   - Scope: remove verified-dead surface area in one focused pass. (a) The entire 88-key subsystem in `src/utils/musicTheory.ts`: `generate88KeyPiano`, `createPianoKeyMap`, `createMidiKeyMap`, `getKeyRange`, `PIANO_RANGES`, `getEnharmonicSpelling`, `getRomanNumeralForChord`, `getNotesForChord`, `midiToNoteName`, `noteToMidi`, and the `FREQUENCIES`/`BASE_FREQUENCIES` tables (`:13-65`) — all referenced only by their own definitions and by tests. (b) The duplicate `PianoKeyData` in `src/types/music.ts` — keep the live one from `src/utils/pianoUtils.ts` and move it into `types/`, updating importers. (c) Dead `MusicContext` surface: `pianoRange`/`setPianoRange`, `toggleScaleView`, `deselectChords` (`scaleViewEnabled` is already gone — see above). (d) Unused `useMidiInput` returns `stopAllNotes`/`isSupported`. (e) Dead sidebar CSS in `LearnMode.css` (`.learn-mode-sidebar`, `.chord-sidebar`, `.sidebar-fab`, `.sidebar-backdrop`, ~:180-346) and `ChordStrip`'s `layout="sidebar"` branch. (f) Broken `check:client`/`check:all` npm scripts. (g) Unused `lint-staged` devDep (remove it — no configuration exists). **Delete the matching test cases** for removed functions (`midiToNoteName`/`noteToMidi` blocks in `musicTheory.test.ts`). **Never delete `useGlissando.ts`.**
   - Files: `src/utils/musicTheory.ts`, `src/types/music.ts`, `src/contexts/MusicContext.tsx`, `src/hooks/useMidiInput.ts`, `src/components/LearnMode.css`, `src/components/ChordStrip.tsx`, `src/utils/__tests__/musicTheory.test.ts`, `package.json`
   - Depends on: — (first; the rest of the tier builds on the cleaned-up files)
   - Agent: opus · Effort: M — large surgical removal across many files; each symbol must be confirmed to have zero live references before deletion (`noUnusedLocals` + `tsc -b` + grep are the safety net).
   - Accept: `npm run validate` green; grep for each deleted symbol returns nothing; every remaining npm script runs. Then run the browser smoke check. (ROADMAP.md § P4-1)
 
-- [ ] **P4-2 · Single source of truth for the equal-temperament formula**
+- [x] **P4-2 · Single source of truth for the equal-temperament formula**
   - Scope: have `getChordFrequencies` (`src/utils/musicTheory.ts`) and both inline sites in `src/utils/pianoUtils.ts` (`generatePianoKeys` and the frequency helper) call `midiToFrequency(midiNote)` instead of re-inlining `440 * Math.pow(2, (n - 69) / 12)`. `pianoUtils.ts` imports `midiToFrequency` from `musicTheory.ts` (verify no import cycle). The frequency pinning test (P3-5 item 6) already exists to protect the refactor.
   - Files: `src/utils/musicTheory.ts`, `src/utils/pianoUtils.ts`
   - Depends on: P4-1 (P4-1 removes the dead `FREQUENCIES`/`BASE_FREQUENCIES` tables and the dead 88-key inline; landing after it avoids touching soon-deleted code)

@@ -1,4 +1,5 @@
 import type { Note, PianoKeyData } from '../types/music';
+import { midiToFrequency } from './musicTheory';
 
 const BLACK_KEY_PATTERN = [
   false,
@@ -29,7 +30,7 @@ export function generatePianoKeys(startOctave: number, octaveCount: number): Pia
       const baseNote = NOTE_NAMES[semitone]!;
       const isBlack = BLACK_KEY_PATTERN[semitone]!;
       const midiNumber = (octave + 1) * 12 + semitone;
-      const frequency = 440 * Math.pow(2, (midiNumber - 69) / 12);
+      const frequency = midiToFrequency(midiNumber);
 
       // For black keys, whiteKeyIndex represents the white key to their left
       // For white keys, it's their actual index
@@ -52,7 +53,7 @@ export function generatePianoKeys(startOctave: number, octaveCount: number): Pia
   // Add final C note to complete the range
   const finalOctave = startOctave + octaveCount;
   const midiNumber = (finalOctave + 1) * 12;
-  const frequency = 440 * Math.pow(2, (midiNumber - 69) / 12);
+  const frequency = midiToFrequency(midiNumber);
 
   keys.push({
     note: `C${finalOctave}`,

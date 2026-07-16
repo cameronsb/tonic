@@ -473,7 +473,7 @@ Optionally wrap `ChordCard` in `React.memo` once its props are stable.
 ## P4 — Cleanup & hygiene
 
 <a id="p4-1"></a>
-### - [ ] P4-1 · Delete dead code (M)
+### - [x] P4-1 · Delete dead code (M)
 
 **Problem:** Verified-dead surface area across the codebase misleads readers and enlarges the context value:
 
@@ -491,7 +491,7 @@ Optionally wrap `ChordCard` in `React.memo` once its props are stable.
 **Acceptance:** `npm run validate` green; grep for each deleted symbol returns nothing; every remaining npm script runs.
 
 <a id="p4-2"></a>
-### - [ ] P4-2 · Single source of truth for the equal-temperament formula (S)
+### - [x] P4-2 · Single source of truth for the equal-temperament formula (S)
 
 **Problem:** `A4 · 2^((midi−69)/12)` is implemented in at least three places: inlined in `getChordFrequencies` (`src/utils/musicTheory.ts:343`), encapsulated in `midiToFrequency` (`:515-517`), and inlined again in `pianoUtils.generatePianoKeys` (`src/utils/pianoUtils.ts:41`) — plus the dead lookup tables removed in P4-1.
 
