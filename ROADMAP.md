@@ -517,7 +517,7 @@ Optionally wrap `ChordCard` in `React.memo` once its props are stable.
 **Acceptance:** Borrowed-chord tests pass unchanged (except numeral glyphs, updated deliberately); `musicTheory.ts` contains no top-level data tables.
 
 <a id="p4-4"></a>
-### - [ ] P4-4 · CSS hygiene pass (M)
+### - [x] P4-4 · CSS hygiene pass (M)
 
 **Problem — a batch of small, verified issues:**
 - `@keyframes fadeIn` defined twice (`src/components/ConfigBar.css:125` and `src/components/LoadingOverlay.css:12`) — last-loaded wins globally. The MIDI dot in `src/components/Piano.tsx:158` depends on `@keyframes pulse` defined only in `LoadingOverlay.css` — a cross-file coupling that breaks if that file is split.

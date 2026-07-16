@@ -22,7 +22,7 @@
   --text-primary: #f0f6fc;
   --text-secondary: #b1bac4;
   --text-tertiary: #8b949e;
-  --text-muted: #6e7681;
+  --text-muted: #8b949e; /* lightened from #6e7681 — 4.0:1 was below the 4.5:1 WCAG AA floor for small text */
   --text-inverse: #0d1117;
 
   /* Accent — Warm Amber (primary interactions) */
@@ -143,6 +143,25 @@
   /* MIDI active glow */
   --midi-glow: rgba(34, 197, 94, 0.5);
   --midi-glow-strong: rgba(34, 197, 94, 0.6);
+
+  /* ========================================
+   * Z-index scale
+   * Layers, low to high. Each stacked UI surface picks the tier it
+   * belongs to instead of a one-off magic number.
+   * ======================================== */
+
+  --z-header: 100;
+  --z-drawer: 300;
+  --z-overlay: 9999;
+  --z-onboarding: 10000;
+  --z-toast: 10010;
+
+  /* ========================================
+   * Touch targets
+   * Mirrors SIZES.minTouchTarget in src/config/ui.ts (iOS/WCAG guideline).
+   * ======================================== */
+
+  --size-touch-target: 44px;
 }
 
 /* ========================================
@@ -274,4 +293,48 @@ button:focus-visible {
 ::selection {
   background: var(--accent-bg);
   color: var(--text-primary);
+}
+
+/* ========================================
+ * Shared keyframes
+ * Single source of truth — components animating with these must not
+ * redeclare them locally.
+ * ======================================== */
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes pulse {
+  0%,
+  100% {
+    opacity: 0.4;
+    transform: scaleY(0.95);
+  }
+  50% {
+    opacity: 1;
+    transform: scaleY(1);
+  }
+}
+
+/* ========================================
+ * Reduced motion
+ * Disable the shared decorative animations and neutralize transitions
+ * app-wide for vestibular-sensitive users.
+ * ======================================== */
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }

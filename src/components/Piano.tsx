@@ -222,31 +222,8 @@ export function Piano({
   return (
     <div className="piano" ref={pianoContainerRef}>
       {midi.isConnected && (
-        <div
-          style={{
-            position: 'absolute',
-            top: '8px',
-            left: '8px',
-            padding: '4px 8px',
-            background: '#22c55e',
-            color: 'white',
-            fontSize: '12px',
-            borderRadius: '4px',
-            zIndex: 10,
-            display: 'flex',
-            alignItems: 'center',
-            gap: '6px',
-          }}
-        >
-          <span
-            style={{
-              width: '8px',
-              height: '8px',
-              background: 'white',
-              borderRadius: '50%',
-              animation: 'pulse 2s infinite',
-            }}
-          />
+        <div className="midi-badge">
+          <span className="midi-badge-dot" />
           MIDI: {midi.devices[0]}
         </div>
       )}

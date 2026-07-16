@@ -16,7 +16,7 @@
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
   border-bottom: 1px solid var(--border-muted);
-  z-index: 100;
+  z-index: var(--z-header);
 }
 
 .header-brand {
@@ -118,17 +118,8 @@
   background: rgba(0, 0, 0, 0.6);
   backdrop-filter: blur(4px);
   -webkit-backdrop-filter: blur(4px);
-  z-index: 200;
+  z-index: var(--z-drawer);
   animation: fadeIn 0.2s ease;
-}
-
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
 }
 
 /* ========================================
@@ -146,7 +137,7 @@
   background: var(--bg-elevated);
   border-left: 1px solid var(--border);
   box-shadow: var(--shadow-lg);
-  z-index: 300;
+  z-index: var(--z-drawer);
   transform: translateX(100%);
   transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   display: flex;

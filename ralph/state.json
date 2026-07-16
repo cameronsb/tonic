@@ -3,12 +3,13 @@
     "started_at": "2026-07-16T19:00:00Z",
     "template": "p4-roadmap",
     "status": "running",
-    "last_heartbeat": "2026-07-16T19:27:30Z",
+    "last_heartbeat": "2026-07-16T19:40:00Z",
     "current_task": null,
     "commits": [
         "456e4e4 refactor: delete dead code (88-key subsystem, dead context/midi surface, sidebar CSS, broken scripts)",
         "5dd9e65 fix(audio): consolidate equal-temperament formula into midiToFrequency",
-        "39559be refactor(theory): move domain tables to config/ and table-drive getBorrowedChords"
+        "39559be refactor(theory): move domain tables to config/ and table-drive getBorrowedChords",
+        "7296729 chore: finalize P4-3 tracking (checkboxes, state, findings log)"
     ],
     "tasks": {
         "P4-1": {
@@ -41,11 +42,11 @@
         "P4-4": {
             "title": "CSS hygiene pass (keyframes, z-index tokens, var(--text) fix, reduced motion, 44px touch targets, --text-muted contrast, MIDI badge)",
             "agent": "sonnet",
-            "status": "pending",
-            "attempts": 0,
+            "status": "done",
+            "attempts": 1,
             "depends_on": [],
             "last_error": null,
-            "completed_at": null
+            "completed_at": "2026-07-16T19:40:00Z"
         },
         "P4-5": {
             "title": "Named ResolvedChord type",

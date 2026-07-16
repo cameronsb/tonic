@@ -35,7 +35,7 @@ export const SIZES = {
     minWidth: 280,
   },
 
-  // Touch target minimum (iOS guideline)
+  // Touch target minimum (iOS guideline) — mirrored by --size-touch-target in src/index.css
   minTouchTarget: 44,
 
   // ConfigBar heights

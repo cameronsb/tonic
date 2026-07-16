@@ -142,7 +142,7 @@
 .chord-card-modifier-btn {
   aspect-ratio: 1;
   min-width: 0;
-  min-height: 32px;
+  min-height: var(--size-touch-target, 44px);
   padding: 0;
   border: 1px solid transparent;
   border-radius: var(--radius-md);
@@ -229,10 +229,6 @@
     padding: var(--space-3);
   }
 
-  .chord-card-modifier-btn {
-    min-height: 36px;
-  }
-
   .chord-card-modifiers {
     gap: 3px;
     padding: var(--space-2) var(--space-2) var(--space-3);
@@ -262,7 +258,6 @@
   }
 
   .chord-card-modifier-btn {
-    min-height: 28px;
     font-size: 9px;
   }
 
