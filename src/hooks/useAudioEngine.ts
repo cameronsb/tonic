@@ -78,6 +78,8 @@ function setupIOSAudioUnlock() {
 export function useAudioEngine() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [context, setContext] = useState<AudioContext | null>(null);
+  const [instrument, setInstrument] = useState<Player | null>(null);
   const audioRef = useRef<AudioEngine>({
     context: null,
     instrument: null,
@@ -120,6 +122,8 @@ export function useAudioEngine() {
         loading: false,
       };
 
+      setContext(context);
+      setInstrument(instrument);
       setLoading(false);
     } catch (error) {
       console.error('Failed to load piano soundfont:', error);
@@ -134,11 +138,31 @@ export function useAudioEngine() {
     setupIOSAudioUnlock();
 
     loadSoundfont();
+
+    // Close the AudioContext on unmount/HMR so contexts don't accumulate
+    // (browsers cap the number of live AudioContexts).
+    return () => {
+      const audioContext = audioRef.current.context;
+      if (audioContext && audioContext.state !== 'closed') {
+        audioContext.close().catch(() => {
+          // Ignore — context may already be closing/closed.
+        });
+      }
+      audioRef.current = {
+        context: null,
+        instrument: null,
+        masterGain: null,
+        initialized: false,
+        loading: false,
+      };
+    };
   }, [loadSoundfont]);
 
   const retry = useCallback(() => {
     audioRef.current.initialized = false;
     audioRef.current.loading = false;
+    setContext(null);
+    setInstrument(null);
     loadSoundfont();
   }, [loadSoundfont]);
 
@@ -201,8 +225,8 @@ export function useAudioEngine() {
     loading,
     error,
     retry,
-    audioContext: audioRef.current.context,
-    instrument: audioRef.current.instrument,
+    audioContext: context,
+    instrument,
   };
 }
 
