@@ -29,6 +29,7 @@
     "noImplicitThis": true,
     "noImplicitAny": true,
     "strictNullChecks": true,
+    "noUncheckedIndexedAccess": true,
     "strictFunctionTypes": true,
     "strictPropertyInitialization": true,
     "forceConsistentCasingInFileNames": true,

@@ -150,17 +150,19 @@ export function getEnharmonicSpelling(chromaticIndex: number, keyRoot: Note, mod
   const rootIndex = NOTES.indexOf(keyRoot);
 
   // Check if this chromatic index is in the scale
+  // scaleSpellings and scaleIntervals are both length 7, so index i is in range for both.
   for (let i = 0; i < scaleIntervals.length; i++) {
-    const scaleNoteIndex = (rootIndex + scaleIntervals[i]) % 12;
+    const scaleNoteIndex = (rootIndex + scaleIntervals[i]!) % 12;
     if (scaleNoteIndex === normalizedIndex) {
       // This note is in the scale, use the scale spelling
-      return scaleSpellings[i];
+      return scaleSpellings[i]!;
     }
   }
 
   // This note is not in the scale (chromatic passing tone)
   // Use sharps for sharp keys, flats for flat keys
-  const pair = ENHARMONIC_PAIRS[normalizedIndex];
+  // normalizedIndex is 0-11, so ENHARMONIC_PAIRS always has an entry for it.
+  const pair = ENHARMONIC_PAIRS[normalizedIndex]!;
 
   if (SHARP_KEYS.has(keyRoot)) {
     return pair.sharp;
@@ -218,8 +220,9 @@ export const CHORD_TYPES: Record<Mode, ChordData> = {
 export function getChordName(rootNote: Note, scaleType: Mode, degree: number): Note {
   const noteIndex = NOTES.indexOf(rootNote);
   const scale = SCALES[scaleType];
-  const chordRootIndex = (noteIndex + scale[degree]) % 12;
-  return NOTES[chordRootIndex];
+  // degree is a valid scale index (0-6) from callers; chordRootIndex is 0-11 via % 12.
+  const chordRootIndex = (noteIndex + scale[degree]!) % 12;
+  return NOTES[chordRootIndex]!;
 }
 
 export function getChordTypeFromIntervals(intervals: number[]): ChordType | null {
@@ -286,7 +289,8 @@ export function getRomanNumeralForChord(
   // Find which scale degree this chord root is
   let scaleDegree = -1;
   for (let i = 0; i < scale.length; i++) {
-    const scaleNoteIndex = (keyRootIndex + scale[i]) % 12;
+    // i < scale.length, so scale[i] is always defined.
+    const scaleNoteIndex = (keyRootIndex + scale[i]!) % 12;
     if (scaleNoteIndex === chordRootIndex) {
       scaleDegree = i;
       break;
@@ -302,7 +306,7 @@ export function getRomanNumeralForChord(
 
   // Check triads - use index-based loop
   for (let i = 0; i < chords.triads.length; i++) {
-    const chord = chords.triads[i];
+    const chord = chords.triads[i]!; // i < chords.triads.length, always defined
     const expectedRoot = getChordName(keyRoot, mode, i);
 
     if (expectedRoot === chordRoot && chord.type === chordType) {
@@ -312,7 +316,7 @@ export function getRomanNumeralForChord(
 
   // Check sevenths - use index-based loop
   for (let i = 0; i < chords.sevenths.length; i++) {
-    const chord = chords.sevenths[i];
+    const chord = chords.sevenths[i]!; // i < chords.sevenths.length, always defined
     const expectedRoot = getChordName(keyRoot, mode, i);
 
     if (expectedRoot === chordRoot && chord.type === chordType) {
@@ -378,7 +382,7 @@ export function getScaleNotes(rootNote: Note, mode: Mode): Note[] {
 
   return scaleIntervals.map((interval) => {
     const noteIndex = (rootIndex + interval) % 12;
-    return NOTES[noteIndex];
+    return NOTES[noteIndex]!; // noteIndex is 0-11, always in range of NOTES
   });
 }
 
@@ -407,7 +411,8 @@ export function getScaleDegreeNumeral(note: Note, keyRoot: Note, mode: Mode): st
   // Find which scale degree this note is
   let scaleDegree = -1;
   for (let i = 0; i < scale.length; i++) {
-    const scaleNoteIndex = (keyRootIndex + scale[i]) % 12;
+    // i < scale.length, so scale[i] is always defined.
+    const scaleNoteIndex = (keyRootIndex + scale[i]!) % 12;
     if (scaleNoteIndex === noteIndex) {
       scaleDegree = i;
       break;
@@ -420,7 +425,8 @@ export function getScaleDegreeNumeral(note: Note, keyRoot: Note, mode: Mode): st
   // Get the appropriate triad for this scale degree
   const chords = CHORD_TYPES[mode];
   if (scaleDegree < chords.triads.length) {
-    return chords.triads[scaleDegree].numeral;
+    // Guarded above: 0 <= scaleDegree < chords.triads.length, so this is defined.
+    return chords.triads[scaleDegree]!.numeral;
   }
 
   return null;
@@ -499,7 +505,8 @@ export function getScaleDegreeLabel(chromaticPosition: number, keyRoot: Note, mo
  */
 function findNearestLowerDegree(interval: number, scale: number[]): number {
   for (let i = scale.length - 1; i >= 0; i--) {
-    if (scale[i] < interval) {
+    // 0 <= i < scale.length, so scale[i] is always defined.
+    if (scale[i]! < interval) {
       return i + 1; // Scale degrees are 1-indexed
     }
   }
@@ -621,7 +628,8 @@ export function noteToMidi(note: NoteWithOctave): number {
   if (!match) return 60; // Default to C4
 
   const [, noteName, octaveStr] = match;
-  const octave = parseInt(octaveStr);
+  // The regex requires both capture groups, so a successful match always has them.
+  const octave = parseInt(octaveStr!);
   const noteIndex = NOTES.indexOf(noteName as Note);
 
   if (noteIndex === -1) return 60;
@@ -637,7 +645,8 @@ export function getScaleChords(rootNote: Note, mode: Mode) {
   const chordData = CHORD_TYPES[mode];
 
   return chordData.triads.map((chord, index) => {
-    const chordRootNote = scaleNotes[index];
+    // index ranges over the 7 triads and scaleNotes also has 7 entries, so in range.
+    const chordRootNote = scaleNotes[index]!;
     return {
       numeral: chord.numeral,
       rootNote: chordRootNote,
@@ -652,6 +661,8 @@ export function getScaleChords(rootNote: Note, mode: Mode) {
  */
 export function getBorrowedChords(rootNote: Note, mode: Mode) {
   const rootIndex = NOTES.indexOf(rootNote);
+  // Every root below is NOTES[(rootIndex + n) % 12]; the % 12 keeps the index
+  // within 0-11, so each lookup is always in range of the 12-element NOTES array.
   const borrowedChords: Array<{
     numeral: string;
     rootNote: Note;
@@ -662,7 +673,7 @@ export function getBorrowedChords(rootNote: Note, mode: Mode) {
   if (mode === 'major') {
     // Borrowing from parallel minor
     // iv chord (minor four) - adds emotional depth
-    const ivRoot = NOTES[(rootIndex + 5) % 12];
+    const ivRoot = NOTES[(rootIndex + 5) % 12]!;
     borrowedChords.push({
       numeral: 'iv',
       rootNote: ivRoot,
@@ -671,7 +682,7 @@ export function getBorrowedChords(rootNote: Note, mode: Mode) {
     });
 
     // bVI chord (flat six) - dreamy, Beatles-esque
-    const bVIRoot = NOTES[(rootIndex + 8) % 12];
+    const bVIRoot = NOTES[(rootIndex + 8) % 12]!;
     borrowedChords.push({
       numeral: 'bVI',
       rootNote: bVIRoot,
@@ -680,7 +691,7 @@ export function getBorrowedChords(rootNote: Note, mode: Mode) {
     });
 
     // bVII chord (flat seven) - modal/rock sound
-    const bVIIRoot = NOTES[(rootIndex + 10) % 12];
+    const bVIIRoot = NOTES[(rootIndex + 10) % 12]!;
     borrowedChords.push({
       numeral: 'bVII',
       rootNote: bVIIRoot,
@@ -689,7 +700,7 @@ export function getBorrowedChords(rootNote: Note, mode: Mode) {
     });
 
     // bIII chord (flat three) - Phrygian flavor
-    const bIIIRoot = NOTES[(rootIndex + 3) % 12];
+    const bIIIRoot = NOTES[(rootIndex + 3) % 12]!;
     borrowedChords.push({
       numeral: 'bIII',
       rootNote: bIIIRoot,
@@ -699,7 +710,7 @@ export function getBorrowedChords(rootNote: Note, mode: Mode) {
   } else {
     // Borrowing from parallel major
     // IV chord (major four) - brightness
-    const IVRoot = NOTES[(rootIndex + 5) % 12];
+    const IVRoot = NOTES[(rootIndex + 5) % 12]!;
     borrowedChords.push({
       numeral: 'IV',
       rootNote: IVRoot,
@@ -708,7 +719,7 @@ export function getBorrowedChords(rootNote: Note, mode: Mode) {
     });
 
     // VI chord (major six)
-    const VIRoot = NOTES[(rootIndex + 9) % 12];
+    const VIRoot = NOTES[(rootIndex + 9) % 12]!;
     borrowedChords.push({
       numeral: 'VI',
       rootNote: VIRoot,
@@ -717,7 +728,7 @@ export function getBorrowedChords(rootNote: Note, mode: Mode) {
     });
 
     // VII chord (major seven) - leading tone resolution
-    const VIIRoot = NOTES[(rootIndex + 11) % 12];
+    const VIIRoot = NOTES[(rootIndex + 11) % 12]!;
     borrowedChords.push({
       numeral: 'VII',
       rootNote: VIIRoot,
@@ -726,7 +737,7 @@ export function getBorrowedChords(rootNote: Note, mode: Mode) {
     });
 
     // III chord (major three) - relative major
-    const IIIRoot = NOTES[(rootIndex + 3) % 12];
+    const IIIRoot = NOTES[(rootIndex + 3) % 12]!;
     borrowedChords.push({
       numeral: 'III',
       rootNote: IIIRoot,

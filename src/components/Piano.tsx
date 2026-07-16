@@ -86,7 +86,7 @@ export function Piano({
         const rootIndex = NOTES.indexOf(chord.rootNote);
         chord.intervals.forEach((interval) => {
           const noteIndex = (rootIndex + interval) % 12;
-          notes.add(NOTES[noteIndex]);
+          notes.add(NOTES[noteIndex]!); // noteIndex is 0-11, always in range of NOTES
         });
       });
     }

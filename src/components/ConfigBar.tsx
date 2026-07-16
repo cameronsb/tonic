@@ -61,8 +61,9 @@ export function ConfigBar() {
       );
       if (focusable.length === 0) return;
 
-      const first = focusable[0];
-      const last = focusable[focusable.length - 1];
+      // focusable.length === 0 returned above, so first and last are defined.
+      const first = focusable[0]!;
+      const last = focusable[focusable.length - 1]!;
 
       if (e.shiftKey && document.activeElement === first) {
         e.preventDefault();

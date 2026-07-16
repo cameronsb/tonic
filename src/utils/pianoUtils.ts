@@ -35,8 +35,9 @@ export function generatePianoKeys(startOctave: number, octaveCount: number): Pia
 
   for (let octave = startOctave; octave < startOctave + octaveCount; octave++) {
     for (let semitone = 0; semitone < 12; semitone++) {
-      const baseNote = NOTE_NAMES[semitone];
-      const isBlack = BLACK_KEY_PATTERN[semitone];
+      // semitone is 0-11, in range of the 12-element NOTE_NAMES / BLACK_KEY_PATTERN arrays.
+      const baseNote = NOTE_NAMES[semitone]!;
+      const isBlack = BLACK_KEY_PATTERN[semitone]!;
       const midiNumber = (octave + 1) * 12 + semitone;
       const frequency = 440 * Math.pow(2, (midiNumber - 69) / 12);
 

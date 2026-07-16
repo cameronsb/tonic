@@ -116,7 +116,8 @@ function PianoKeyImpl({
       // Add all touches that started on this key
       // changedTouches contains ONLY the touches that triggered this event
       for (let i = 0; i < e.changedTouches.length; i++) {
-        activeTouchesRef.current.add(e.changedTouches[i].identifier);
+        // i < e.changedTouches.length, so the item is always present.
+        activeTouchesRef.current.add(e.changedTouches[i]!.identifier);
       }
 
       // Update state for re-render
@@ -135,7 +136,8 @@ function PianoKeyImpl({
 
     // Remove all touches that ended
     for (let i = 0; i < e.changedTouches.length; i++) {
-      activeTouchesRef.current.delete(e.changedTouches[i].identifier);
+      // i < e.changedTouches.length, so the item is always present.
+      activeTouchesRef.current.delete(e.changedTouches[i]!.identifier);
     }
 
     // Only update state when all touches have ended
@@ -149,7 +151,8 @@ function PianoKeyImpl({
 
     // Remove all cancelled touches
     for (let i = 0; i < e.changedTouches.length; i++) {
-      activeTouchesRef.current.delete(e.changedTouches[i].identifier);
+      // i < e.changedTouches.length, so the item is always present.
+      activeTouchesRef.current.delete(e.changedTouches[i]!.identifier);
     }
 
     if (activeTouchesRef.current.size === 0) {

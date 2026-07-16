@@ -184,9 +184,8 @@ export function ChordCard({
 
   // Check if this chord is currently selected on the main piano
   const isSelected =
-    state.selectedChords.length > 0 &&
-    state.selectedChords[0].rootNote === rootNote &&
-    state.selectedChords[0].numeral === numeral;
+    state.selectedChords[0]?.rootNote === rootNote &&
+    state.selectedChords[0]?.numeral === numeral;
 
   // Play the chord with given intervals
   const playChord = useCallback(

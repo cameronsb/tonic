@@ -35,7 +35,8 @@ describe('generatePianoKeys', () => {
 
     it('whiteKeyIndex is monotonically non-decreasing across the key list', () => {
       for (let i = 1; i < keys.length; i++) {
-        expect(keys[i].whiteKeyIndex).toBeGreaterThanOrEqual(keys[i - 1].whiteKeyIndex);
+        // 1 <= i < keys.length, so both keys[i] and keys[i - 1] are defined.
+        expect(keys[i]!.whiteKeyIndex).toBeGreaterThanOrEqual(keys[i - 1]!.whiteKeyIndex);
       }
     });
 

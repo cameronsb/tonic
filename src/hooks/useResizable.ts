@@ -41,7 +41,8 @@ export function useResizable({
     (e: React.TouchEvent) => {
       e.preventDefault();
       setIsResizing(true);
-      startYRef.current = e.touches[0].clientY;
+      // A touchstart always carries at least one active touch.
+      startYRef.current = e.touches[0]!.clientY;
       startHeightRef.current = height;
     },
     [height]
@@ -66,7 +67,8 @@ export function useResizable({
       if (!isResizing) return;
 
       // Calculate the delta (negative because moving up should increase bottom height)
-      const deltaY = startYRef.current - e.touches[0].clientY;
+      // A touchmove fires while a finger is down, so there is always an active touch.
+      const deltaY = startYRef.current - e.touches[0]!.clientY;
       const newHeight = Math.max(minHeight, Math.min(maxHeight, startHeightRef.current + deltaY));
 
       setHeight(newHeight);

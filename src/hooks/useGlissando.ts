@@ -262,7 +262,7 @@ export function useGlissando<T = string>(options: UseGlissandoOptions<T>): UseGl
       if (preventDefault) e.preventDefault();
 
       if (e.touches.length > 0 && touchId === null) {
-        const touch = e.touches[0];
+        const touch = e.touches[0]!; // guarded by e.touches.length > 0
         setTouchId(touch.identifier);
         lastTriggeredRef.current = null; // Reset for new touch
 

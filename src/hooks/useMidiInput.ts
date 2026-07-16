@@ -66,6 +66,8 @@ export function useMidiInput({ onNoteOn, onNoteOff }: MidiInputOptions) {
 
         const handleMIDIMessage = (event: MIDIMessageEvent) => {
           const [command, note, velocity] = event.data;
+          // A note on/off MIDI message carries all three bytes; bail if truncated.
+          if (command === undefined || note === undefined || velocity === undefined) return;
           const messageType = command & 0xf0;
 
           // Note On (0x90)
