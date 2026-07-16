@@ -60,6 +60,15 @@
             "depends_on": [],
             "last_error": null,
             "completed_at": null
+        },
+        "P3-7": {
+            "title": "Make npm run typecheck actually typecheck",
+            "agent": "sonnet",
+            "status": "pending",
+            "attempts": 0,
+            "depends_on": [],
+            "last_error": null,
+            "completed_at": null
         }
     }
 }
