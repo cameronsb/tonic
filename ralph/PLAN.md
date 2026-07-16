@@ -62,7 +62,7 @@ Every task that touches `src/` runtime code must pass the browser smoke check (s
   - Agent: sonnet · Effort: S — single hook, localized cleanup + state mirror.
   - Accept: with Vite HMR, repeated edits don't accumulate `AudioContext`s; audio still plays after reload. Then run the browser smoke check. (ROADMAP.md § P3-6)
 
-- [ ] **P3-7 · Make `npm run typecheck` actually typecheck**
+- [x] **P3-7 · Make `npm run typecheck` actually typecheck**
   - Scope: the root `tsconfig.json` has `files: []` with project references (`tsconfig.app.json`, `tsconfig.node.json`), and plain `tsc --noEmit` does NOT follow project references (only `tsc -b` does) — so the `typecheck` script in `package.json` is currently a silent no-op, meaning `npm run validate` (typecheck && lint && test), used by the pre-commit hook and CI gate, does not actually catch type errors; only the deploy build's `tsc -b` does. Change the `typecheck` script so it follows project references — e.g. `tsc -b --noEmit` if the project configs support it, or `tsc -p tsconfig.app.json --noEmit && tsc -p tsconfig.node.json --noEmit` — worker verifies which form actually works and genuinely fails on an injected type error.
   - Files: `package.json`
   - Depends on: — (independent; tooling-only change)
