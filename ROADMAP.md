@@ -416,7 +416,7 @@ Optionally wrap `ChordCard` in `React.memo` once its props are stable.
 **Acceptance:** Deliberately comment out one entry in `MODIFIER_CATEGORIES` → `tsc` fails. A typo'd label anywhere fails to compile.
 
 <a id="p3-3"></a>
-### - [ ] P3-3 · Enable `noUncheckedIndexedAccess` (M)
+### - [x] P3-3 · Enable `noUncheckedIndexedAccess` (M)
 
 **Problem:** `tsconfig.app.json:19-36` has an otherwise excellent strict block, but `noUncheckedIndexedAccess` is off while the domain code is saturated with unchecked indexing — `NOTES[noteIndex]`, `scaleSpellings[i]`, `romanNumerals[scaleDegree]`, etc. `NOTES.indexOf(x)` returning `-1` then `NOTES[-1]` yields runtime `undefined` with no type error.
 
@@ -428,7 +428,7 @@ Optionally wrap `ChordCard` in `React.memo` once its props are stable.
 **Acceptance:** `tsc -b` passes with the flag on; no blanket `!` sprinkled without range justification.
 
 <a id="p3-4"></a>
-### - [ ] P3-4 · Fix ambiguous minor scale-degree labels (S)
+### - [x] P3-4 · Fix ambiguous minor scale-degree labels (S)
 
 **Problem:** `getScaleDegreeLabel` (`src/utils/musicTheory.ts:481-490`) labels chromatic tones in minor with bare numbers identical to diatonic ones: interval 4 (raised 3rd) → `'3'` while diatonic interval 3 is also `'3'`; likewise `'6'` (intervals 8 and 9) and `'7'` (intervals 10 and 11). The current tests pin this behavior (`src/utils/__tests__/musicTheory.test.ts:244-254`).
 

@@ -40,14 +40,14 @@ Every task that touches `src/` runtime code must pass the browser smoke check (s
   - Agent: opus · Effort: M — cross-file type fallout that must stay coherent (types + two config files + the display path).
   - Accept: commenting out one `MODIFIER_CATEGORIES` entry → `tsc` fails; a typo'd label anywhere fails to compile. Then run the browser smoke check. (ROADMAP.md § P3-2)
 
-- [ ] **P3-3 · Enable `noUncheckedIndexedAccess`**
+- [x] **P3-3 · Enable `noUncheckedIndexedAccess`**
   - Scope: add `"noUncheckedIndexedAccess": true` to `tsconfig.app.json`; fix the fallout file by file — guard `indexOf(...) === -1` cases explicitly; where an index is provably in range (`% 12` into a 12-element array), a non-null assertion WITH a one-line justification comment is acceptable. No blanket `!` without a range justification.
   - Files: `tsconfig.app.json`, `src/utils/musicTheory.ts` (plus any other files the flag lights up)
   - Depends on: P3-5 (broad sweep of the same domain functions the pinning tests cover; landing after P3-1/P3-2 in queue order means the flag also catches their new code)
   - Agent: opus · Effort: M — codebase-wide type fallout requiring per-site range reasoning.
   - Accept: `tsc -b` passes with the flag on; no unjustified `!`. Then run the browser smoke check. (ROADMAP.md § P3-3)
 
-- [ ] **P3-4 · Fix ambiguous minor scale-degree labels**
+- [x] **P3-4 · Fix ambiguous minor scale-degree labels**
   - Scope: in `getScaleDegreeLabel`, label the raised chromatic variants distinctly from the diatonic ones — interval 4 → `'♮3'`, 9 → `'♮6'`, 11 → `'♮7'` (natural-sign accidentals, reading distinctly from `♭3/♭6/♭7`). Pick and apply one convention consistently.
   - **Intentional existing-test change:** the tests at `src/utils/__tests__/musicTheory.test.ts:244-254` currently PIN the buggy duplicate-label behavior (they assert bare `'3'/'6'/'7'` for the chromatic tones). This is the ONE place in this tier where rewriting existing test assertions is correct — update them to the new contract as part of the fix, and record the intentional change in findings-log.md.
   - Files: `src/utils/musicTheory.ts`, `src/utils/__tests__/musicTheory.test.ts`
