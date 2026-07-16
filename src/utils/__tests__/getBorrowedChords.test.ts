@@ -58,8 +58,21 @@ describe('getBorrowedChords', () => {
   describe('A minor (borrows from A major / parallel major)', () => {
     const borrowed = getBorrowedChords('A', 'minor');
 
+    // True modal interchange: the borrowed set is diatonic to the parallel
+    // MAJOR key (A major), so qualities match that scale — I & IV major, vi
+    // minor, vii° diminished. The duplicate diatonic III (C major) is dropped.
+
     it('returns 4 borrowed chords', () => {
       expect(borrowed).toHaveLength(4);
+    });
+
+    it('I is A major (Picardy tonic — major triad on the tonic)', () => {
+      expect(borrowed).toContainEqual({
+        numeral: 'I',
+        rootNote: 'A',
+        intervals: [0, 4, 7],
+        type: 'maj',
+      });
     });
 
     it('IV is D major', () => {
@@ -71,31 +84,29 @@ describe('getBorrowedChords', () => {
       });
     });
 
-    it('VI is F# major (major chord on the natural major 6th degree, not the natural minor vi)', () => {
+    it('vi is F# minor (minor triad on the raised 6th degree, per the parallel major)', () => {
       expect(borrowed).toContainEqual({
-        numeral: 'VI',
+        numeral: 'vi',
         rootNote: 'F#',
-        intervals: [0, 4, 7],
-        type: 'maj',
+        intervals: [0, 3, 7],
+        type: 'min',
       });
     });
 
-    it('VII is G# major (major chord on the natural major 7th degree, not the natural minor VII)', () => {
+    it('vii° is G# diminished (leading-tone diminished triad, per the parallel major)', () => {
       expect(borrowed).toContainEqual({
-        numeral: 'VII',
+        numeral: 'vii°',
         rootNote: 'G#',
-        intervals: [0, 4, 7],
-        type: 'maj',
+        intervals: [0, 3, 6],
+        type: 'dim',
       });
     });
 
-    it('III is C major', () => {
-      expect(borrowed).toContainEqual({
-        numeral: 'III',
-        rootNote: 'C',
-        intervals: [0, 4, 7],
-        type: 'maj',
-      });
+    it('does not include the old major VI / VII / III that duplicated the diatonic III', () => {
+      const numerals = borrowed.map((c) => c.numeral);
+      expect(numerals).not.toContain('VI');
+      expect(numerals).not.toContain('VII');
+      expect(numerals).not.toContain('III');
     });
   });
 });

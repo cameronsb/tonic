@@ -708,7 +708,22 @@ export function getBorrowedChords(rootNote: Note, mode: Mode) {
       type: 'maj',
     });
   } else {
-    // Borrowing from parallel major
+    // Borrowing from parallel major (true modal interchange): each chord below
+    // is diatonic to the parallel MAJOR key, so its quality matches that major
+    // scale — I and IV are major, vi is minor, vii° is diminished. (Not every
+    // triad is major: only I, IV, and V are, so the parallel-major set here is
+    // the major/minor/diminished mix of the major scale, not four major triads.)
+
+    // I chord (major tonic) - the Picardy third: a bright major color on the
+    // tonic in place of the diatonic minor i.
+    const IRoot = NOTES[(rootIndex + 0) % 12]!;
+    borrowedChords.push({
+      numeral: 'I',
+      rootNote: IRoot,
+      intervals: [0, 4, 7],
+      type: 'maj',
+    });
+
     // IV chord (major four) - brightness
     const IVRoot = NOTES[(rootIndex + 5) % 12]!;
     borrowedChords.push({
@@ -718,31 +733,22 @@ export function getBorrowedChords(rootNote: Note, mode: Mode) {
       type: 'maj',
     });
 
-    // VI chord (major six)
-    const VIRoot = NOTES[(rootIndex + 9) % 12]!;
+    // vi chord (minor six) - minor triad on the raised (major-scale) 6th degree
+    const viRoot = NOTES[(rootIndex + 9) % 12]!;
     borrowedChords.push({
-      numeral: 'VI',
-      rootNote: VIRoot,
-      intervals: [0, 4, 7],
-      type: 'maj',
+      numeral: 'vi',
+      rootNote: viRoot,
+      intervals: [0, 3, 7],
+      type: 'min',
     });
 
-    // VII chord (major seven) - leading tone resolution
-    const VIIRoot = NOTES[(rootIndex + 11) % 12]!;
+    // vii° chord (diminished seven) - leading-tone diminished triad
+    const viiRoot = NOTES[(rootIndex + 11) % 12]!;
     borrowedChords.push({
-      numeral: 'VII',
-      rootNote: VIIRoot,
-      intervals: [0, 4, 7],
-      type: 'maj',
-    });
-
-    // III chord (major three) - relative major
-    const IIIRoot = NOTES[(rootIndex + 3) % 12]!;
-    borrowedChords.push({
-      numeral: 'III',
-      rootNote: IIIRoot,
-      intervals: [0, 4, 7],
-      type: 'maj',
+      numeral: 'vii°',
+      rootNote: viiRoot,
+      intervals: [0, 3, 6],
+      type: 'dim',
     });
   }
 
