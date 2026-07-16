@@ -9,7 +9,8 @@
         "456e4e4 refactor: delete dead code (88-key subsystem, dead context/midi surface, sidebar CSS, broken scripts)",
         "5dd9e65 fix(audio): consolidate equal-temperament formula into midiToFrequency",
         "39559be refactor(theory): move domain tables to config/ and table-drive getBorrowedChords",
-        "7296729 chore: finalize P4-3 tracking (checkboxes, state, findings log)"
+        "7296729 chore: finalize P4-3 tracking (checkboxes, state, findings log)",
+        "4832a13 fix(css): dedupe keyframes, add z-index tokens, fix contrast and touch targets"
     ],
     "tasks": {
         "P4-1": {
