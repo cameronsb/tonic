@@ -2,8 +2,8 @@
     "session_id": "ralph_p4_20260716",
     "started_at": "2026-07-16T19:00:00Z",
     "template": "p4-roadmap",
-    "status": "running",
-    "last_heartbeat": "2026-07-16T19:40:00Z",
+    "status": "complete",
+    "last_heartbeat": "2026-07-16T19:41:28Z",
     "current_task": null,
     "commits": [
         "456e4e4 refactor: delete dead code (88-key subsystem, dead context/midi surface, sidebar CSS, broken scripts)",
@@ -52,11 +52,11 @@
         "P4-5": {
             "title": "Named ResolvedChord type",
             "agent": "sonnet",
-            "status": "pending",
-            "attempts": 0,
+            "status": "done",
+            "attempts": 1,
             "depends_on": ["P4-3"],
             "last_error": null,
-            "completed_at": null
+            "completed_at": "2026-07-16T19:41:28Z"
         }
     }
 }

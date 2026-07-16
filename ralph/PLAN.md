@@ -55,7 +55,7 @@ Some P4 sub-points were incidentally addressed by P2/P3 work. Verify against cur
   - Agent: sonnet · Effort: M — a batch of small, isolated, verified fixes.
   - Accept: each keyframe name defined exactly once; no `var(--text)` fallback; modifier buttons measure ≥ 44px on a phone viewport; `--text-muted` passes 4.5:1 on `--bg`. Then run the browser smoke check **plus a visual before/after screenshot** of each affected element (loading overlay, MIDI badge, modifier buttons, onboarding/about muted text). (ROADMAP.md § P4-4)
 
-- [ ] **P4-5 · Named `ResolvedChord` type**
+- [x] **P4-5 · Named `ResolvedChord` type**
   - Scope: declare `export interface ResolvedChord { numeral: string; rootNote: Note; intervals: number[]; type: ChordType }` in `src/types/music.ts`; use it as the explicit return type of both `getScaleChords` and `getBorrowedChords`, and in the `ChordStrip`/`ChordCard` prop types that consume them.
   - Files: `src/types/music.ts`, `src/utils/musicTheory.ts`, `src/components/ChordStrip.tsx`, `src/components/ChordCard.tsx`
   - Depends on: P4-3 (pairs naturally with P4-3 per ROADMAP — landing after the table-drive means the named type is applied to the already-refactored `getBorrowedChords`, avoiding rework)

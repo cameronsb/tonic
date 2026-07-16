@@ -18,7 +18,7 @@ import {
 } from '../utils/musicTheory';
 import { CHORD_MODIFIERS } from '../config/chords';
 import { getConflictingModifiers } from '../config/chordModifierRules';
-import type { Note, Mode, ChordType } from '../types/music';
+import type { Note, Mode, ResolvedChord } from '../types/music';
 import type { ModifierLabel } from '../types/chords';
 import './ChordCard.css';
 
@@ -128,11 +128,7 @@ const PianoPreview = memo(function PianoPreview({
   );
 });
 
-interface ChordCardProps {
-  numeral: string;
-  rootNote: Note;
-  intervals: number[];
-  type: ChordType;
+interface ChordCardProps extends ResolvedChord {
   isDiatonic: boolean;
   keyRoot: Note;
   mode: Mode;

@@ -37,6 +37,17 @@ export interface SelectedChord {
   numeral: string;
 }
 
+/**
+ * A chord resolved to a concrete root note within a key — the shape returned
+ * by `getScaleChords` and `getBorrowedChords` (`src/utils/musicTheory.ts`).
+ */
+export interface ResolvedChord {
+  numeral: string;
+  rootNote: Note;
+  intervals: number[];
+  type: ChordType;
+}
+
 export type ViewMode = 'circular' | 'linear';
 
 export type InteractionMode = 'keySelection' | 'play';

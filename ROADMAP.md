@@ -533,7 +533,7 @@ Optionally wrap `ChordCard` in `React.memo` once its props are stable.
 **Acceptance:** Visual spot-check of all animated elements; each keyframe name defined exactly once; DevTools shows no `var(--text)` fallback warnings; modifier buttons measure ≥ 44px on a phone viewport; contrast checker passes `--text-muted` on `--bg`.
 
 <a id="p4-5"></a>
-### - [ ] P4-5 · Named `ResolvedChord` type (S)
+### - [x] P4-5 · Named `ResolvedChord` type (S)
 
 **Problem:** The "resolved chord" concept (`{ numeral, rootNote, intervals, type }`) has no named type — `getScaleChords` (`src/utils/musicTheory.ts:632-645`) returns it by inference and `getBorrowedChords` (`:650-736`) re-declares it inline; `ChordCard`/`ChordStrip` consume both.
 

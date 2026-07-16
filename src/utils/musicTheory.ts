@@ -1,4 +1,4 @@
-import type { Note, Mode, ChordType } from '../types/music';
+import type { Note, Mode, ChordType, ResolvedChord } from '../types/music';
 import type { ModifierLabel } from '../types/chords';
 import { NOTES, SCALES, MAJOR_SCALE_SPELLINGS, MINOR_SCALE_SPELLINGS } from '../config/scales';
 import { CHORD_TYPES } from '../config/diatonicChords';
@@ -252,7 +252,7 @@ export function isBlackKey(note: Note): boolean {
 /**
  * Get all chords for a given scale (diatonic)
  */
-export function getScaleChords(rootNote: Note, mode: Mode) {
+export function getScaleChords(rootNote: Note, mode: Mode): ResolvedChord[] {
   const scaleNotes = getScaleNotes(rootNote, mode);
   const chordData = CHORD_TYPES[mode];
 
@@ -302,7 +302,7 @@ const BORROWED_CHORDS: Record<
 /**
  * Get common borrowed chords from the parallel key (modal interchange).
  */
-export function getBorrowedChords(rootNote: Note, mode: Mode) {
+export function getBorrowedChords(rootNote: Note, mode: Mode): ResolvedChord[] {
   const rootIndex = NOTES.indexOf(rootNote);
   // Each root is NOTES[(rootIndex + semitoneOffset) % 12]; the % 12 keeps the
   // index within 0-11, so every lookup is in range of the 12-element NOTES array.
