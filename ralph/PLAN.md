@@ -76,6 +76,13 @@ Every task that touches `src/` runtime code must pass the browser smoke check (s
   - Agent: sonnet · Effort: S — one label map plus a CSS font-size tweak, both already-isolated from P3-4.
   - Accept: in A minor, the borrowed IV/VI/VII preview labels show `♯6`/`♯3`/`♯6`/`♯7` (no `♮` left in the codebase); labels legible when zoomed; `npm run validate` green; browser smoke check clean. (ralph/findings-log.md Checkpoint 2 note)
 
+- [x] **P3-9 · Correct minor-mode borrowed chords to true parallel-major chords**
+  - Scope: `getBorrowedChords`' minor-mode branch (`src/utils/musicTheory.ts`, the `else` block) hardcoded MAJOR triads at offsets +5/+9/+11/+3, producing for A minor IV=D maj (correct) but VI=F♯ maj and VII=G♯ maj (WRONG — the parallel major A major contains F♯ minor and G♯ diminished) and III=C maj (a duplicate of the diatonic III card). Rewrite the branch to yield true modal interchange from the parallel MAJOR key: I (major tonic / Picardy, +0, `[0,4,7]`, `maj`), IV (+5, `[0,4,7]`, `maj`), vi (+9, `[0,3,7]`, `min`), vii° (+11, `[0,3,6]`, `dim`) — drop the duplicate III. Numerals reflect quality by case (`I`, `IV`, `vi`, `vii°`). Update the P3-5 pinning tests to the new contract (intentional behavior change, user-directed at Checkpoint 2).
+  - Files: `src/utils/musicTheory.ts`, `src/utils/__tests__/getBorrowedChords.test.ts`
+  - Depends on: — (corrects domain output; user-approved product decision)
+  - Agent: opus · Effort: S — one branch rewrite plus its co-located pinning tests.
+  - Accept: A minor → I=A maj, IV=D maj, vi=F♯m, vii°=G♯dim (root+intervals+type+numeral); the major-mode branch (iv/♭VI/♭VII/♭III) verified unchanged; `npm run validate` green; browser smoke check confirms the A-minor borrowed row renders I/IV/vi/vii° with sensible preview labels and a major key is unchanged. (Checkpoint 2 user decision)
+
 ---
 
 ## Browser smoke check (required for every task touching `src/` runtime code)
