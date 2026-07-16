@@ -7,7 +7,7 @@
     "current_task": null,
     "commits": [
         "456e4e4 refactor: delete dead code (88-key subsystem, dead context/midi surface, sidebar CSS, broken scripts)",
-        "PENDING_P4-2"
+        "5dd9e65 fix(audio): consolidate equal-temperament formula into midiToFrequency"
     ],
     "tasks": {
         "P4-1": {
