@@ -69,6 +69,13 @@ Every task that touches `src/` runtime code must pass the browser smoke check (s
   - Agent: sonnet · Effort: S — a script change plus verification, no application code involved.
   - Accept: introducing a deliberate type error in `src/` makes `npm run typecheck` (and thus `npm run validate`) exit non-zero; removing it restores green; `npm run validate` stays green on a clean tree. **Tooling-only task — browser smoke check is NOT required** (no `src/` runtime change).
 
+- [x] **P3-8 · Relabel raised minor degrees ♮→♯ and improve accidental legibility**
+  - Scope: P3-4's chromatic minor labels (`getScaleDegreeLabel`, interval 4/9/11) were caught at Checkpoint 2 user review as wrong on two counts: (1) theory — the app labels diatonic minor degrees with bare `3`/`6`/`7`, so raised chromatic tones in sharp-side minor keys (e.g. C#/F#/G# in A minor) should read `♯3`/`♯6`/`♯7`, not `♮3`/`♮6`/`♮7` — a natural sign is misleading there; (2) legibility — the mini piano-preview key labels render at 7-9px in JetBrains Mono and the accidental glyph was an illegible smudge at that size. Fix both: swap `♮` for `♯` in the three chromatic labels, and bump `.chord-card-key-label` font-size a notch at each breakpoint (verify no overflow against the fixed SVG viewBox in `PianoPreview`).
+  - Files: `src/utils/musicTheory.ts`, `src/utils/__tests__/musicTheory.test.ts`, `src/components/ChordCard.css`
+  - Depends on: — (independent; corrects P3-4's output)
+  - Agent: sonnet · Effort: S — one label map plus a CSS font-size tweak, both already-isolated from P3-4.
+  - Accept: in A minor, the borrowed IV/VI/VII preview labels show `♯6`/`♯3`/`♯6`/`♯7` (no `♮` left in the codebase); labels legible when zoomed; `npm run validate` green; browser smoke check clean. (ralph/findings-log.md Checkpoint 2 note)
+
 ---
 
 ## Browser smoke check (required for every task touching `src/` runtime code)

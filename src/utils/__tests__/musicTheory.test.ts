@@ -241,23 +241,25 @@ describe('getScaleDegreeLabel', () => {
 
   describe('Chromatic notes in minor keys', () => {
     // In minor, raised 3, 6, 7 are common (harmonic/melodic minor).
-    // These are labeled with a natural-sign accidental ('♮3'/'♮6'/'♮7') so they
-    // read distinctly from the diatonic '3'/'6'/'7' labels (see P3-4).
+    // These are labeled with a sharp accidental ('♯3'/'♯6'/'♯7') so they read
+    // distinctly from the diatonic '3'/'6'/'7' labels (see P3-8) — the raised
+    // tones genuinely are sharps in sharp-side minor keys like A minor, so a
+    // natural sign (the P3-4 choice) was theoretically misleading.
     it('G# (position 8) in A minor is raised 7 (leading tone)', () => {
-      expect(getScaleDegreeLabel(8, 'A', 'minor')).toBe('♮7');
+      expect(getScaleDegreeLabel(8, 'A', 'minor')).toBe('♯7');
     });
 
     it('F# (position 6) in A minor is raised 6', () => {
-      expect(getScaleDegreeLabel(6, 'A', 'minor')).toBe('♮6');
+      expect(getScaleDegreeLabel(6, 'A', 'minor')).toBe('♯6');
     });
 
     it('C# (position 1) in A minor is raised 3 (major third)', () => {
-      expect(getScaleDegreeLabel(1, 'A', 'minor')).toBe('♮3');
+      expect(getScaleDegreeLabel(1, 'A', 'minor')).toBe('♯3');
     });
 
     it('C (position 0, diatonic 3) is labeled distinctly from C# (raised 3) in A minor', () => {
       expect(getScaleDegreeLabel(0, 'A', 'minor')).toBe('3');
-      expect(getScaleDegreeLabel(1, 'A', 'minor')).toBe('♮3');
+      expect(getScaleDegreeLabel(1, 'A', 'minor')).toBe('♯3');
       expect(getScaleDegreeLabel(0, 'A', 'minor')).not.toBe(getScaleDegreeLabel(1, 'A', 'minor'));
     });
   });

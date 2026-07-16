@@ -489,10 +489,10 @@ export function getScaleDegreeLabel(chromaticPosition: number, keyRoot: Note, mo
   // Minor scale chromatic labels
   const minorChromaticLabels: Record<number, string> = {
     1: '♭2', // Minor 2nd
-    4: '♮3', // Major 3rd (raised 3rd in minor context) - natural sign distinguishes from diatonic '3'
+    4: '♯3', // Major 3rd (raised 3rd in minor context) - genuinely a sharp in sharp-side minor keys (e.g. C# in A minor); distinguishes from diatonic '3'
     6: '♭5', // Tritone
-    9: '♮6', // Major 6th (raised 6th in minor context) - natural sign distinguishes from diatonic '6'
-    11: '♮7', // Major 7th (raised 7th / leading tone) - natural sign distinguishes from diatonic '7'
+    9: '♯6', // Major 6th (raised 6th in minor context) - genuinely a sharp in sharp-side minor keys (e.g. F# in A minor); distinguishes from diatonic '6'
+    11: '♯7', // Major 7th (raised 7th / leading tone) - genuinely a sharp in sharp-side minor keys (e.g. G# in A minor); distinguishes from diatonic '7'
   };
   return (
     minorChromaticLabels[intervalFromRoot] || `♯${findNearestLowerDegree(intervalFromRoot, scale)}`

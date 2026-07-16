@@ -120,7 +120,7 @@
 
 .chord-card-key-label {
   font-family: var(--font-mono);
-  font-size: 8px;
+  font-size: 9px;
   font-weight: 600;
   fill: var(--text-secondary);
   text-anchor: middle;
@@ -214,7 +214,7 @@
   }
 
   .chord-card-key-label {
-    font-size: 9px;
+    font-size: 10px;
   }
 }
 
@@ -272,7 +272,7 @@
   }
 
   .chord-card-key-label {
-    font-size: 7px;
+    font-size: 8px;
   }
 }
 

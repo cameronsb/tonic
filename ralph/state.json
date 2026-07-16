@@ -2,9 +2,9 @@
     "session_id": "ralph_p3_20260716",
     "started_at": "2026-07-16T00:00:00Z",
     "template": "p3-roadmap",
-    "status": "complete",
-    "last_heartbeat": "2026-07-16T17:14:00Z",
-    "current_task": null,
+    "status": "running",
+    "last_heartbeat": "2026-07-16T17:35:00Z",
+    "current_task": "P3-8",
     "commits": ["20e12a7 test: pin behavior for chord display, borrowed chords, and settings merge", "6225494 fix(musicTheory): stop defaulting unrecognized chord intervals to major", "caca315 refactor(chords): model ChordModifier as a discriminated union with a ModifierLabel type", "6e3dc3c chore(types): enable noUncheckedIndexedAccess and guard indexed access", "611ca61 fix(musicTheory): distinguish raised minor scale degrees with natural-sign labels", "0fb5763 fix(audio): close AudioContext on cleanup and surface it via state", "2882e5c ci: make typecheck follow tsconfig project references"],
     "tasks": {
         "P3-5": {
@@ -69,6 +69,15 @@
             "depends_on": [],
             "last_error": null,
             "completed_at": "2026-07-16T17:12:41Z"
+        },
+        "P3-8": {
+            "title": "Relabel raised minor degrees ♮→♯ and improve accidental legibility",
+            "agent": "sonnet",
+            "status": "done",
+            "attempts": 0,
+            "depends_on": [],
+            "last_error": null,
+            "completed_at": "2026-07-16T17:40:00Z"
         }
     }
 }
