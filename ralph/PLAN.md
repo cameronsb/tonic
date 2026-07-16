@@ -55,7 +55,7 @@ Every task that touches `src/` runtime code must pass the browser smoke check (s
   - Agent: sonnet · Effort: S — one label function plus its own co-located tests.
   - Accept: in A minor, C and C♯ show different labels on the piano; tests pass with updated expectations. Then run the browser smoke check. (ROADMAP.md § P3-4)
 
-- [ ] **P3-6 · Close the `AudioContext` on cleanup; surface it via state**
+- [x] **P3-6 · Close the `AudioContext` on cleanup; surface it via state**
   - Scope: return a cleanup from the init effect in `useAudioEngine.ts` that `close()`s the context and nulls the ref (guard for already-closed); mirror `context`/`instrument` into `useState`, set on load completion, and return the state values; update P0-2's `useMemo` deps accordingly.
   - Files: `src/hooks/useAudioEngine.ts`
   - Depends on: — (independent; touches only the audio hook, none of the tested pure functions)

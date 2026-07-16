@@ -457,7 +457,7 @@ Optionally wrap `ChordCard` in `React.memo` once its props are stable.
 **Acceptance:** New test files pass in CI; coverage thresholds set and green.
 
 <a id="p3-6"></a>
-### - [ ] P3-6 · Close the `AudioContext` on cleanup; surface it via state (S)
+### - [x] P3-6 · Close the `AudioContext` on cleanup; surface it via state (S)
 
 **Problem:** The init effect in `src/hooks/useAudioEngine.ts:88-134` has no cleanup — the `AudioContext` is never `close()`d, leaking contexts under HMR/remount (browsers cap active contexts). Additionally, `audioContext`/`instrument` are returned by reading `audioRef.current` during render (`:193-194`); they only reach consumers because the async load happens to call `setLoading(false)`, coupling correctness to that state write.
 
