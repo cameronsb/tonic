@@ -3,9 +3,9 @@
     "started_at": "2026-07-16T00:00:00Z",
     "template": "p3-roadmap",
     "status": "running",
-    "last_heartbeat": "2026-07-16T16:52:00Z",
+    "last_heartbeat": "2026-07-16T17:06:14Z",
     "current_task": null,
-    "commits": ["20e12a7 test: pin behavior for chord display, borrowed chords, and settings merge", "6225494 fix(musicTheory): stop defaulting unrecognized chord intervals to major", "caca315 refactor(chords): model ChordModifier as a discriminated union with a ModifierLabel type"],
+    "commits": ["20e12a7 test: pin behavior for chord display, borrowed chords, and settings merge", "6225494 fix(musicTheory): stop defaulting unrecognized chord intervals to major", "caca315 refactor(chords): model ChordModifier as a discriminated union with a ModifierLabel type", "6e3dc3c chore(types): enable noUncheckedIndexedAccess and guard indexed access", "611ca61 fix(musicTheory): distinguish raised minor scale degrees with natural-sign labels"],
     "tasks": {
         "P3-5": {
             "title": "Add high-value missing tests",
@@ -37,20 +37,20 @@
         "P3-3": {
             "title": "Enable noUncheckedIndexedAccess",
             "agent": "opus",
-            "status": "pending",
+            "status": "done",
             "attempts": 0,
             "depends_on": ["P3-5"],
             "last_error": null,
-            "completed_at": null
+            "completed_at": "2026-07-16T17:20:00Z"
         },
         "P3-4": {
             "title": "Fix ambiguous minor scale-degree labels",
             "agent": "sonnet",
-            "status": "pending",
+            "status": "done",
             "attempts": 0,
             "depends_on": [],
             "last_error": null,
-            "completed_at": null
+            "completed_at": "2026-07-16T17:06:14Z"
         },
         "P3-6": {
             "title": "Close the AudioContext on cleanup; surface it via state",
