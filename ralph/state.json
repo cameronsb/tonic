@@ -3,18 +3,18 @@
     "started_at": "2026-07-16T00:00:00Z",
     "template": "p3-roadmap",
     "status": "running",
-    "last_heartbeat": "2026-07-16T00:00:00Z",
+    "last_heartbeat": "2026-07-16T09:37:00Z",
     "current_task": null,
-    "commits": [],
+    "commits": ["20e12a7 test: pin behavior for chord display, borrowed chords, and settings merge"],
     "tasks": {
         "P3-5": {
             "title": "Add high-value missing tests",
             "agent": "sonnet",
-            "status": "pending",
+            "status": "done",
             "attempts": 0,
             "depends_on": [],
             "last_error": null,
-            "completed_at": null
+            "completed_at": "2026-07-16T09:37:00Z"
         },
         "P3-1": {
             "title": "getChordTypeFromIntervals -> ChordType | null (no silent 'maj')",

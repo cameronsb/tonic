@@ -19,7 +19,7 @@ Every task that touches `src/` runtime code must pass the browser smoke check (s
 
 ---
 
-- [ ] **P3-5 · Add high-value missing tests**
+- [x] **P3-5 · Add high-value missing tests**
   - Scope: author behavior-pinning + coverage tests, in the ROADMAP's priority order — (1) `getChordDisplayName` `it.each` table tests (base cases, single modifiers, priority ladder, sus+extension edges); (2) `getConflictingModifiers`; (3) `getBorrowedChords` (C major → `iv`=F minor, `bVI/bVII/bIII`; A minor → `IV`=D major); (4) `useSettings` merge + migration via `renderHook` against the landed `SettingsProvider`; (5) `generatePianoKeys`; (6) `getChordFrequencies`. Items 1–3 are the pinning tests the refactors depend on. Do NOT yet enable `coverage.thresholds` unless all six land cleanly (item 7 is optional follow-through per acceptance).
   - Files: `src/utils/__tests__/` (new), `src/hooks/__tests__/` (new)
   - Depends on: — (must land first)

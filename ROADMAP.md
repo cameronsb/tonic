@@ -441,7 +441,7 @@ Optionally wrap `ChordCard` in `React.memo` once its props are stable.
 **Acceptance:** In A minor, C and C♯ show different labels on the piano; tests pass with updated expectations.
 
 <a id="p3-5"></a>
-### - [ ] P3-5 · Add high-value missing tests (L)
+### - [x] P3-5 · Add high-value missing tests (L)
 
 **Problem:** There is one test file (88 cases, all green) — but it heavily covers `noteToMidi`/`midiToNoteName` utilities that are dead in the app (see P4-1), while the functions actually driving the UI are untested. Test infrastructure is fully ready (`vitest.config.ts` with jsdom + coverage, `@testing-library/react`, `src/test/setup.ts`).
 
