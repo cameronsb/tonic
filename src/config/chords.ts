@@ -19,22 +19,22 @@ import type { ChordModifier } from '../types/chords';
  */
 export const CHORD_MODIFIERS: ChordModifier[] = [
   // Row 1: Essential - the most common modifications
-  { label: '7', intervalToAdd: 10 }, // Dominant 7th: the gateway modifier
-  { label: 'sus4', replaceWith: [0, 5, 7] }, // Suspended 4th: pop/rock staple
-  { label: 'maj7', intervalToAdd: 11 }, // Major 7th: jazz/pop crossover
+  { label: '7', kind: 'addOne', interval: 10 }, // Dominant 7th: the gateway modifier
+  { label: 'sus4', kind: 'replace', intervals: [0, 5, 7] }, // Suspended 4th: pop/rock staple
+  { label: 'maj7', kind: 'addOne', interval: 11 }, // Major 7th: jazz/pop crossover
 
   // Row 2: Common color additions
-  { label: 'sus2', replaceWith: [0, 2, 7] }, // Suspended 2nd: modern alternative to sus4
-  { label: 'add9', intervalToAdd: 14 }, // Add 9: easy color without 7th
-  { label: '9', intervalsToAdd: [10, 14] }, // Dominant 9th: jazz/funk essential
+  { label: 'sus2', kind: 'replace', intervals: [0, 2, 7] }, // Suspended 2nd: modern alternative to sus4
+  { label: 'add9', kind: 'addOne', interval: 14 }, // Add 9: easy color without 7th
+  { label: '9', kind: 'addMany', intervals: [10, 14] }, // Dominant 9th: jazz/funk essential
 
   // Row 3: Intermediate harmony
-  { label: '6', intervalToAdd: 9 }, // Major 6th: classic jazz sound
-  { label: 'dim', replaceWith: [0, 3, 6] }, // Diminished: tension/passing chords
-  { label: 'maj9', intervalsToAdd: [11, 14] }, // Major 9th: sophisticated color
+  { label: '6', kind: 'addOne', interval: 9 }, // Major 6th: classic jazz sound
+  { label: 'dim', kind: 'replace', intervals: [0, 3, 6] }, // Diminished: tension/passing chords
+  { label: 'maj9', kind: 'addMany', intervals: [11, 14] }, // Major 9th: sophisticated color
 
   // Row 4: Advanced extensions
-  { label: '11', intervalsToAdd: [10, 14, 17] }, // Dominant 11th: jazz extended
-  { label: '13', intervalsToAdd: [10, 14, 21] }, // Dominant 13th: full jazz voicing
-  { label: 'aug', replaceWith: [0, 4, 8] }, // Augmented: chromatic movement
+  { label: '11', kind: 'addMany', intervals: [10, 14, 17] }, // Dominant 11th: jazz extended
+  { label: '13', kind: 'addMany', intervals: [10, 14, 21] }, // Dominant 13th: full jazz voicing
+  { label: 'aug', kind: 'replace', intervals: [0, 4, 8] }, // Augmented: chromatic movement
 ];

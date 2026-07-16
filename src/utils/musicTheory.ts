@@ -7,6 +7,7 @@ import type {
   PianoKeyData,
   NoteWithOctave,
 } from '../types/music';
+import type { ModifierLabel } from '../types/chords';
 
 export const NOTES: Note[] = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
 
@@ -762,7 +763,7 @@ export function getChordDisplayName(
   rootNote: Note,
   baseType: ChordType,
   baseIntervals: number[],
-  activeModifiers: Set<string>
+  activeModifiers: Set<ModifierLabel>
 ): string {
   // No modifiers - use simple chord name
   if (activeModifiers.size === 0) {

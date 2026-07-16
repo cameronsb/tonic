@@ -392,7 +392,7 @@ Optionally wrap `ChordCard` in `React.memo` once its props are stable.
 **Acceptance:** `tsc` passes; a unit test asserts an unknown interval set (e.g. `[0, 1, 2]`) returns `null`, not `'maj'`.
 
 <a id="p3-2"></a>
-### - [ ] P3-2 · `ModifierLabel` union + `ChordModifier` discriminated union (M)
+### - [x] P3-2 · `ModifierLabel` union + `ChordModifier` discriminated union (M)
 
 **Problem:** Two related modeling gaps:
 - The set of valid modifier labels exists only implicitly as bare strings across three files: `src/config/chords.ts:20`, `src/config/chordModifierRules.ts:18` (`Record<string, ModifierCategory>`), `:67` (`getConflictingModifiers(modifierToAdd: string, ...)`), and the `modArray.includes('sus4')`-style checks in `getChordDisplayName` (`src/utils/musicTheory.ts:774-841`). A new modifier added to `CHORD_MODIFIERS` but forgotten in `MODIFIER_CATEGORIES` yields `undefined` category → conflict resolution silently returns `[]`.

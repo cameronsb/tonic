@@ -8,6 +8,7 @@
 
 import { describe, it, expect } from 'vitest';
 import { getChordDisplayName } from '../musicTheory';
+import type { ModifierLabel } from '../../types/chords';
 
 describe('getChordDisplayName', () => {
   describe('base cases (no modifiers use the base chord type)', () => {
@@ -29,7 +30,7 @@ describe('getChordDisplayName', () => {
   });
 
   describe('single modifiers', () => {
-    it.each<[string, string]>([
+    it.each<[ModifierLabel, string]>([
       ['7', 'C7'],
       ['maj7', 'Cmaj7'],
       ['add9', 'Cadd9'],

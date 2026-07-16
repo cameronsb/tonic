@@ -5,6 +5,8 @@
  * Used by long-press combination feature to auto-resolve conflicts.
  */
 
+import type { ModifierLabel } from '../types/chords';
+
 export type ModifierCategory =
   | 'seventh'
   | 'extension'
@@ -13,9 +15,12 @@ export type ModifierCategory =
   | 'quality';
 
 /**
- * Maps each modifier label to its category
+ * Maps each modifier label to its category.
+ *
+ * Keyed by `ModifierLabel` so the map must stay exhaustive: adding a new
+ * modifier to `CHORD_MODIFIERS` without a category entry here is a compile error.
  */
-export const MODIFIER_CATEGORIES: Record<string, ModifierCategory> = {
+export const MODIFIER_CATEGORIES: Record<ModifierLabel, ModifierCategory> = {
   // Seventh chords - add a 7th tone
   '7': 'seventh',
   'maj7': 'seventh',
@@ -65,14 +70,14 @@ export const CATEGORY_CONFLICTS: Record<ModifierCategory, ModifierCategory[]> = 
  * Used to auto-remove conflicting modifiers when combining via long-press.
  */
 export function getConflictingModifiers(
-  modifierToAdd: string,
-  activeModifiers: Set<string>
-): string[] {
+  modifierToAdd: ModifierLabel,
+  activeModifiers: Set<ModifierLabel>
+): ModifierLabel[] {
   const category = MODIFIER_CATEGORIES[modifierToAdd];
   if (!category) return [];
 
   const conflictingCategories = CATEGORY_CONFLICTS[category];
-  const conflicts: string[] = [];
+  const conflicts: ModifierLabel[] = [];
 
   activeModifiers.forEach((activeModifier) => {
     const activeCategory = MODIFIER_CATEGORIES[activeModifier];

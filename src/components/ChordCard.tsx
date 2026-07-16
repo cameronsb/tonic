@@ -19,6 +19,7 @@ import {
 import { CHORD_MODIFIERS } from '../config/chords';
 import { getConflictingModifiers } from '../config/chordModifierRules';
 import type { Note, Mode, ChordType } from '../types/music';
+import type { ModifierLabel } from '../types/chords';
 import './ChordCard.css';
 
 const LONG_PRESS_MS = 400;
@@ -152,9 +153,9 @@ export function ChordCard({
   const { audio, actions } = useMusicActions();
 
   // Locked modifiers persist until explicitly unlocked via long-press
-  const [lockedModifiers, setLockedModifiers] = useState<Set<string>>(new Set());
+  const [lockedModifiers, setLockedModifiers] = useState<Set<ModifierLabel>>(new Set());
   // Temp modifier is selected via tap, can be toggled off by tapping again
-  const [tempModifier, setTempModifier] = useState<string | null>(null);
+  const [tempModifier, setTempModifier] = useState<ModifierLabel | null>(null);
   const [currentIntervals, setCurrentIntervals] = useState<number[]>(baseIntervals);
 
   // Active modifiers = locked + temp (if any)
@@ -213,12 +214,12 @@ export function ChordCard({
   // Long-press detection refs
   const pressTimerRef = useRef<number | null>(null);
   const isLongPressRef = useRef(false);
-  const currentModifierRef = useRef<string | null>(null);
+  const currentModifierRef = useRef<ModifierLabel | null>(null);
 
   // Calculate intervals from a set of modifiers
   // Applies replacement modifiers first, then additive modifiers on top
   const calculateIntervals = useCallback(
-    (modifiers: Set<string>): number[] => {
+    (modifiers: Set<ModifierLabel>): number[] => {
       // Find replacement modifier (sus2, sus4, dim, aug) - should be at most one due to conflicts
       let intervals = [...baseIntervals];
       const additiveMods: typeof CHORD_MODIFIERS = [];
@@ -227,29 +228,27 @@ export function ChordCard({
         const mod = CHORD_MODIFIERS.find((m) => m.label === modLabel);
         if (!mod) return;
 
-        if (mod.replaceWith) {
+        if (mod.kind === 'replace') {
           // Replacement modifier - use its intervals as the base
-          intervals = [...mod.replaceWith];
+          intervals = [...mod.intervals];
         } else {
-          // Additive modifier - collect for later
+          // Additive modifier (addOne / addMany) - collect for later
           additiveMods.push(mod);
         }
       });
 
       // Apply additive modifiers on top of the base
       additiveMods.forEach((mod) => {
-        if (mod.intervalsToAdd) {
-          mod.intervalsToAdd.forEach((interval) => {
+        if (mod.kind === 'addMany') {
+          mod.intervals.forEach((interval) => {
             if (!intervals.includes(interval)) {
               intervals.push(interval);
             }
           });
-        } else if (mod.intervalToAdd !== undefined) {
-          if (!intervals.includes(mod.intervalToAdd)) {
-            intervals.push(mod.intervalToAdd);
+        } else if (mod.kind === 'addOne') {
+          if (!intervals.includes(mod.interval)) {
+            intervals.push(mod.interval);
           }
-        } else if (mod.intervalToRemove !== undefined) {
-          intervals = intervals.filter((i) => i !== mod.intervalToRemove);
         }
       });
 
@@ -260,7 +259,7 @@ export function ChordCard({
 
   // Tap handler: toggle temp modifier or preview locked combination
   const handleTap = useCallback(
-    (modifierLabel: string) => {
+    (modifierLabel: ModifierLabel) => {
       // If tapping the current temp modifier, toggle it off
       if (tempModifier === modifierLabel) {
         setTempModifier(null);
@@ -290,7 +289,7 @@ export function ChordCard({
 
   // Long-press handler: toggle lock status
   const handleLongPress = useCallback(
-    (modifierLabel: string) => {
+    (modifierLabel: ModifierLabel) => {
       const newLocked = new Set(lockedModifiers);
 
       if (newLocked.has(modifierLabel)) {
@@ -333,7 +332,7 @@ export function ChordCard({
 
   // Pointer event handlers for long-press detection
   const handlePointerDown = useCallback(
-    (modifierLabel: string) => {
+    (modifierLabel: ModifierLabel) => {
       isLongPressRef.current = false;
       currentModifierRef.current = modifierLabel;
 
@@ -376,7 +375,7 @@ export function ChordCard({
   //                               which only runs for keyboard-generated clicks)
   //   - Shift+Enter / Shift+Space → toggle lock, mirroring the pointer long-press
   const handleModifierKeyDown = useCallback(
-    (e: KeyboardEvent, modifierLabel: string) => {
+    (e: KeyboardEvent, modifierLabel: ModifierLabel) => {
       if (e.key !== 'Enter' && e.key !== ' ') return;
       if (!e.shiftKey) return; // plain Enter/Space falls through to the click → handleTap
       if (e.repeat) return;
@@ -391,7 +390,7 @@ export function ChordCard({
   // detail === 0, whereas a pointer/mouse click reports detail >= 1 — those are
   // already handled by handlePointerUp, so we skip them to avoid double-plays.
   const handleModifierClick = useCallback(
-    (e: MouseEvent, modifierLabel: string) => {
+    (e: MouseEvent, modifierLabel: ModifierLabel) => {
       if (e.detail !== 0) return;
       handleTap(modifierLabel);
     },

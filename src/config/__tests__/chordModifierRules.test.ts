@@ -8,6 +8,7 @@
 
 import { describe, it, expect } from 'vitest';
 import { getConflictingModifiers } from '../chordModifierRules';
+import type { ModifierLabel } from '../../types/chords';
 
 describe('getConflictingModifiers', () => {
   it('adding "7" (seventh) clears an active "maj7" (also seventh category)', () => {
@@ -21,7 +22,10 @@ describe('getConflictingModifiers', () => {
   });
 
   it('an unknown modifier label returns no conflicts', () => {
-    expect(getConflictingModifiers('not-a-real-modifier', new Set(['7', 'sus4']))).toEqual([]);
+    // Out-of-contract label: cast past the ModifierLabel type to exercise the
+    // defensive runtime guard for an uncategorized label.
+    const unknown = 'not-a-real-modifier' as ModifierLabel;
+    expect(getConflictingModifiers(unknown, new Set(['7', 'sus4']))).toEqual([]);
   });
 
   it('an empty active-modifiers set returns no conflicts', () => {

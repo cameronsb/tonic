@@ -33,7 +33,7 @@ Every task that touches `src/` runtime code must pass the browser smoke check (s
   - Agent: sonnet · Effort: S — localized single-function return-type change; the call-site fixes are mechanical.
   - Accept: `tsc` passes; a unit test asserts an unknown interval set (e.g. `[0,1,2]`) returns `null`, not `'maj'`. Then run the browser smoke check. (ROADMAP.md § P3-1)
 
-- [ ] **P3-2 · `ModifierLabel` union + `ChordModifier` discriminated union**
+- [x] **P3-2 · `ModifierLabel` union + `ChordModifier` discriminated union**
   - Scope: add a shared `ModifierLabel` string-literal union in `src/types/chords.ts` (complete from `config/chords.ts`); model `ChordModifier` as a discriminated union (`kind: 'addOne' | 'addMany' | 'replace'`) with a shared `label: ModifierLabel`; drop the dead `intervalToRemove`; type `CHORD_MODIFIERS: ChordModifier[]` and `MODIFIER_CATEGORIES: Record<ModifierLabel, ModifierCategory>` (the `Record` over the union forces completeness); `getConflictingModifiers(modifierToAdd: ModifierLabel, activeModifiers: Set<ModifierLabel>)`; consumers `switch (mod.kind)`.
   - Files: `src/types/chords.ts`, `src/config/chords.ts`, `src/config/chordModifierRules.ts`, and the `modArray.includes(...)` checks in `src/utils/musicTheory.ts` (`getChordDisplayName`)
   - Depends on: P3-5 (the `getChordDisplayName` + `getConflictingModifiers` pinning tests must exist first — this refactor touches both)
